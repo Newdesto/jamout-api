@@ -16,6 +16,7 @@ dependencies:
     - ~/.yarn-cache
   override:
     - yarn install
+    - yarn global add pm2
     - yarn run build
     - docker build --rm=false -t jamout/api .
 
