@@ -9,8 +9,8 @@ configure_aws_cli(){
 
 push_ecr_image(){
 	eval $(aws ecr get-login --region us-west-1)
-  docker tag jamout/api $AWS_ACCOUNT_ID.dkr.ecr.us-west-1.amazonaws.com/jamout/api:production
-	docker push $AWS_ACCOUNT_ID.dkr.ecr.us-west-1.amazonaws.com/jamout/api:production
+  docker tag jamout/api $AWS_ACCOUNT_ID.dkr.ecr.us-west-1.amazonaws.com/jamout/api:latest
+	docker push $AWS_ACCOUNT_ID.dkr.ecr.us-west-1.amazonaws.com/jamout/api:latest
 }
 
 
