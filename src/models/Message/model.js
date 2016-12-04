@@ -13,7 +13,7 @@ import Joi from 'joi'
 const Message = vogels.define('Message', {
   hashKey: 'createdAt',
   rangeKey: 'userId',
-  tableName: process.env.TABLE_MESSAGE,
+  tableName: 'chat.message',
   timestamps: true,
   schema: {
     id: vogels.types.uuid(), // index

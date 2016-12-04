@@ -3,7 +3,7 @@ import Joi from 'joi'
 
 const Channel = vogels.define('Channel', {
   hashKey: 'id',
-  tableName: process.env.TABLE_CHANNEL,
+  tableName: 'chat.channel',
   timestamps: true,
   schema: {
     id: vogels.types.uuid(), // index

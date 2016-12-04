@@ -4,7 +4,7 @@ import Joi from 'joi'
 const Connection = vogels.define('Connection', {
   hashKey: 'userId',
   rangeKey: 'friendId',
-  tableName: process.env.TABLE_CONNECTION,
+  tableName: 'connection',
   timestamps: true,
   schema: {
     id: vogels.types.uuid(),

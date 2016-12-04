@@ -3,7 +3,7 @@ import Joi from 'joi'
 
 const Profile = vogels.define('Profile', {
   hashKey: 'userId',
-  tableName: process.env.TABLE_PROFILE,
+  tableName: 'profile',
   timestamps: true,
   schema: {
     id: vogels.types.uuid(),

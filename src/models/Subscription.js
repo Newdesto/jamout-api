@@ -4,7 +4,7 @@ import Joi from 'joi'
 const Subscription = vogels.define('Subscription', {
   hashKey: 'userId',
   rangeKey: 'channelId',
-  tableName: process.env.TABLE_SUBSCRIPTION,
+  tableName: 'chat.subscription',
   timestamps: true,
   schema: {
     userId: Joi.string(),
