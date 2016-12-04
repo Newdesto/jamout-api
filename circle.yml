@@ -39,4 +39,4 @@ deployment:
       - chmod +x ./ecr-push
       - chmod +x ./ecs-deploy
       - ./ecr-push
-      - ./ecs-deploy -c production -n api -i jamout/api:production
+      - ./ecs-deploy -c production -n api -i jamout/api:latest
