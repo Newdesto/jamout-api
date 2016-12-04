@@ -18,6 +18,19 @@ export function createCustomer(args) {
   })
 }
 
+export function getCustomer(id) {
+  return new Promise((resolve, reject) => {
+    stripe.customers.retrieve(
+      id,
+      function(err, customer) {
+        if(err)
+          reject(err)
+        resolve(customer)
+      }
+    )
+  })
+}
+
 export function createOrder(args) {
   return new Promise((resolve, reject) => {
     stripe.orders.create(args, (error, order) => {

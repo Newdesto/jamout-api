@@ -1,7 +1,7 @@
 // We're defining all release resolvers in one file as
 // they are all closely related
 
-import { createCustomer } from '../../utils/stripe'
+import { createCustomer, getCustomer } from '../../utils/stripe'
 
 export default {
   createRelease(root, { input }, { user, Release }) {
@@ -56,8 +56,15 @@ export default {
       user.stripe.customer = stripeCustomer
       // @NOTE we might have to invalidate cache for current user
       // @TODO force the JWT update
-    }
+    } else {
+      // this is should never be thrown, but better safe than sorry
+      if(!user.stripe.customerId)
+        throw new Error('Customer data malformed.')
 
+      // if they're an existing customer fetch from Stripe
+      const stripeCustomer = await getCustomer(user.stripe.customerId)
+      user.stripe.customer = stripeCustomer
+    }
 
     // stripe token is passed if source isn't attached to customer
     // @NOTE: note how we pass an email, Stripe requires it for orders
