@@ -16,6 +16,7 @@ dependencies:
     - ~/.yarn-cache
   override:
     - yarn install
+    - yarn global add pm2 
 
 # @TODO also test the container itself
 # It's difficult to test the actual container because of env vars
