@@ -26,7 +26,6 @@ dependencies:
 test:
   override:
     - NODE_ENV=production pm2 start ./build/index.js
-    - pm2 logs index --lines=500
     - curl --retry 10 --retry-delay 5 -v http://localhost:3000/check
 
 # we will always overwrite the production tag with the latest image build
