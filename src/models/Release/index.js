@@ -17,8 +17,10 @@ export default class Release {
     if(!userId)
       throw new Error('User ID is undefined.')
     const { Items } = await releaseModel
+      .scan()
       .where('userId').equals(userId)
       .execAsync()
+    console.log(Items)
     return Items.map(i => i.attrs)
   }
   async fetchById(id) {

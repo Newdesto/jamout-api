@@ -1,6 +1,7 @@
 import merge from 'lodash/merge'
 import channels from './channels'
 import messages from './messages'
+import releases from './releases'
 import {
   Channel,
   Message,
@@ -18,7 +19,8 @@ const Query = `
 export const resolvers = {
   Query: merge(
     channels,
-    messages
+    messages,
+    releases
   )
 }
 
