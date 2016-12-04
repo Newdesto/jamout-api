@@ -16,7 +16,7 @@ const Mutation = `
     generateS3Signature(stringToSign: String!, datetime: String!): String!,
     openChannel(type: ChannelType!, users: [ID!]!): Channel,
     sendMessage(channelId: ID!, text: String!): Message,
-    createRelease(input: ReleaseInput!): Release,
+    createRelease(input: ReleaseInput!): Release
     updateRelease(id: ID!, input: ReleaseInput!): Release,
     deleteRelease(id: ID!): ID!,
     payForRelease(id: ID!, stripeToken: String!, saveSource: Boolean!): Release

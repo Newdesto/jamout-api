@@ -23,7 +23,7 @@ export default class Release {
     console.log(Items)
     return Items.map(i => i.attrs)
   }
-  async fetchById(id) {
+  async fetchById(id, userId) {
     const { attrs } = await releaseModel
       .getAsync(id)
     return attrs
