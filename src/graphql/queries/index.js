@@ -6,14 +6,17 @@ import releases from './releases'
 import {
   Channel,
   Message,
-  Profile
+  Profile,
+  Release
 } from '../types'
 
+// @NOTE: We allow the release field to return null for our new distro modal...
+// a little weird, but it works
 const Query = `
   type Query {
     channels(messageLimit: Int): [Channel!]!,
     messages(channelId: ID!, limit: Int): [Message!]!,
-    release(id: ID!): Release!,
+    release(id: ID!): Release,
     releases: [Release!]!
   }
 `
@@ -30,5 +33,6 @@ export const resolvers = {
 export default () => [
   Query,
   Channel,
-  Message
+  Message,
+  Release
 ]

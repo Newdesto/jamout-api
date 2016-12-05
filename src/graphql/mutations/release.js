@@ -1,7 +1,13 @@
 // We're defining all release resolvers in one file as
 // they are all closely related
-
 import { createCustomer, getCustomer } from '../../utils/stripe'
+
+// Release type ENUM, bro!
+const type = {
+  SINGLE: 's',
+  EP: 'e',
+  ALBUM: 'a'
+}
 
 export default {
   createRelease(root, { input }, { user, Release }) {
@@ -11,26 +17,15 @@ export default {
     // Possibly remove payment check to payForRelease
     // so free users can "preview"
 
-    // type ENUM
-    const type = {
-      SINGLE: 's',
-      EP: 'e',
-      ALBUM: 'a'
-    }[input.type]
-
     // set status
     const status = 'd'
-    console.log(input)
-    console.log(user)
-    console.log(type)
-    console.log(status)
-    return Release.create(Object.assign(input, { userId: user.id, type, status }))
+    return Release.create(Object.assign(input, { userId: user.id, type: type[input.type], status }))
   },
   updateRelease(root, { id, input }, { user, Release }) {
     if(!user)
       throw new Error('Authentication failed.')
 
-    return Release.update(id, input, user.id)
+    return Release.update(id, Object.assign(input, { type: type[input.type] }), user.id)
   },
   deleteRelease(root, { id }, { user, Release }) {
     if(!user)

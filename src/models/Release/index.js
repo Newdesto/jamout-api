@@ -24,9 +24,13 @@ export default class Release {
     return Items.map(i => i.attrs)
   }
   async fetchById(id, userId) {
-    const { attrs } = await releaseModel
+    const Item = await releaseModel
       .getAsync(id)
-    return attrs
+
+    // @NOTE: quickfix so we can send a null
+    if(!Item)
+      return null
+    return Item.attrs
   }
   async create(input) {
     try {
