@@ -3,6 +3,7 @@ import generateS3Signature from './generateS3Signature'
 import openChannel from './openChannel'
 import sendMessage from './sendMessage'
 import release from './release'
+import signUp from './signUp'
 import {
   Channel,
   ChannelType,
@@ -13,6 +14,8 @@ import {
 
 const Mutation = `
   type Mutation {
+    login(email: String!, password: String!): String!,
+    signUp(email: String!, username: String!, password: String!): String!
     generateS3Signature(stringToSign: String!, datetime: String!): String!,
     openChannel(type: ChannelType!, users: [ID!]!): Channel,
     sendMessage(channelId: ID!, text: String!): Message,
@@ -25,6 +28,7 @@ const Mutation = `
 
 export const resolvers = {
   Mutation: merge(
+    signUp,
     generateS3Signature,
     openChannel,
     sendMessage,
