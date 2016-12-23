@@ -45,9 +45,15 @@ export default class Release {
   }
   async update(id, input, userId) {
     // @TODO expression statement for userId
-    const { attrs } = await releaseModel
-      .updateAsync(Object.assign(input, { id }))
-    return attrs
+    console.log(input)
+    try {
+      const { attrs } = await releaseModel
+        .updateAsync(Object.assign(input, { id }))
+      return attrs
+    } catch(e) {
+      console.error(e)
+      throw e
+    }
   }
   async delete(userId, id) {
     try {

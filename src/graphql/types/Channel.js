@@ -3,7 +3,7 @@ import Profile from './Profile'
 
 const Channel = `
   type Channel {
-    createdAt: String!
+    createdAt: String!,
     updatedAt: String,
     id: ID!
     type: String!

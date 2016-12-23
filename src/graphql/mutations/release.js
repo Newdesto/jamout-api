@@ -25,7 +25,7 @@ export default {
     if(!user)
       throw new Error('Authentication failed.')
 
-    return Release.update(id, Object.assign(input, { type: type[input.type] }), user.id)
+    return Release.update(id, input, user.id)
   },
   deleteRelease(root, { id }, { user, Release }) {
     if(!user)

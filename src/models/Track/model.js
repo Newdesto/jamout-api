@@ -1,0 +1,27 @@
+import vogels from '../../utils/vogels'
+import Joi from 'joi'
+
+const Track = vogels.define('Track', {
+  hashKey: 'id',
+  tableName: 'music.track',
+  timestamps: true,
+  schema: {
+    id: vogels.types.uuid(),
+    userId: Joi.string(),
+    user: {
+      id: Joi.string(),
+      displayName: Joi.string()
+    },
+    title: Joi.string(),
+    isPublic: Joi.boolean(),
+    genres: vogels.types.stringSet(), // [0] = primary, [1], secondary
+    tags: vogels.types.stringSet(),
+    status: Joi.string(), // processing, failed, finished
+    artworkKey: Joi.string(), // used to provision s3 temp url
+    audioKey: Joi.string(), // used to provision s3 temp url
+    type: Joi.string(),
+    playCount: Joi.number(),
+  }
+})
+
+export default Track
