@@ -1,11 +1,9 @@
 type Subscription {
-  count: Int!
+  # Subs current user to a chat channel
+  # Publishes everything but new messages, with the exception of the latest message
+  channel(channelId: ID!): Channel!
 
-  # Subs current use            r to their chat channel subscriptions
-  # Publishes unread notifications, join/leave events
-  myChannels: [Channel!]!
-
-  # Subs current user to a specific chat channel
-  # Publishes full message payloads, channel events, etc
-  channel(channelId: String!): Channel
+  # Subs the current user to messages within a new chat channel
+  # Publishes messages
+  messages(channelId: ID!): Message!
 }

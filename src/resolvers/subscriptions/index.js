@@ -1,32 +1,28 @@
 import { includes, merge } from 'lodash'
-import { incr } from 'graphql/queries'
-const count = {
-  count(root, args, context) {
-    return incr
+import { incr } from 'resolvers/queries'
+
+const channel = {
+  channel(channel) {
+    // here is where we might check perms and return null
+    return channel
   }
 }
 
 const subscriptionMapping = {
-  count: (root, args, context) => ({
-    count: {
-      channelOptions: { path: ['incr'] }
-    }
-  }),
-  myChannels: (root, args, context) => {
+  channel: (root, args, context) => {
     console.log(context)
-    // query for user's channels
-    const myChannels = ['abc', 'def']
+    // query for my channels
     return {
-      'chat.channel': {
-        filter: channel => includes(myChannels, channel.id)
-      }
+        'chat.channel': {
+          channelOptions: { path: ['incr'] }
+        }
     }
   }
 }
 
 export const resolvers = {
   Subscription: merge(
-    count,
+    channel,
   )
 }
 

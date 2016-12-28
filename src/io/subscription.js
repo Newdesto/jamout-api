@@ -7,7 +7,6 @@ import logger from './logger'
 import { createServer } from 'http'
 let server;
 
-console.log(setupFunctions)
 const subscriptionManager = new SubscriptionManager({
   schema,
   pubsub,
