@@ -3,11 +3,13 @@ import channels from './channels'
 import messages from './messages'
 import release from './release'
 import releases from './releases'
+import studioEvents from './studioEvents'
 import {
   Channel,
   Message,
   Profile,
-  Release
+  Release,
+  StudioEvent,
 } from '../types'
 
 // @NOTE: We allow the release field to return null for our new distro modal...
@@ -17,7 +19,8 @@ const Query = `
     channels(messageLimit: Int): [Channel!]!,
     messages(channelId: ID!, limit: Int): [Message!]!,
     release(id: ID!): Release,
-    releases: [Release!]!
+    releases: [Release!]!,
+    studioEvents: [StudioEvent],
   }
 `
 
@@ -26,7 +29,8 @@ export const resolvers = {
     channels,
     messages,
     release,
-    releases
+    releases,
+    studioEvents
   )
 }
 
@@ -34,5 +38,6 @@ export default () => [
   Query,
   Channel,
   Message,
-  Release
+  Release,
+  StudioEvent,
 ]
