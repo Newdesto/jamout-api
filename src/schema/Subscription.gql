@@ -1,0 +1,11 @@
+type Subscription {
+  count: Int!
+
+  # Subs current user to their chat channel subscriptions
+  # Publishes unread notifications, join/leave events
+  myChannels: [Channel!]!
+
+  # Subs current user to a specific chat channel
+  # Publishes full message payloads, channel events, etc
+  channel(channelId: String!): Channel
+}
