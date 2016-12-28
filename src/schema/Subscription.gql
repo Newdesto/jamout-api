@@ -1,7 +1,7 @@
 type Subscription {
   count: Int!
 
-  # Subs current user to their chat channel subscriptions
+  # Subs current use            r to their chat channel subscriptions
   # Publishes unread notifications, join/leave events
   myChannels: [Channel!]!
 

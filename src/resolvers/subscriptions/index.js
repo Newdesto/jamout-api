@@ -6,26 +6,12 @@ const count = {
   }
 }
 
-export const resolvers = {
-  Subscription: merge(
-    count,
-  )
-}
-
-export const setupFunctions = {
-  ...subscriptionMapping
-};
-
 const subscriptionMapping = {
-  count: (root, args, context) => {
-    // updates user of simple incrementer
-    return {
-      count: (count) => {
-        console.log(count)
-        return true
-      }
+  count: (root, args, context) => ({
+    count: {
+      channelOptions: { path: ['incr'] }
     }
-  },
+  }),
   myChannels: (root, args, context) => {
     console.log(context)
     // query for user's channels
@@ -37,3 +23,13 @@ const subscriptionMapping = {
     }
   }
 }
+
+export const resolvers = {
+  Subscription: merge(
+    count,
+  )
+}
+
+export const setupFunctions = {
+  ...subscriptionMapping
+};

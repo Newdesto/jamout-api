@@ -1,5 +1,6 @@
 import { RedisPubSub } from 'graphql-redis-subscriptions'
 
+const triggerTransform = (trigger, { path }) => [trigger, ...path].join('.')
 const connection = {
   host: 'localhost',
   port: 6379,
@@ -8,7 +9,8 @@ const connection = {
 }
 
 const pubsub = new RedisPubSub({
-  connection
+  connection,
+  triggerTransform
 })
 
 export default pubsub

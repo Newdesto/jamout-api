@@ -3,13 +3,13 @@ import channels from './channels'
 import messages from './messages'
 import release from './release'
 import releases from './releases'
-import {altPS} from 'io/subscription'
+import pubsub from 'io/pubsub'
 import logger from 'io/logger'
 export let incr = 0
 const count = {
   count(root, args, context) {
     incr++
-    altPS.publish('count', incr);
+    pubsub.publish('count.incr', incr);
     return incr
   }
 }

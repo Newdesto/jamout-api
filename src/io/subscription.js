@@ -7,10 +7,10 @@ import logger from './logger'
 import { createServer } from 'http'
 let server;
 
-export const altPS = new PubSub()
+console.log(setupFunctions)
 const subscriptionManager = new SubscriptionManager({
   schema,
-  pubsub: altPS,
+  pubsub,
   setupFunctions
 })
 
