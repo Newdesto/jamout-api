@@ -1,0 +1,7 @@
+type Query {
+  count: Int!,
+  channels(messageLimit: Int): [Channel!]!,
+  messages(channelId: ID!, limit: Int): [Message!]!,
+  release(id: ID!): Release,
+  releases: [Release!]!
+}

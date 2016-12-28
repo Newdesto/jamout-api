@@ -1,52 +1,20 @@
-import express from 'express'
-import bodyParser from 'body-parser'
-import jwt from 'express-jwt'
-import cors from 'cors'
-import helmet from 'helmet'
-import { graphqlExpress, graphiqlExpress } from 'graphql-server-express'
-import schema from './graphql/schema'
-import Channel from './models/Channel'
-import Message from './models/Message'
-import Release from './models/Release'
-import User, { UserLoader } from './models/User'
-import Profile, { ProfileLoader } from './models/Profile'
-import { formatError } from 'apollo-errors'
+import 'app-module-path/register'
+import { app, logger, subscriptionServer } from './io'
+import { jwt, graphql, graphiql } from './middleware'
 
-// setup the env and app instance
-const secret = process.env.JWT_SECRET
-const app = express()
+// jwt authentication
+app.use(jwt)
 
-// setup middleware, woo!
-app.use(bodyParser.json())
-app.use(helmet())
-app.use(cors())
-app.use(jwt({ secret, credentialsRequired: false }))
+// graphql
+app.use('/graphql', graphql)
 
-// generic health check route
-app.get('/check', (req, res) => res.sendStatus(200))
+// graphiql
+if(process.env.NODE_ENV !== 'production') {
+  logger.info('Mounting GraphiQL endpoint.')
+  app.use('/graphiql', graphiql)
+}
 
-// graphql endpoint
-app.use('/graphql', graphqlExpress(req => {
-  const user = req.user
-  const profileLoader = new ProfileLoader({ userId: user && user.id })
-  const userLoader = new UserLoader({ userId: user && user.id })
-  return {
-    schema,
-    context: {
-      user,
-      Profile: new Profile({ loader: profileLoader }),
-      Channel: new Channel(),
-      Message: new Message(),
-      Release: new Release(),
-      User: new User({ loader: userLoader })
-    },
-    formatError
-  }
-}))
+// setup the ws subscription server
+subscriptionServer(app)
 
-// graphiql endpoint
-app.use('/graphiql', graphiqlExpress({
-  endpointURL: '/graphql',
-}))
-
-app.listen(3000)
+app.listen(3000, () => logger.info('GraphQL Server listening on port 3000.'))
