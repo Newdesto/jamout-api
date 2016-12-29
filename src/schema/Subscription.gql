@@ -1,4 +1,8 @@
 type Subscription {
+  # Subs current users to events emitted by assistant
+  # Publishes messages, ui updates, redirects, typing indicator, etc
+
+
   # Subs current user to a chat channel
   # Publishes everything but new messages, with the exception of the latest message
   channel(channelId: ID!): Channel!

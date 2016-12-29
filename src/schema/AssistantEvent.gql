@@ -1,0 +1,40 @@
+interface AssistantEvent {
+  __type: String!
+  createdAt: String!
+  id: ID!
+  type: String!
+}
+
+type AssistantMessage implements AssistantEvent {
+  __type: String!
+  createdAt: String!
+  id: ID!
+  type: String!
+  text: String!
+  contexts: MessageContexts
+  messenger: MessengerMessage
+}
+
+type MessageContexts {
+  name: String!,
+  lifespan: Int!,
+  parameters: JSON!
+}
+
+type MessengerMessage {
+  text: String!
+}
+
+type AssistantUiUpdate implements AssistantEvent {
+  __type: String!
+  createdAt: String!
+  id: ID!
+  type: String!
+}
+
+type AssistantRedirect implements AssistantEvent {
+  __type: String!
+  createdAt: String!
+  id: ID!
+  type: String!
+}

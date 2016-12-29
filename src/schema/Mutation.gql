@@ -3,6 +3,9 @@ type Mutation {
   signUp(email: String!, username: String!, password: String!): String!
   generateS3Signature(stringToSign: String!, datetime: String!): String!,
   openChannel(type: ChannelType!, users: [ID!]!): Channel,
+  # We won't do anything with the sendAssistantMessage response as it'll be
+  # published in the user's channel
+  sendAssistantMessage(text: String!): Message!,
   sendMessage(channelId: ID!, text: String!): Message,
   createRelease(input: ReleaseInput!): Release
   updateRelease(id: ID!, input: ReleaseInput!): Release,
