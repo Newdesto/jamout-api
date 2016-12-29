@@ -1,5 +1,5 @@
 export default {
-  studioEvents(root, args, { user, StudioEvent }) {
+  studioEvent(root, args, { user, StudioEvent }) {
     if(!user)
       throw new Error('Authentication failed.')
 

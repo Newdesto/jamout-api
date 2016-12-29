@@ -23,15 +23,14 @@ export default class StudioEvent {
 
 
 
-  async createEvent(user, currentEventId, nextEvent) {
+  async createStudioEvent(user, currentEventId, nextEvent) {
 
     const { Items } = await studioEventModel
-      .query()
+      .scan()
       .where('id').equals(currentEventId)
       .execAsync()
 
-    const currentEvent = Items.attrs;
-    console.log(currentEvent)
+    const currentEvent = Items[0].attrs;
 
   let attrs = null;
   // session types: inquiry pending, inquiry denied, inquiry accepted, session planned, artist paid, session completed, review

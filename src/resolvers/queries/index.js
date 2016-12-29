@@ -33,7 +33,7 @@ const Query = `
     messages(channelId: ID!, limit: Int): [Message!]!,
     release(id: ID!): Release,
     releases: [Release!]!,
-    studioEvents: [StudioEvent],
+    studioEvent: [StudioEvent],
   }
 `
 
