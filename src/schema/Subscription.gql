@@ -1,0 +1,9 @@
+type Subscription {
+  # Subs current user to a chat channel
+  # Publishes everything but new messages, with the exception of the latest message
+  channel(channelId: ID!): Channel!
+
+  # Subs the current user to messages within a new chat channel
+  # Publishes messages
+  messages(channelId: ID!): Message!
+}

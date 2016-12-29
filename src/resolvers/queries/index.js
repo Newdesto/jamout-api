@@ -4,6 +4,19 @@ import messages from './messages'
 import release from './release'
 import releases from './releases'
 import studioEvents from './studioEvents'
+
+import pubsub from 'io/pubsub'
+import logger from 'io/logger'
+
+export let incr = 0
+const count = {
+  count(root, args, context) {
+    incr++
+    pubsub.publish('count.incr', incr);
+    return incr
+  }
+}
+
 import {
   Channel,
   Message,
@@ -26,11 +39,12 @@ const Query = `
 
 export const resolvers = {
   Query: merge(
+    count,
     channels,
     messages,
     release,
     releases,
-    studioEvents
+    studioEvents,
   )
 }
 

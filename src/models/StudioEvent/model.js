@@ -1,4 +1,4 @@
-import vogels from '../../utils/vogels'
+import vogels from 'io/vogels'
 import Joi from 'joi'
 
 const StudioEvent = vogels.define('StudioEvent', {

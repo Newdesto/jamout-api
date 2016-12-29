@@ -4,6 +4,7 @@ const s3 = new AWS.S3()
 const StudioEvent = `
   type StudioEvent {
     id: ID!,
+    createdAt: String,
     userId: ID!,
     username: String,
     studioId: ID!,
