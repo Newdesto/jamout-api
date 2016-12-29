@@ -1,0 +1,12 @@
+type Profile {
+  createdAt: String!,
+  updatedAt: String,
+  id: ID!,
+  userId: ID!,
+  username: String!,
+  permalink: String!,
+  displayName: String!,
+  location: String,
+  avatarKey: String,
+  avatarUrl: String
+}

@@ -1,4 +1,4 @@
-import vogels from '../../utils/vogels'
+import vogels from 'io/vogels'
 import Joi from 'joi'
 
 // @TODO move table name to env var

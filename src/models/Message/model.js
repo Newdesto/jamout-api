@@ -1,4 +1,4 @@
-import vogels from '../../utils/vogels'
+import vogels from 'io/vogels'
 import Joi from 'joi'
 
 // The primary key is made up of the timestamp and the userId of the sender

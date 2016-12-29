@@ -1,0 +1,14 @@
+input ReleaseInput {
+  type: ReleaseType,
+  artworkS3Key: String,
+  title: String,
+  artist: String,
+  recordLabel: String,
+  language: String,
+  primaryGenre: String,
+  secondaryGenre: String,
+  releaseDate: Int,
+  albumPrice: Int,
+  trackPrice: Int,
+  tracklist: [ReleaseInputTrack!]
+}

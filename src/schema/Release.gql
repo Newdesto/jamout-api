@@ -1,0 +1,19 @@
+type Release {
+  id: ID!,
+  status: ReleaseStatus!,
+  userId: ID!,
+  stripeOrderId: String,
+  type: ReleaseType!,
+  artworkS3Key: String,
+  artworkUrl: String,
+  title: String,
+  artist: String,
+  recordLabel: String,
+  language: String,
+  primaryGenre: String,
+  secondaryGenre: String,
+  releaseDate: Int,
+  albumPrice: Int,
+  trackPrice: Int,
+  tracklist: [ReleaseTrack!]
+}
