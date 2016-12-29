@@ -8,6 +8,7 @@ import schema from './graphql/schema'
 import Channel from './models/Channel'
 import Message from './models/Message'
 import Release from './models/Release'
+import AssistantMessage from './models/AssistantMessage'
 import User, { UserLoader } from './models/User'
 import Profile, { ProfileLoader } from './models/Profile'
 import { formatError } from 'apollo-errors'
@@ -38,6 +39,7 @@ app.use('/graphql', graphqlExpress(req => {
       Channel: new Channel(),
       Message: new Message(),
       Release: new Release(),
+      AssistantMessage: new AssistantMessage(),
       User: new User({ loader: userLoader })
     },
     formatError
