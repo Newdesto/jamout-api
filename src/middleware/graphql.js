@@ -18,7 +18,7 @@ export default graphqlExpress(req => {
     schema,
     context: {
       user,
-      User: new User({ loader: userLoader })
+      User: new User({ loader: userLoader }),
       Profile: new Profile({ loader: profileLoader }),
       Channel: new Channel(),
       Message: new Message(),
