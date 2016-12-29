@@ -19,6 +19,7 @@ import ReleaseStatus from './ReleaseStatus.gql'
 import ReleaseTrack from './ReleaseTrack.gql'
 import ReleaseType from './ReleaseType.gql'
 import StudioEvent from './StudioEvent.gql'
+import StudioEventInput from './StudioEventInput.gql'
 
 const typeDefs = [
   schema,
@@ -36,6 +37,7 @@ const typeDefs = [
   ReleaseTrack,
   ReleaseType,
   StudioEvent,
+  StudioEventInput,
 ]
 
 export default makeExecutableSchema({

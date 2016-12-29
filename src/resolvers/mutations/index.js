@@ -4,12 +4,15 @@ import openChannel from './openChannel'
 import sendMessage from './sendMessage'
 import release from './release'
 import signUp from './signUp'
+import studioEvent from './studioEvent'
 import {
   Channel,
   ChannelType,
   Message,
   Release,
-  ReleaseInput
+  ReleaseInput,
+  StudioEvent,
+  StudioEventInput,
 } from '../types'
 
 const Mutation = `
@@ -22,7 +25,8 @@ const Mutation = `
     createRelease(input: ReleaseInput!): Release
     updateRelease(id: ID!, input: ReleaseInput!): Release,
     deleteRelease(id: ID!): ID!,
-    payForRelease(id: ID!, stripeToken: String!, saveSource: Boolean!): Release
+    payForRelease(id: ID!, stripeToken: String!, saveSource: Boolean!): Release,
+    createStudioEvent(currentEventId:ID, nextEvent: StudioEventInput): StudioEvent,
   }
 `
 
@@ -32,7 +36,8 @@ export const resolvers = {
     generateS3Signature,
     openChannel,
     sendMessage,
-    release
+    release,
+    studioEvent,
   )
 }
 
@@ -42,5 +47,7 @@ export default () => [
   ChannelType,
   Message,
   Release,
-  ReleaseInput
+  ReleaseInput,
+  StudioEvent,
+  StudioEventInput,
 ]

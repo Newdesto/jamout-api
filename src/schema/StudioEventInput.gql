@@ -1,0 +1,8 @@
+input StudioEventInput {
+    startDate: Int,
+    endDate: Int,
+    username: String,
+    userId: String,
+    studioId: String,
+    studio: String,
+  }

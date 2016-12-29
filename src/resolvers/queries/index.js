@@ -3,7 +3,7 @@ import channels from './channels'
 import messages from './messages'
 import release from './release'
 import releases from './releases'
-import studioEvents from './studioEvents'
+import studioEvent from './studioEvent'
 
 import pubsub from 'io/pubsub'
 import logger from 'io/logger'
@@ -44,7 +44,7 @@ export const resolvers = {
     messages,
     release,
     releases,
-    studioEvents,
+    studioEvent,
   )
 }
 

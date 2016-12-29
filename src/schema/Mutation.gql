@@ -7,5 +7,6 @@ type Mutation {
   createRelease(input: ReleaseInput!): Release
   updateRelease(id: ID!, input: ReleaseInput!): Release,
   deleteRelease(id: ID!): ID!,
-  payForRelease(id: ID!, stripeToken: String!, saveSource: Boolean!): Release
+  payForRelease(id: ID!, stripeToken: String!, saveSource: Boolean!): Release,
+  createStudioEvent(currentEventId: ID, nextEvent: StudioEventInput): StudioEvent
 }

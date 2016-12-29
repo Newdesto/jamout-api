@@ -9,6 +9,7 @@ export ReleaseInputTrack from './ReleaseInputTrack'
 export ReleaseType from './ReleaseType'
 export ReleaseStatus from './ReleaseStatus'
 export StudioEvent from './StudioEvent'
+export StudioEventInput from './StudioEventInput'
 
 import { resolver as channelResolver } from './Channel'
 import { resolver as messageResolver } from './Message'
