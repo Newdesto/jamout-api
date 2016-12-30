@@ -5,7 +5,7 @@ type Mutation {
   openChannel(type: ChannelType!, users: [ID!]!): Channel,
   # We won't do anything with the sendAssistantMessage response as it'll be
   # published in the user's channel
-  sendAssistantMessage(text: String!): Message!,
+  sendAssistantMessage(anonId: ID, input: AssistantMessageInput!): AssistantMessage!,
   sendMessage(channelId: ID!, text: String!): Message,
   createRelease(input: ReleaseInput!): Release
   updateRelease(id: ID!, input: ReleaseInput!): Release,

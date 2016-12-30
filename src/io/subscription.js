@@ -26,15 +26,14 @@ const websocketServer = createServer((request, response) => {
   response.end();
 });
 
-websocketServer.listen(3005, () => console.log( // eslint-disable-line no-console
-  `Websocket Server is now running on port 3005`
+websocketServer.listen(3005, () => logger.info(
+  `Websocket Server listening on port 3005.`
 ))
 
 export default httpServer => {
   if(server)
     return
 
-  logger.info('Mounting subscriptions server.')
   new SubscriptionServer({
     subscriptionManager,
     onSubscribe

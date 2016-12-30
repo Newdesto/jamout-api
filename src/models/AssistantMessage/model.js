@@ -1,6 +1,8 @@
 import vogels from 'io/vogels'
 import Joi from 'joi'
 
+// @NOTE userId also applies for anonymousIds
+// we combine them so we can index properly
 const AssistantMessage = vogels.define('AssistantMessage', {
   hashKey: 'userId',
   rangeKey: 'createdAt',
@@ -8,8 +10,11 @@ const AssistantMessage = vogels.define('AssistantMessage', {
   timestamps: true,
   schema: {
     id: vogels.types.uuid(), // index
+    userId: Joi.string(),
+    isAnon: Joi.boolean(), // is the userId an anonId
     sender: Joi.string().valid(['a', 'u']), // a = assistant, u = user
     text: Joi.string(),
+    // context only applies to assistant sent messages
     contexts: Joi.array().items(Joi.object().keys({
       name: Joi.string(),
       lifespan: Joi.number(),

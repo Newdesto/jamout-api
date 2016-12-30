@@ -1,7 +1,12 @@
 type Subscription {
   # Subs current users to events emitted by assistant
   # Publishes messages, ui updates, redirects, typing indicator, etc
-
+  assistant(anonId: ID): AssistantEvent!
+  # Trusting an anonymous ID argument poses a security risk.
+  # If you get a hold of an anonymous ID you can pass it to the GQL server
+  # and receive the messages related to it. A possible solution is to generate
+  # an anonymous JWT to derive the anonymous ID from. Though, if you can get a
+  # hold of the anonymous ID you can probably get a hold of the anonymous JWT.
 
   # Subs current user to a chat channel
   # Publishes everything but new messages, with the exception of the latest message
