@@ -35,14 +35,14 @@ export default class StudioEvent {
   let attrs = null;
   // session types: inquiry pending, inquiry denied, inquiry accepted, session planned, artist paid, session completed, review
     if (!currentEvent) {
-      attrs = await studioEventModel.createAsync({
+        attrs = await studioEventModel.createAsync({
         username: user.username,
         userId: user.id, // id the user who made the request
         studioId: nextEvent.studioId, // id of the studio?
         studio: nextEvent.studio,
         type: 'inquiry pending',
       })
-      return attrs;
+      return attrs.attrs;
     }
 
     switch(currentEvent.type) {
@@ -53,8 +53,9 @@ export default class StudioEvent {
           studioId: currentEvent.studioId, // id of the studio?
           studio: currentEvent.studio,
           type: 'inquiry accepted',
+          sessionId: currentEvent.sessionId,
         })
-        return attrs;
+        return attrs.attrs;
       case 'inquiry accepted':
         attrs = await studioEventModel.createAsync({
           username: user.username,
@@ -64,8 +65,9 @@ export default class StudioEvent {
           startDate: nextEvent.startDate,
           endDate: nextEvent.endDate,
           type: 'session planned',
+          sessionId: currentEvent.sessionId,
         })
-        return attrs;
+        return attrs.attrs;
       case 'session planned':
         attrs = await studioEventModel.createAsync({
           username: user.username,
@@ -75,10 +77,11 @@ export default class StudioEvent {
           startDate: nextEvent.startDate,
           endDate: nextEvent.endDate,
           type: 'artist paid',
+          sessionId: currentEvent.sessionId,
         })
-        return attrs;
+        return attrs.attrs;
       default:
-        return null
+        return attrs
     }
     return attrs;
   }

@@ -8,6 +8,7 @@ const StudioEvent = vogels.define('StudioEvent', {
   timestamps: true,
   schema: {
     id: vogels.types.uuid(), // id
+    sessionId: vogels.types.uuid(),
     type: Joi.string(), // inquiry pending, inquiry denied, inquiry accepted, session planned, artist paid, session completed, review
     username: Joi.string(),
     studio: Joi.string(),

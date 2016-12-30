@@ -12,6 +12,7 @@ const StudioEvent = `
     type: String!,
     startDate: Int,
     endDate: Int,
+    sessionId: ID!,
   }
 `
 export default () => [
