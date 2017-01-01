@@ -34,7 +34,7 @@ test:
 # in the future we can tag hashes and clean up old images...
 deployment:
   production:
-    branch: master
+    tag: /release-.*/
     commands:
       - chmod +x ./ecr-push
       - chmod +x ./ecs-deploy
