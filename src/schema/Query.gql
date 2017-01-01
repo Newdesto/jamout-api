@@ -4,5 +4,5 @@ type Query {
   messages(channelId: ID!, limit: Int): [Message!]!,
   release(id: ID!): Release,
   releases: [Release!]!,
-  studioEvent: [StudioEvent],
+  studioEvent: [[StudioEvent]],
 }

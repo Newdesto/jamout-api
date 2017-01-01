@@ -2,7 +2,7 @@ input StudioEventInput {
     startDate: Int,
     endDate: Int,
     username: String,
-    userId: String,
-    studioId: String,
+    userId: ID,
+    studioId: ID,
     studio: String,
   }

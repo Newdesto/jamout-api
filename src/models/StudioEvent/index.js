@@ -7,7 +7,8 @@ export default class StudioEvent {
       .loadAll()
       .execAsync()
 
-    return Items.map(i => i.attrs);
+
+    return this.sortStudioEvents(Items);
   }
 
   async fetchByUserId(userId) {
@@ -18,23 +19,34 @@ export default class StudioEvent {
       .where('userId').equals(userId)
       .execAsync()
 
-    return Items.map(i => i.attrs);
+    return this.sortStudioEvents(Items);
   }
 
+
+sortStudioEvents(items) {
+  let events = items.map(i => i.attrs);
+  let sortedEvents = [];
+  for (let i = 0; i < events.length; i++) {
+
+    let sortedEvent = events.filter(e => {
+      return e.sessionId === events[i].sessionId;
+    })
+
+    events = events.filter(e => {
+      return e.sessionId !== events[i].sessionId;
+    })
+    console.log(events)
+    sortedEvents.push(sortedEvent)
+  }
+  return sortedEvents;
+}
 
 
   async createStudioEvent(user, currentEventId, nextEvent) {
 
-    const { Items } = await studioEventModel
-      .scan()
-      .where('id').equals(currentEventId)
-      .execAsync()
-
-    const currentEvent = Items[0].attrs;
-
   let attrs = null;
   // session types: inquiry pending, inquiry denied, inquiry accepted, session planned, artist paid, session completed, review
-    if (!currentEvent) {
+    if (currentEventId === 'new-event') {
         attrs = await studioEventModel.createAsync({
         username: user.username,
         userId: user.id, // id the user who made the request
@@ -44,6 +56,13 @@ export default class StudioEvent {
       })
       return attrs.attrs;
     }
+
+    const { Items } = await studioEventModel
+      .scan()
+      .where('id').equals(currentEventId)
+      .execAsync()
+
+    const currentEvent = Items[0].attrs;
 
     switch(currentEvent.type) {
       case 'inquiry pending':
