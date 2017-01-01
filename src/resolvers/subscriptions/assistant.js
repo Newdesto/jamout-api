@@ -1,5 +1,6 @@
 import logger from 'io/logger'
 import uuid from 'uuid'
+import JWT from 'jsonwebtoken'
 
 export const resolvers = {
   assistant(assistantEvent) {
@@ -8,16 +9,17 @@ export const resolvers = {
 }
 
 export const mapper = {
-  assistant: (root, { anonId }, { user: { id: userId } = {} }) => {
-    if(!userId && !anonId)
-      throw new Error('No ID provided.')
-    const id = userId || anonId
-    logger.debug(`New assistant subscription for user (${id})`)
+  assistant: (root, { jwt }, context) => {
+    if(!jwt)
+      throw new Error('Authentication failed.')
+
+    const user = JWT.verify(jwt, process.env.JWT_SECRET)
+    logger.debug(`New assistant subscription for user (${user.id})`)
     return {
         'assistant': {
-          channelOptions: { path: [id] },
+          channelOptions: { path: [user.id] },
           filter: assistantEvent => {
-            return assistantEvent.userId === id
+            return assistantEvent.userId === user.id
           }
         }
     }

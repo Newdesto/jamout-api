@@ -1,7 +1,13 @@
 type Subscription {
+  # A note on user context
+  # There's not reliable way to pass a JWT through web sockets so the best solution
+  # is to pass in the JWT as an argument, decode it within the resolver, init
+  # any connectors that require a decoded JWT and carry on.
+
+
   # Subs current users to events emitted by assistant
   # Publishes messages, ui updates, redirects, typing indicator, etc
-  assistant(anonId: ID): AssistantEvent!
+  assistant(jwt: String!): AssistantEvent!
   # Trusting an anonymous ID argument poses a security risk.
   # If you get a hold of an anonymous ID you can pass it to the GQL server
   # and receive the messages related to it. A possible solution is to generate

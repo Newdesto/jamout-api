@@ -6,7 +6,7 @@ const resolvers = {
   async sendAssistantMessage(root, { anonId, input }, { user: { id: userId } = {}, AssistantMessage }) {
     // @TODO decide if we should store messages not attached to an
     // anonymous or an identified user
-    if(!anonId && userId) {
+    if(!anonId && !userId) {
       logger.error('No ID was passed.')
       throw new Error('No ID was passed.')
     }
