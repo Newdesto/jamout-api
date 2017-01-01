@@ -26,16 +26,20 @@ export default class StudioEvent {
 sortStudioEvents(items) {
   let events = items.map(i => i.attrs);
   let sortedEvents = [];
-  for (let i = 0; i < events.length; i++) {
+
+  while (events.length !== 0) {
 
     let sortedEvent = events.filter(e => {
-      return e.sessionId === events[i].sessionId;
+      return e.sessionId === events[0].sessionId;
+    }).sort((a, b) => {
+      const date1 = new Date(a.createdAt)
+      const date2 = new Date(a.createdAt)
+      return date1  - date2;
     })
 
     events = events.filter(e => {
-      return e.sessionId !== events[i].sessionId;
+      return e.sessionId !== events[0].sessionId;
     })
-    console.log(events)
     sortedEvents.push(sortedEvent)
   }
   return sortedEvents;
