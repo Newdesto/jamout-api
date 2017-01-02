@@ -1,0 +1,53 @@
+interface AssistantEvent {
+  createdAt: String!
+  id: ID!
+  type: String!
+  userId: ID!
+}
+
+type AssistantMessage implements AssistantEvent {
+  createdAt: String!
+  id: ID!
+  type: String!
+  userId: ID!
+  sender: String # enum ASSISTANT=a, USER=u
+  isAnon: Boolean
+  text: String!
+  contexts: MessageContexts
+  messenger: MessengerMessage
+}
+
+type MessageContexts {
+  name: String!,
+  lifespan: Int!,
+  parameters: JSON!
+}
+
+type MessengerMessage {
+  text: String!
+}
+
+input AssistantMessageInput {
+  text: String!
+}
+
+type AssistantTyping implements AssistantEvent{
+  createdAt: String!
+  id: ID!
+  type: String! # typing.start, typing.stop
+  userId: ID!
+}
+
+type AssistantUiUpdate implements AssistantEvent {
+  createdAt: String!
+  id: ID!
+  type: String!
+  userId: ID!
+}
+
+type AssistantRedirect implements AssistantEvent {
+  createdAt: String!
+  id: ID!
+  type: String!
+  userId: ID!
+}

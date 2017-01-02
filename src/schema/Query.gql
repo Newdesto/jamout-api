@@ -1,5 +1,5 @@
 type Query {
-  count: Int!,
+  assistantMessages(anonId: ID): [AssistantMessage!]!,
   channels(messageLimit: Int): [Channel!]!,
   messages(channelId: ID!, limit: Int): [Message!]!,
   release(id: ID!): Release,
