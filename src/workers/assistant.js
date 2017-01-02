@@ -1,14 +1,15 @@
 import { logger, queue, pubsub, apiai } from 'io'
+import AssistantMessage from 'models/AssistantMessage'
 import { request } from 'io/apiai'
 
 queue.process('assistant.process', async ({ data }, done) => {
   logger.debug(`Processing assistant message from user (${data.userId})`)
+  const amConnector = new AssistantMessage()
 
   // publish typing.start
   // @NOTE we show the typing indicator for as long as the process takes. A better
   // option would be to display the indicator in correlation with the message length
   pubsub.publish(`assistant.${data.userId}`, {
-    __type: 'AssistantTyping',
     createdAt: Date.now(),
     type: 'typing.start',
     userId: data.userId
@@ -26,23 +27,22 @@ queue.process('assistant.process', async ({ data }, done) => {
     return
   }
 
-  // handle the fulfillment
-
+  // persist the message - we can fork this into another job if needed
+  const amPersisted = await amConnector.create({
+    userId: data.userId,
+    isAnon: data.isAnon, // is the userId an anonId
+    sender: 'a', // a = assistant, u = user
+    text: response.result.fulfillment.speech,
+    contexts: response.result.context
+  })
+  amPersisted.type = 'message'
   pubsub.publish(`assistant.${data.userId}`, {
-    __type: 'AssistantTyping',
     createdAt: Date.now(),
     type: 'typing.stop',
     userId: data.userId
   })
-
-  pubsub.publish(`assistant.${data.userId}`, {
-    __type: 'AssistantMessage',
-    createdAt: Date.now(),
-    type: 'message',
-    userId: data.userId,
-    id: response.id, // @NOTE: this is the persisted message ID
-    text: response.result.fulfillment.speech
-  })
+  console.log(amPersisted)
+  pubsub.publish(`assistant.${data.userId}`, amPersisted)
 
 
   done()
