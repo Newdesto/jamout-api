@@ -10,8 +10,8 @@ const StudioEvent = `
     studioId: ID!,
     studio: String,
     type: String!,
-    startDate: Int,
-    endDate: Int,
+    startDate: String,
+    endDate: String,
     sessionId: ID!,
   }
 `
