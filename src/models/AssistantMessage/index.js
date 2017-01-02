@@ -27,6 +27,7 @@ export default class AssistantMessage {
       const response = await assistantMessageModel
         .query(userId)
         .limit(limit)
+        .descending('createdAt')
         .execAsync()
 
       return response.Items.map(i => i.attrs)
