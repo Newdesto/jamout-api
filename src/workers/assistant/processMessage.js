@@ -1,8 +1,8 @@
 import { logger, queue, pubsub, apiai } from 'io'
 import AssistantMessage from 'models/AssistantMessage'
-import { request } from 'io/apiai'
+import { textRequest } from 'io/apiai'
 
-queue.process('assistant.process', async ({ data }, done) => {
+queue.process('assistant.processMessage', async ({ data }, done) => {
   logger.debug(`Processing assistant message from user (${data.userId})`)
   const amConnector = new AssistantMessage()
 
@@ -18,7 +18,7 @@ queue.process('assistant.process', async ({ data }, done) => {
   // @NOTE we can use API.ai for persisting context for this user's session
   // They expire though, so we need to persist them even after the user leaves
 
-  const response = await request(data.text, { sessionId: data.userId })
+  const response = await textRequest(data.text, { sessionId: data.userId })
 
   if(response.status.code !== 200) {
     // @TODO fail this job
@@ -35,7 +35,7 @@ queue.process('assistant.process', async ({ data }, done) => {
     text: response.result.fulfillment.speech,
     contexts: response.result.context
   })
-  amPersisted.type = 'message'
+  amPersisted.type = 'message.text'
   pubsub.publish(`assistant.${data.userId}`, {
     createdAt: Date.now(),
     type: 'typing.stop',

@@ -50,4 +50,9 @@ type AssistantRedirect implements AssistantEvent {
   id: ID!
   type: String!
   userId: ID!
+  route: String!
+}
+
+input AssistantContextInput {
+  route: String
 }
