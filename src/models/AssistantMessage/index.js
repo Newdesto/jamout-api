@@ -16,6 +16,20 @@ export default class AssistantMessage {
       throw e
     }
   }
+  async createMany(inputs) {
+    if(!inputs)
+      logger.error('No inputs to create many AssistantMessage.')
+
+    try {
+      const response = await assistantMessageModel
+        .createAsync(inputs)
+
+      return response.map(r => r.attrs)
+    } catch(e) {
+      logger.error(e)
+      throw e
+    }
+  }
   async fetchByUserId(userId, limit) {
     if(!userId)
       throw new Error('Invalid userId.')

@@ -4,7 +4,7 @@ const resolver = {
       case 'typing.start':
       case 'typing.stop':
         return 'AssistantTyping'
-      case 'message':
+      case 'message.text':
         return 'AssistantMessage'
       default:
         null

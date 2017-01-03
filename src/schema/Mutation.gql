@@ -1,14 +1,13 @@
 type Mutation {
   login(email: String!, password: String!): String!,
   signUp(email: String!, username: String!, password: String!): String!
-  generateS3Signature(stringToSign: String!, datetime: String!): String!,
-  openChannel(type: ChannelType!, users: [ID!]!): Channel,
-  # We won't do anything with the sendAssistantMessage response as it'll be
-  # published in the user's channel
-  sendAssistantMessage(anonId: ID, input: AssistantMessageInput!): AssistantMessage!,
-  sendMessage(channelId: ID!, text: String!): Message,
+  generateS3Signature(stringToSign: String!, datetime: String!): String!
+  openChannel(type: ChannelType!, users: [ID!]!): Channel
+  updateAssistantContext(input: AssistantContextInput!): Boolean # null or true = success
+  sendAssistantMessage(anonId: ID, input: AssistantMessageInput!): AssistantMessage!
+  sendMessage(channelId: ID!, text: String!): Message
   createRelease(input: ReleaseInput!): Release
-  updateRelease(id: ID!, input: ReleaseInput!): Release,
-  deleteRelease(id: ID!): ID!,
+  updateRelease(id: ID!, input: ReleaseInput!): Release
+  deleteRelease(id: ID!): ID!
   payForRelease(id: ID!, stripeToken: String!, saveSource: Boolean!): Release
 }
