@@ -28,6 +28,8 @@ queue.process('distribution:new', async ({ data: { userId } }, done) => {
     message.id = uuid()
     pubsub.publish(`assistant.${userId}`, message)
   })
+  pubsub.publish(`assistant.${userId}`, events.input)
+
 
   done()
 })

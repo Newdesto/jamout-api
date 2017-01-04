@@ -9,6 +9,7 @@ import { resolver as releaseResolver } from './Release'
 import AssistantEvent from './AssistantEvent'
 import AssistantMessage from './AssistantMessage'
 import AssistantTyping from './AssistantTyping'
+import AssistantInput from './AssistantInput'
 
 export default {
   Channel: channelResolver,
@@ -17,5 +18,6 @@ export default {
   Release: releaseResolver,
   AssistantEvent,
   AssistantMessage,
-  AssistantTyping
+  AssistantTyping,
+  AssistantInput
 }
