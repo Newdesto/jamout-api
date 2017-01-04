@@ -1,6 +1,7 @@
 import { logger, queue, pubsub, apiai } from 'io'
 import AssistantMessage from 'models/AssistantMessage'
 import { textRequest } from 'io/apiai'
+import { createJob } from 'io/queue'
 
 queue.process('assistant.processMessage', async ({ data }, done) => {
   logger.debug(`Processing assistant message from user (${data.userId})`)
@@ -44,6 +45,15 @@ queue.process('assistant.processMessage', async ({ data }, done) => {
   console.log(amPersisted)
   pubsub.publish(`assistant.${data.userId}`, amPersisted)
 
+  // checks if the action is complete
+  // adds user id to parameters
+  if (!response.result.actionIncomplete) {
+    const { action, parameters } =  response.result;
+    await createJob(action, {
+      ...parameters,
+      userId: response.sessionId
+    });
+  }
 
   done()
 })

@@ -1,6 +1,6 @@
 import { logger, queue, pubsub } from 'io'
 import { createJob } from 'io/queue'
-import { eventRequestAndProcess } from './utils'
+import { eventRequestAndProcess } from 'utils/assistant'
 import Promise from 'bluebird'
 import uuid from 'uuid'
 
