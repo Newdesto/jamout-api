@@ -5,14 +5,36 @@ import { flatten } from 'lodash'
 /**
  * Sends an event request to API.ai and processes the response, throwing an error
  * if one exists or converting the fulfillment to AssistantEvent objects.
- * @param  {object} event   See https://docs.api.ai/docs/query#post-query
- * @param  {object} options See https://docs.api.ai/docs/query#post-query
- * @return {object}         Returns a object with the response, events, contexts, etc.
+ * @param  {Object} event   See https://docs.api.ai/docs/query#post-query
+ * @param  {Object} options See https://docs.api.ai/docs/query#post-query
+ * @return {Object}         Returns a object with the response, events, contexts, etc.
  */
 export async function eventRequestAndProcess(event, options) {
   try {
     const response = await eventRequest(event, options)
     const events = mapResponseToEvents(response)
+    return {
+      response,
+      events
+    }
+  } catch(e) {
+    logger.error(e)
+    throw e
+  }
+}
+
+/**
+ * Sends a text request to API.ai and process the response, throwing an error
+ * if one exists or converting the fulfillment to AssistantEvent objects.
+ * @param  {String}  text    See https://docs.api.ai/docs/query#post-query
+ * @param  {string}  options See https://docs.api.ai/docs/query#post-query
+ * @return {Object}          Returns a object with the response, events, contexts, etc.
+ */
+export async function textRequestAndProcess(text, options) {
+  try {
+    const response = await textRequest(text, options)
+    const events = mapResponseToEvents(response)
+
     return {
       response,
       events
@@ -34,8 +56,13 @@ function mapResponseToEvents(response) {
   if(status.code == 200 && status.errorType === 'deprecated')
     logger.warn('API.ai responded with a warning about a deprecated feature!')
 
-  // Map rich messages to AssistantMessage objects.
-  const messages = mapRichMessages(result.fulfillment.messages, sessionId, result.contexts)
+  // API.ai sometimes returns a speech fulfillment without including it in the messages array
+  // Prioritize the messages array if it exists.
+  let messages;
+  if(result.fulfillment.messages && result.fulfillment.messages.length > 0)
+    messages = mapRichMessages(result.fulfillment.messages, sessionId, result.contexts)
+  else
+    messages = mapSpeech(result.fulfillment.speech, sessionId, result.contexts)
 
   // Map redirect parameter to AssistantRedirect object
   // @NOTE: Redirect values returned may have variable string embedded.
@@ -57,9 +84,24 @@ function mapResponseToEvents(response) {
   }
 }
 
+function mapSpeech(speech, sessionId, contexts) {
+  if(!sessionId)
+    throw new Error('Session ID to map API.ai messages')
+
+  const speeches = speech.split('\\n')
+  return speeches.map(s => ({
+    type: 'message.text',
+    userId: sessionId, // sessionId = userId, both auth and anon
+    //isAnon: data.isAnon, // @TODO work anon into context
+    sender: 'a',
+    text: s,
+    contexts
+  }))
+}
+
 // @TODO check if API.ai returns null or empty array for no contexts
 function mapRichMessages(messages, sessionId, contexts) {
-  if(!sessionId  || !contexts)
+  if(!sessionId)
     throw new Error('Session ID to map API.ai messages')
 
   const mapped =  messages.map(m => {
@@ -81,7 +123,13 @@ function mapRichMessages(messages, sessionId, contexts) {
 
       // card message
       case 1:
-        console.log(m)
+        return {
+          ...m,
+          type: 'message.card',
+          userId: sessionId,
+          sender: 'a',
+          contexts
+        }
       // log an error
       default:
         logger.error('Failed to match the API.ai message type.')

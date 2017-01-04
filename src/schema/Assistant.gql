@@ -10,11 +10,20 @@ type AssistantMessage implements AssistantEvent {
   id: ID!
   type: String!
   userId: ID!
-  sender: String # enum ASSISTANT=a, USER=u
+  sender: String! # enum ASSISTANT=a, USER=u
   isAnon: Boolean
-  text: String!
+  text: String
+  title: String
+  subtitle: String
+  buttons: [MessageButton!]
   contexts: MessageContexts
   messenger: MessengerMessage
+
+}
+
+type MessageButton {
+  text: String
+  postback: String
 }
 
 type MessageContexts {

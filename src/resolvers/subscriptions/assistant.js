@@ -4,8 +4,6 @@ import JWT from 'jsonwebtoken'
 
 export const resolvers = {
   assistant(assistantEvent) {
-    logger.debug('assistant resolution')
-    console.log(typeof assistantEvent)
     return assistantEvent
   }
 }
