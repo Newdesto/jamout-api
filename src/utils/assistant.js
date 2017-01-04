@@ -5,13 +5,34 @@ import { flatten } from 'lodash'
 /**
  * Sends an event request to API.ai and processes the response, throwing an error
  * if one exists or converting the fulfillment to AssistantEvent objects.
- * @param  {object} event   See https://docs.api.ai/docs/query#post-query
- * @param  {object} options See https://docs.api.ai/docs/query#post-query
- * @return {object}         Returns a object with the response, events, contexts, etc.
+ * @param  {Object} event   See https://docs.api.ai/docs/query#post-query
+ * @param  {Object} options See https://docs.api.ai/docs/query#post-query
+ * @return {Object}         Returns a object with the response, events, contexts, etc.
  */
 export async function eventRequestAndProcess(event, options) {
   try {
     const response = await eventRequest(event, options)
+    const events = mapResponseToEvents(response)
+    return {
+      response,
+      events
+    }
+  } catch(e) {
+    logger.error(e)
+    throw e
+  }
+}
+
+/**
+ * Sends a text request to API.ai and process the response, throwing an error
+ * if one exists or converting the fulfillment to AssistantEvent objects.
+ * @param  {String}  text    See https://docs.api.ai/docs/query#post-query
+ * @param  {string}  options See https://docs.api.ai/docs/query#post-query
+ * @return {Object}          Returns a object with the response, events, contexts, etc.
+ */
+export async function textRequestAndProcess(text, options) {
+  try {
+    const response = await textRequest(text, options)
     const events = mapResponseToEvents(response)
     return {
       response,
