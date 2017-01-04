@@ -47,11 +47,13 @@ type AssistantTyping implements AssistantEvent{
   userId: ID!
 }
 
-type AssistantUiUpdate implements AssistantEvent {
+type AssistantInput implements AssistantEvent {
   createdAt: String!
   id: ID!
   type: String!
   userId: ID!
+  input: String!
+  inputHint: String
 }
 
 type AssistantRedirect implements AssistantEvent {

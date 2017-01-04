@@ -7,6 +7,8 @@ const resolver = {
       case 'message.text':
       case 'message.card':
         return 'AssistantMessage'
+      case 'input':
+        return 'AssistantInput'
       default:
         null
     }

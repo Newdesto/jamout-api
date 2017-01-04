@@ -11,7 +11,7 @@ import AssistantMessage from './AssistantMessage'
 import AssistantTyping from './AssistantTyping'
 import StudioEvent from './StudioEvent'
 import StudioEventInput from './StudioEventInput'
-
+import AssistantInput from './AssistantInput'
 
 export default {
   Channel: channelResolver,
@@ -23,4 +23,5 @@ export default {
   AssistantTyping,
   StudioEvent,
   StudioEventInput,
+  AssistantInput
 }

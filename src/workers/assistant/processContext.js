@@ -52,7 +52,8 @@ async function welcomeToDistribution(userId) {
       message.id = uuid()
       pubsub.publish(`assistant.${userId}`, message)
     })
-    events.redirect && pubsub.publish(`assistant.${userId}`, events.redirect)
+    pubsub.publish(`assistant.${userId}`, events.input)
+
   } catch(e) {
     // Throw an exception. The client should quietly handle the exception - the
     // UX shouldn't be interrupted.

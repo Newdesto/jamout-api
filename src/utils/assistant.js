@@ -64,23 +64,18 @@ function mapResponseToEvents(response) {
   else
     messages = mapSpeech(result.fulfillment.speech, sessionId, result.contexts)
 
-  // Map redirect parameter to AssistantRedirect object
-  // @NOTE: Redirect values returned may have variable string embedded.
-  // (e.g.; /distribution/release/edit/${id})
-  let redirect;
-  if(result.parameters.redirect) {
-    redirect = {
-      type: 'redirect',
-      route: result.parameters.redirect
-    }
-  }
-
-  // @TODO Map UI parameters to AssistantUiUpdate object
+  // Map input parameter to AssistantInput object
+  // Default to a text input is undefined
+  let input;
+  if(result.parameters.input)
+    input = { type: 'input', input: result.parameters.input }
+  else
+    input = { type: 'input', input: 'text' }
 
   // return the original response + mapped events
   return {
     messages,
-    redirect
+    input
   }
 }
 
