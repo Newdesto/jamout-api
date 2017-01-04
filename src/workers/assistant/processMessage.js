@@ -1,25 +1,27 @@
 import { logger, queue, pubsub, apiai } from 'io'
 import AssistantMessage from 'models/AssistantMessage'
-import { textRequest } from 'io/apiai'
+import { textRequestAndProcess } from 'utils/assistant'
 import { createJob } from 'io/queue'
+import uuid from 'uuid'
+import Promise from 'bluebird'
 
-queue.process('assistant.processMessage', async ({ data }, done) => {
-  logger.debug(`Processing assistant message from user (${data.userId})`)
+queue.process('assistant.processMessage', async ({ data: { text, userId } }, done) => {
+  logger.debug(`Processing assistant message from user (${userId})`)
   const amConnector = new AssistantMessage()
 
   // publish typing.start
   // @NOTE we show the typing indicator for as long as the process takes. A better
   // option would be to display the indicator in correlation with the message length
-  pubsub.publish(`assistant.${data.userId}`, {
+  pubsub.publish(`assistant.${userId}`, {
     createdAt: Date.now(),
     type: 'typing.start',
-    userId: data.userId
+    userId: userId
   })
 
   // @NOTE we can use API.ai for persisting context for this user's session
   // They expire though, so we need to persist them even after the user leaves
 
-  const response = await textRequest(data.text, { sessionId: data.userId })
+  const { response, events } = await textRequestAndProcess(text, { sessionId: userId })
 
   if(response.status.code !== 200) {
     // @TODO fail this job
@@ -28,24 +30,29 @@ queue.process('assistant.processMessage', async ({ data }, done) => {
     return
   }
 
-  // persist the message - we can fork this into another job if needed
-  const amPersisted = await amConnector.create({
-    userId: data.userId,
-    isAnon: data.isAnon, // is the userId an anonId
-    sender: 'a', // a = assistant, u = user
-    text: response.result.fulfillment.speech,
-    contexts: response.result.context
-  })
-  amPersisted.type = 'message.text'
-  pubsub.publish(`assistant.${data.userId}`, {
-    createdAt: Date.now(),
-    type: 'typing.stop',
-    userId: data.userId
-  })
-  console.log(amPersisted)
-  pubsub.publish(`assistant.${data.userId}`, amPersisted)
+  // persist messages
+  const jobs = await Promise.all(events.messages.map((message, index) => createJob('assistant.persistMessage', {
+      title: `Persist assistant messages for user (${userId})`,
+      message,
+      userId,
+    }, (index * 1000)))) // @NOTE the one second delay bc our write/sec = 1 LOL
 
-  // checks if the action is complete
+    pubsub.publish(`assistant.${userId}`, {
+      createdAt: Date.now(),
+      type: 'typing.stop',
+      userId: userId
+    })
+
+  // Publish events to the client.
+  // Priority: 1) Messages 2) Redirect 3) UI Updates
+  events.messages.forEach(message => {
+    // @NOTE we optimistically generate a timestamp and id
+    message.createdAt = new Date().toISOString()
+    message.id = uuid()
+    pubsub.publish(`assistant.${userId}`, message)
+  })
+
+  // checks if the action is complete and queues a jov
   // adds user id to parameters
   if (!response.result.actionIncomplete) {
     const { action, parameters } =  response.result;
