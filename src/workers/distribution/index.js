@@ -1,0 +1,1 @@
+export newDialog from './newDialog'

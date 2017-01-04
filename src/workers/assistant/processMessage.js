@@ -21,14 +21,6 @@ queue.process('assistant.processMessage', async ({ data }, done) => {
 
   const response = await textRequest(data.text, { sessionId: data.userId })
 
-  // checks if the action is complete
-  // adds user id to parameters
-  if (!response.result.actionIncomplete) {
-    const { action, parameters } =  response.result;
-    parameters.userId = response.sessionId;
-    await createJob(action, parameters);
-  }
-
   if(response.status.code !== 200) {
     // @TODO fail this job
     logger.error(response)
@@ -53,6 +45,15 @@ queue.process('assistant.processMessage', async ({ data }, done) => {
 
   pubsub.publish(`assistant.${data.userId}`, amPersisted)
 
+  // checks if the action is complete
+  // adds user id to parameters
+  if (!response.result.actionIncomplete) {
+    const { action, parameters } =  response.result;
+    await createJob(action, {
+      ...parameters,
+      userId: response.sessionId
+    });
+  }
 
   done()
 })
