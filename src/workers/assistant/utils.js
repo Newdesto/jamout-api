@@ -63,6 +63,7 @@ function mapRichMessages(messages, sessionId, contexts) {
     throw new Error('Session ID to map API.ai messages')
 
   const mapped =  messages.map(m => {
+    console.log(m.type)
     switch(m.type) {
 
       // text message

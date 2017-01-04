@@ -46,32 +46,23 @@ sortStudioEvents(items) {
 }
 
 
-  async createStudioEvent(user, currentEventId, nextEvent) {
+  async createStudioEvent(userId, type, payload) {
 
   let attrs = null;
+
   // session types: inquiry pending, inquiry denied, inquiry accepted, session planned, artist paid, session completed, review
-    if (currentEventId === 'new-event') {
+    switch(type) {
+      case 'new-inquiry':
         attrs = await studioEventModel.createAsync({
-        username: user.username,
-        userId: user.id, // id the user who made the request
-        studioId: nextEvent.studioId, // id of the studio?
-        studio: nextEvent.studio,
-        type: 'inquiry pending',
-      })
-      return attrs.attrs;
-    }
-
-    const { Items } = await studioEventModel
-      .scan()
-      .where('id').equals(currentEventId)
-      .execAsync()
-
-    const currentEvent = Items[0].attrs;
-
-    switch(currentEvent.type) {
-      case 'inquiry pending':
+          userId: userId, // id the user who made the request
+          studioId: this.idStudio(payload.studio), // id of the studio?
+          studio: payload.studio,
+          type: 'inquiry pending',
+          preferredDate: payload.preferredDate,
+        })
+        return attrs.attrs;
+/*      case 'inquiry pending':
         attrs = await studioEventModel.createAsync({
-          username: user.username,
           userId: user.id, // id the user who made the request
           studioId: currentEvent.studioId, // id of the studio?
           studio: currentEvent.studio,
@@ -81,7 +72,6 @@ sortStudioEvents(items) {
         return attrs.attrs;
       case 'inquiry accepted':
         attrs = await studioEventModel.createAsync({
-          username: user.username,
           userId: user.id, // id the user who made the request
           studioId: currentEvent.studioId, // id of the studio?
           studio: currentEvent.studio,
@@ -93,7 +83,6 @@ sortStudioEvents(items) {
         return attrs.attrs;
       case 'session planned':
         attrs = await studioEventModel.createAsync({
-          username: user.username,
           userId: user.id, // id the user who made the request
           studioId: currentEvent.studioId, // id of the studio?
           studio: currentEvent.studio,
@@ -102,11 +91,15 @@ sortStudioEvents(items) {
           type: 'artist paid',
           sessionId: currentEvent.sessionId,
         })
-        return attrs.attrs;
+        return attrs.attrs;*/
       default:
         return attrs
     }
     return attrs;
+  }
+
+  idStudio(studio) {
+    return studio.toLowerCase().replace(' ', '-');
   }
 
 }

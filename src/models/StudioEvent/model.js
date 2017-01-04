@@ -10,12 +10,12 @@ const StudioEvent = vogels.define('StudioEvent', {
     id: vogels.types.uuid(), // id
     sessionId: vogels.types.uuid(),
     type: Joi.string(), // inquiry pending, inquiry denied, inquiry accepted, session planned, artist paid, session completed, review
-    username: Joi.string(),
     studio: Joi.string(),
     userId: Joi.string(),
     studioId: Joi.string(),
     startDate: Joi.date().timestamp(),
     endDate: Joi.date().timestamp(),
+    preferredDate: Joi.date(),
     }
   })
 

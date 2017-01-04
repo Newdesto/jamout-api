@@ -1,6 +1,7 @@
 import { logger, queue, pubsub, apiai } from 'io'
 import AssistantMessage from 'models/AssistantMessage'
 import { textRequest } from 'io/apiai'
+import { createJob } from 'io/queue'
 
 queue.process('assistant.processMessage', async ({ data }, done) => {
   logger.debug(`Processing assistant message from user (${data.userId})`)
@@ -20,13 +21,20 @@ queue.process('assistant.processMessage', async ({ data }, done) => {
 
   const response = await textRequest(data.text, { sessionId: data.userId })
 
+  // checks if the action is complete
+  // adds user id to parameters
+  if (!response.result.actionIncomplete) {
+    const { action, parameters } =  response.result;
+    parameters.userId = response.sessionId;
+    await createJob(action, parameters);
+  }
+
   if(response.status.code !== 200) {
     // @TODO fail this job
     logger.error(response)
     done()
     return
   }
-
   // persist the message - we can fork this into another job if needed
   const amPersisted = await amConnector.create({
     userId: data.userId,
@@ -36,12 +44,13 @@ queue.process('assistant.processMessage', async ({ data }, done) => {
     contexts: response.result.context
   })
   amPersisted.type = 'message.text'
+
   pubsub.publish(`assistant.${data.userId}`, {
     createdAt: Date.now(),
     type: 'typing.stop',
     userId: data.userId
   })
-  console.log(amPersisted)
+
   pubsub.publish(`assistant.${data.userId}`, amPersisted)
 
 
