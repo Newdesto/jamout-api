@@ -12,12 +12,18 @@ const queue = kue.createQueue({
   }
 })
 
-// promisifies create
-export const createJob = (name, data) => new Promise((resolve, reject) => {
-  queue.create(name, data).save(error => {
+// Promisifies job creation. We allow a delay parameter because our
+// write per second capacity is at 1 which is lame...
+export const createJob = (name, data, delay) => new Promise((resolve, reject) => {
+  const job = queue.create(name, data)
+
+  if(delay)
+    job.delay(delay)
+
+  return job.save(error => {
     if(error)
       reject(error)
-    resolve(error)
+    resolve(job)
   })
 })
 

@@ -22,7 +22,7 @@ import ReleaseTrack from './ReleaseTrack.gql'
 import ReleaseType from './ReleaseType.gql'
 import StudioEvent from './StudioEvent.gql'
 import StudioEventInput from './StudioEventInput.gql'
-import AssistantEvent from './AssistantEvent.gql'
+import Assistant from './Assistant.gql'
 
 // @TODO combine schemas by module (e.g.; combine all release defs)
 const typeDefs = [
@@ -31,7 +31,7 @@ const typeDefs = [
   Mutation,
   Query,
   Subscription,
-  AssistantEvent,
+  Assistant,
   Channel,
   ChannelType,
   Message,

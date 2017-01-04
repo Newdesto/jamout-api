@@ -10,6 +10,7 @@ const AssistantMessage = vogels.define('AssistantMessage', {
   timestamps: true,
   schema: {
     id: vogels.types.uuid(), // index
+    type: Joi.string().strip(),
     userId: Joi.string(),
     isAnon: Joi.boolean(), // is the userId an anonId
     sender: Joi.string().valid(['a', 'u']), // a = assistant, u = user

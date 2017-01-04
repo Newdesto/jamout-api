@@ -3,7 +3,6 @@
  */
 import vogels from 'vogels';
 import Promise from 'bluebird'
-import logger from './logger'
 
 Promise.promisifyAll(require('vogels/lib/table').prototype);
 Promise.promisifyAll(require('vogels/lib/item').prototype);
@@ -23,7 +22,7 @@ vogels.AWS.config.update({
   region: process.env.AWS_REGION,
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  logger
+  //logger: console
 })
 
 export default vogels

@@ -21,7 +21,7 @@ const resolvers = {
 
     // queue the assistant job
     try {
-      const job = await createJob('assistant.process', {
+      const job = await createJob('assistant.processMessage', {
         ...message,
         title: `Process assistant message sent from user (${userId || anonId})`
       })
