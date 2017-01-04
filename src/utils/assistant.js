@@ -33,9 +33,8 @@ export async function eventRequestAndProcess(event, options) {
 export async function textRequestAndProcess(text, options) {
   try {
     const response = await textRequest(text, options)
-    console.log(response)
     const events = mapResponseToEvents(response)
-    logger.debug(events)
+
     return {
       response,
       events
