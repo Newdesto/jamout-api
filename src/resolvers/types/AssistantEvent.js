@@ -5,6 +5,7 @@ const resolver = {
       case 'typing.stop':
         return 'AssistantTyping'
       case 'message.text':
+      case 'message.card':
         return 'AssistantMessage'
       default:
         null

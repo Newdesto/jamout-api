@@ -80,7 +80,12 @@ function mapRichMessages(messages, sessionId, contexts) {
 
       // card message
       case 1:
-        console.log(m)
+        return {
+          ...m,
+          type: 'message.card',
+          userId: sessionId,
+          sender: 'a',
+        }
       // log an error
       default:
         logger.error('Failed to match the API.ai message type.')
