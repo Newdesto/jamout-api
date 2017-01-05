@@ -5,6 +5,12 @@ import redis from 'redis'
 import uuid from 'uuid'
 import Promise from 'bluebird'
 
+const typeEnum = {
+  e: 'EP',
+  s: 'Single',
+  a: 'album'
+}
+
 queue.process('distribution:new--title', async ({ data: { type, userId } }, done) => {
   // Get the events from API.ai
   const { response, events } = await eventRequestAndProcess({
@@ -15,11 +21,10 @@ queue.process('distribution:new--title', async ({ data: { type, userId } }, done
 
   // Inject the selected type
   events.messages = events.messages.map(m => {
-    m.text && m.text.replace('$TYPE', type)
+    if(m.text)
+      m.text = m.text.replace('$TYPE', typeEnum[type])
     return m
   })
-
-  console.log(events)
 
   // persist messages
   const jobs = await Promise.all(events.messages.map((message, index) => createJob('assistant.persistMessage', {
