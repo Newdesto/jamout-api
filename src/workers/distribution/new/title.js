@@ -5,13 +5,21 @@ import redis from 'redis'
 import uuid from 'uuid'
 import Promise from 'bluebird'
 
-queue.process('distribution:new--type', async ({ data: { userId } }, done) => {
+queue.process('distribution:new--title', async ({ data: { type, userId } }, done) => {
   // Get the events from API.ai
   const { response, events } = await eventRequestAndProcess({
-    name: 'distribution:new--type',
+    name: 'distribution:new--title',
   }, {
     sessionId: userId // user id that is
   })
+
+  // Inject the selected type
+  events.messages = events.messages.map(m => {
+    m.text && m.text.replace('$TYPE', type)
+    return m
+  })
+
+  console.log(events)
 
   // persist messages
   const jobs = await Promise.all(events.messages.map((message, index) => createJob('assistant.persistMessage', {
