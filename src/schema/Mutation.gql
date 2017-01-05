@@ -7,7 +7,7 @@ type Mutation {
   sendAssistantMessage(anonId: ID, input: AssistantMessageInput!): AssistantMessage!
   # Publishes postback in redis postback.userId channel
   # Used by client side assistant inputs (cards, date, etc.)
-  postback(input: JSON!): Boolean
+  postback(input: PostbackInput!): AssistantMessage
   sendMessage(channelId: ID!, text: String!): Message
   createRelease(input: ReleaseInput!): Release
   updateRelease(id: ID!, input: ReleaseInput!): Release

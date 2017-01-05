@@ -21,6 +21,7 @@ import ReleaseStatus from './ReleaseStatus.gql'
 import ReleaseTrack from './ReleaseTrack.gql'
 import ReleaseType from './ReleaseType.gql'
 import Assistant from './Assistant.gql'
+import Postback from './Postback.gql'
 
 // @TODO combine schemas by module (e.g.; combine all release defs)
 const typeDefs = [
@@ -30,6 +31,7 @@ const typeDefs = [
   Query,
   Subscription,
   Assistant,
+  Postback,
   Channel,
   ChannelType,
   Message,
