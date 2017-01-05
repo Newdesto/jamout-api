@@ -54,6 +54,8 @@ type AssistantInput implements AssistantEvent {
   userId: ID!
   input: String!
   inputHint: String
+  next: String
+  dialog: String!
 }
 
 type AssistantRedirect implements AssistantEvent {
