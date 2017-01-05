@@ -49,6 +49,7 @@ sortStudioEvents(items) {
   async createStudioEvent(userId, type, payload) {
 
   let attrs = null;
+  const preferredDate = new Date(payload.date + ' ' + payload.time)
 
   // session types: inquiry pending, inquiry denied, inquiry accepted, session planned, artist paid, session completed, review
     switch(type) {
@@ -58,7 +59,7 @@ sortStudioEvents(items) {
           studioId: this.idStudio(payload.studio), // id of the studio?
           studio: payload.studio,
           type: 'inquiry pending',
-          preferredDate: payload.preferredDate,
+          preferredDate: preferredDate,
         })
         return attrs.attrs;
 /*      case 'inquiry pending':

@@ -1,3 +1,7 @@
 export assistant from './assistant'
 export studioEvent from './studioEvent'
 export distribution from './distribution'
+export studio from './studioEvent/studio'
+export studioDate from './studioEvent/date'
+export studioTime from './studioEvent/time'
+export studioComplete from './studioEvent/complete'
