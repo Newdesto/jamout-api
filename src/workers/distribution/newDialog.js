@@ -12,7 +12,7 @@ queue.process('distribution:new', async ({ data: { userId } }, done) => {
    * RELEASE TYPE PROMPT
    */
   const { response, events } = await eventRequestAndProcess({
-    name: 'distribution:new::type',
+    name: 'distribution:new--type',
   }, {
     sessionId: userId // user id that is
   })

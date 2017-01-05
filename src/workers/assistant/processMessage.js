@@ -45,7 +45,7 @@ queue.process('assistant.processMessage', async ({ data: { text, userId } }, don
     pubsub.publish(`assistant.${userId}`, message)
   })
 
-  pubsub.publish(`assistant.${userId}`, events.input)
+  events.input && pubsub.publish(`assistant.${userId}`, events.input)
 
   // checks if the action is complete and queues a jov
   // adds user id to parameters
