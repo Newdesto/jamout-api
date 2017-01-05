@@ -14,7 +14,7 @@ const AssistantMessage = vogels.define('AssistantMessage', {
     userId: Joi.string(),
     isAnon: Joi.boolean(), // is the userId an anonId
     sender: Joi.string().valid(['a', 'u']), // a = assistant, u = user
-    text: Joi.string(),
+    text: Joi.string().empty(''),
     title: Joi.string(),
     subtitle: Joi.string(),
     buttons: Joi.array().items(Joi.object().keys({
