@@ -6,6 +6,7 @@ import release from './release'
 import signUp from './signUp'
 import updateAssistantContext from './updateAssistantContext'
 import sendAssistantMessage from './sendAssistantMessage'
+import postback from './postback'
 
 const resolvers = {
   Mutation: merge(
@@ -15,7 +16,8 @@ const resolvers = {
     generateS3Signature,
     openChannel,
     sendMessage,
-    release
+    release,
+    postback
   )
 }
 

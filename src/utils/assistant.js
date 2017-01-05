@@ -92,9 +92,9 @@ function mapResponseToEvents(response) {
   // Default to a text input is undefined
   let input;
   if(result.parameters.input)
-    input = { type: 'input', input: result.parameters.input }
+    input = { type: 'input', userId: sessionId, input: result.parameters.input }
   else
-    input = { type: 'input', input: 'text' }
+    input = { type: 'input', userId: sessionId, input: 'text' }
 
   // return the original response + mapped events
   return {

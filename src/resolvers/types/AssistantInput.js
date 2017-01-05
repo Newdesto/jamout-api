@@ -5,7 +5,9 @@ const resolver = {
     return new Date().toISOString()
   },
   id(root, args, context) {
-    return uuid()
+    if(!root.id)
+      return uuid()
+    return root.id
   }
 }
 
