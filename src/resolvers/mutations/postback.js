@@ -1,10 +1,12 @@
 import redis from 'redis'
+import { logger } from 'io'
 
 // @TODO move redis client to context
 const resolvers = {
   postback(root, { input }, { user }) {
     const client = redis.createClient()
     client.on('error', e => {
+      logger.error(e)
       throw new Error('Redis error.')
     })
     client.publish(`postback.${user.id}`, JSON.stringify(input))
