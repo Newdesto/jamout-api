@@ -1,6 +1,6 @@
 import { logger } from 'io'
 import { eventRequest, textRequest } from 'io/apiai'
-import { flatten } from 'lodash'
+import { flatten, omitBy, mapValues } from 'lodash'
 
 /**
  * Sends an event request to API.ai and processes the response, throwing an error
@@ -12,9 +12,10 @@ import { flatten } from 'lodash'
 export async function eventRequestAndProcess(event, options) {
   try {
     const response = await eventRequest(event, options)
-    const events = mapResponseToEvents(response)
+    const strippedResponse = stripEmptyParameters(response)
+    const events = mapResponseToEvents(strippedResponse)
     return {
-      response,
+      response: strippedResponse,
       events
     }
   } catch(e) {
@@ -33,16 +34,39 @@ export async function eventRequestAndProcess(event, options) {
 export async function textRequestAndProcess(text, options) {
   try {
     const response = await textRequest(text, options)
-    const events = mapResponseToEvents(response)
+    const strippedResponse = stripEmptyParameters(response)
+    const events = mapResponseToEvents(strippedResponse)
 
     return {
-      response,
+      response: strippedResponse,
       events
     }
   } catch(e) {
     logger.error(e)
     throw e
   }
+}
+
+/**
+ * Strips empty parameters from the contexts of an API.ai response.
+ * @param  {Object} response API.ai response (https://docs.api.ai/docs/query#response)
+ * @return {Object}          Stripped API.ai response
+ */
+function stripEmptyParameters(response) {
+  // Strip empty responses
+  if(response.result.parameters)
+    response.result.parameters = omitBy(response.result.parameters, v => v === '')
+
+  // Strip empty context parameters
+  if(response.result.contexts) {
+    response.result.contexts = response.result.contexts.map(context => {
+      // Strip empty parameters
+      context.parameters = omitBy(context.parameters, v => v === '')
+      return context
+    })
+  }
+
+  return response
 }
 
 // Maps an API.ai response to the correct assistant events. If an error is

@@ -16,7 +16,8 @@ const resolvers = {
       userId:  userId || anonId,
       isAnon:  !userId ? true : undefined, // undefined bc storage
       sender: 'u',
-      text: input.text
+      text: input.text,
+      type: 'message.text'
     })
 
     // queue the assistant job
