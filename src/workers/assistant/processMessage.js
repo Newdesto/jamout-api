@@ -23,13 +23,6 @@ queue.process('assistant.processMessage', async ({ data: { text, userId } }, don
 
   const { response, events } = await textRequestAndProcess(text, { sessionId: userId })
 
-  if(response.status.code !== 200) {
-    // @TODO fail this job
-    logger.error(response)
-    done()
-    return
-  }
-
   // persist messages
   const jobs = await Promise.all(events.messages.map((message, index) => createJob('assistant.persistMessage', {
       title: `Persist assistant messages for user (${userId})`,
