@@ -18,6 +18,7 @@ export const mapper = {
     return {
         'assistant': {
           channelOptions: { path: [user.id] },
+          // @TODO remove the filter since path already include userId...
           filter: assistantEvent => {
             return assistantEvent.userId === user.id
           }

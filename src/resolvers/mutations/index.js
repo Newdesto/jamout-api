@@ -7,6 +7,7 @@ import signUp from './signUp'
 import studioEvent from './studioEvent'
 import updateAssistantContext from './updateAssistantContext'
 import sendAssistantMessage from './sendAssistantMessage'
+import postback from './postback'
 
 const resolvers = {
   Mutation: merge(
@@ -18,6 +19,7 @@ const resolvers = {
     sendMessage,
     release,
     studioEvent,
+    postback,
   )
 }
 
