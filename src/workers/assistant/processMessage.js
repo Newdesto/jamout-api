@@ -53,7 +53,7 @@ queue.process('assistant.processMessage', async ({ data: { text, userId } }, don
   })
 
   pubsub.publish(`assistant.${userId}`, events.input)
-
+  console.log(response)
   // checks if the action is complete and queues a jov
   // adds user id to parameters
   if (!response.result.actionIncomplete) {
