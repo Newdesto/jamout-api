@@ -90,7 +90,7 @@ function mapResponseToEvents(response) {
 
   // Map input parameter to AssistantInput object
   // Default to a text input is undefined
-  const input = result.parameters.input && { type: 'input', userId: sessionId, input: result.parameters.input }
+  const input = result.parameters.input && { type: 'input', userId: sessionId, input: result.parameters.input, inputHint: result.parameters.inputHint }
 
   // return the original response + mapped events
   return {
