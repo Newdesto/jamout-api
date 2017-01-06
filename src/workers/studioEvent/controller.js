@@ -44,12 +44,13 @@ queue.process('studio-session:inquire--controller', async ({ data }, done) => {
     ...studioData,
     ...querriedData
   }
-
+  console.log(totalData.studio)
   if (!totalData.studio) {
     const job = await createJob('studio-session:inquire--studio', {
       userId,
     })
   } else if (!totalData.date) {
+    console.log('hello')
     const job = await createJob('studio-session:inquire--date', {
       userId,
     })
