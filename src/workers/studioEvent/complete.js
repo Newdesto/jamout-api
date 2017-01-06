@@ -66,7 +66,13 @@ queue.process('studio-session:inquire--complete', async ({ data }, done) => {
     message.id = uuid()
     pubsub.publish(`assistant.${userId}`, message)
   })
-
+  
+/*
+  const request = apiai.textRequest('<Your text query>', {
+    sessionId: userId,
+    resetContext: true,
+  });
+*/
 
   await new Promise((resolve, reject) => {
    client.del(`${userId}.studio-inquiry-data`, (err, ok) => {

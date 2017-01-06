@@ -50,7 +50,7 @@ sortStudioEvents(items) {
 
   let attrs = null;
   const preferredDate = new Date(payload.date + ' ' + payload.time)
-
+  console.log(preferredDate)
   // session types: inquiry pending, inquiry denied, inquiry accepted, session planned, artist paid, session completed, review
     switch(type) {
       case 'new-inquiry':

@@ -41,5 +41,6 @@ queue.process('studio-sessions:inquire', async ({ data }, done) => {
 
   // start the process!
   await createJob('studio-session:inquire--controller', { userId });
+  
   done()
 });
