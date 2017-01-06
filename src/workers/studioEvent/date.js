@@ -50,5 +50,6 @@ queue.process('studio-session:inquire--date', async ({ data: { type, userId } },
       next: 'studio-session:inquire--date'
     })
   }
+
   done()
 })

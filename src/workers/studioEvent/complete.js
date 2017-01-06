@@ -67,15 +67,23 @@ queue.process('studio-session:inquire--complete', async ({ data }, done) => {
     pubsub.publish(`assistant.${userId}`, message)
   })
 
-/*
+
   await new Promise((resolve, reject) => {
-   client.hdel(`${userId}.studio-inquiry-data`, (err, ok) => {
+   client.del(`${userId}.studio-inquiry-data`, (err, ok) => {
      if(err)
        reject(err)
      resolve(ok)
     })
   })
-  */
+
+  await new Promise((resolve, reject) => {
+   client.del(`${userId}.studio-sessions:inquire`, (err, ok) => {
+     if(err)
+       reject(err)
+     resolve(ok)
+    })
+  })
+
   done(null, inquiry)
 
 });
