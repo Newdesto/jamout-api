@@ -1,4 +1,5 @@
 import studioEventModel from './model'
+import userModel from 'models/User/model'
 
 export default class StudioEvent {
   async fetchAll() {
@@ -7,7 +8,7 @@ export default class StudioEvent {
       .loadAll()
       .execAsync()
 
-
+    console.log(Items)
     return this.sortStudioEvents(Items);
   }
 
@@ -48,9 +49,14 @@ sortStudioEvents(items) {
 
   async createStudioEvent(userId, type, payload) {
 
+  // probably better way to get this shit
+  const { Items } = await userModel
+    .scan()
+    .where('id').equals(userId)
+    .execAsync()
+  const user = Items[0].attrs
   let attrs = null;
   const preferredDate = new Date(payload.date + ' ' + payload.time)
-  console.log(preferredDate)
   // session types: inquiry pending, inquiry denied, inquiry accepted, session planned, artist paid, session completed, review
     switch(type) {
       case 'new-inquiry':
@@ -60,6 +66,7 @@ sortStudioEvents(items) {
           studio: payload.studio,
           type: 'inquiry pending',
           preferredDate: preferredDate,
+          username: user.username,
         })
         return attrs.attrs;
 /*      case 'inquiry pending':

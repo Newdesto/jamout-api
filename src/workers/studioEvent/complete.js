@@ -44,7 +44,8 @@ queue.process('studio-session:inquire--complete', async ({ data }, done) => {
     ...studioData,
     ...querriedData
   }
-
+  console.log(totalData)
+  
   const NewEvent = new StudioEvent()
   const inquiry = await NewEvent.createStudioEvent(userId, 'new-inquiry', totalData)
 
@@ -66,7 +67,7 @@ queue.process('studio-session:inquire--complete', async ({ data }, done) => {
     message.id = uuid()
     pubsub.publish(`assistant.${userId}`, message)
   })
-  
+
 /*
   const request = apiai.textRequest('<Your text query>', {
     sessionId: userId,
