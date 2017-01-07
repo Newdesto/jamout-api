@@ -9,4 +9,5 @@ type StudioEvent {
     startDate: String,
     endDate: String,
     sessionId: ID!,
+    preferredDate: String,
   }
