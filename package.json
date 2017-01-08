@@ -19,6 +19,32 @@
     "require": ["babel-register", "babel-polyfill"],
     "babel": "inherit"
   },
+  "eslintConfig": {
+    "env": {
+      "node": true
+    },
+    "extends": "airbnb",
+    "rules": {
+      "comma-dangle": [
+        "error",
+        "never"
+      ],
+      "semi": [
+        "error",
+        "never"
+      ]
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "moduleDirectory": [
+            "node_modules",
+            "src"
+          ]
+        }
+      }
+    }
+  },
   "devDependencies": {
     "babel-cli": "^6.16.0",
     "babel-plugin-inline-import": "^2.0.4",
