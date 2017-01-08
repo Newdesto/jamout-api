@@ -5,4 +5,5 @@ input StudioEventInput {
     userId: ID,
     studioId: ID,
     studio: String,
+    sessionId: ID,
   }

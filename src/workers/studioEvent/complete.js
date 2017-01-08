@@ -45,7 +45,7 @@ queue.process('studio-session:inquire--complete', async ({ data }, done) => {
     ...querriedData
   }
   console.log(totalData)
-  
+
   const NewEvent = new StudioEvent()
   const inquiry = await NewEvent.createStudioEvent(userId, 'new-inquiry', totalData)
 

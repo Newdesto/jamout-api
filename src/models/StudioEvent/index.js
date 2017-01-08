@@ -47,37 +47,42 @@ sortStudioEvents(items) {
 }
 
 
-  async createStudioEvent(userId, type, payload) {
+  async createStudioEvent(user, type, payload) {
 
   // probably better way to get this shit
   const { Items } = await userModel
     .scan()
-    .where('id').equals(userId)
+    .where('id').equals(payload.userId)
     .execAsync()
-  const user = Items[0].attrs
+
+  const artist = Items[0].attrs
+
   let attrs = null;
   const preferredDate = new Date(payload.date + ' ' + payload.time)
+
   // session types: inquiry pending, inquiry denied, inquiry accepted, session planned, artist paid, session completed, review
     switch(type) {
       case 'new-inquiry':
         attrs = await studioEventModel.createAsync({
-          userId: userId, // id the user who made the request
+          userId: artist.id, // id the user who made the request
           studioId: this.idStudio(payload.studio), // id of the studio?
           studio: payload.studio,
           type: 'inquiry pending',
           preferredDate: preferredDate,
-          username: user.username,
+          username: artist.username,
         })
         return attrs.attrs;
-/*      case 'inquiry pending':
+      case 'inquiry accepted':
         attrs = await studioEventModel.createAsync({
-          userId: user.id, // id the user who made the request
-          studioId: currentEvent.studioId, // id of the studio?
-          studio: currentEvent.studio,
+          userId: artist.id, // id the user who made the request
+          username: artist.username,
+          studioId: payload.studioId, // id of the studio?
+          studio: payload.studio,
           type: 'inquiry accepted',
-          sessionId: currentEvent.sessionId,
+          sessionId: payload.sessionId,
         })
         return attrs.attrs;
+      /*
       case 'inquiry accepted':
         attrs = await studioEventModel.createAsync({
           userId: user.id, // id the user who made the request
@@ -88,6 +93,7 @@ sortStudioEvents(items) {
           type: 'session planned',
           sessionId: currentEvent.sessionId,
         })
+      /*
         return attrs.attrs;
       case 'session planned':
         attrs = await studioEventModel.createAsync({

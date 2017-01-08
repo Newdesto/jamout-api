@@ -10,7 +10,7 @@ type Mutation {
   postback(input: PostbackInput!): AssistantMessage
   sendMessage(channelId: ID!, text: String!): Message
   createRelease(input: ReleaseInput!): Release
-  createStudioEvent(currentEventId: ID, nextEvent: StudioEventInput): StudioEvent
+  createStudioEvent(type: String, nextEvent: StudioEventInput): StudioEvent
   updateRelease(id: ID!, input: ReleaseInput!): Release
   deleteRelease(id: ID!): ID!
   payForRelease(id: ID!, stripeToken: String!, saveSource: Boolean!): Release
