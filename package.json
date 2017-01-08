@@ -8,11 +8,17 @@
     "clean": "rm -rf build && mkdir build",
     "build": "babel -d ./build ./src",
     "prod": "NODE_ENV=production DEBUG=* pm2 start --no-daemon ./index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava -v",
+    "watch:test": "ava -w -v"
   },
   "author": "gabriel p samson",
   "private": true,
   "license": "ISC",
+  "ava": {
+    "files": "./src/**/__tests__/**/*.test.js",
+    "require": ["babel-register", "babel-polyfill"],
+    "babel": "inherit"
+  },
   "devDependencies": {
     "babel-cli": "^6.16.0",
     "babel-plugin-inline-import": "^2.0.4",
