@@ -7,25 +7,25 @@ import AssistantMessage from 'models/AssistantMessage'
 import User, { UserLoader } from 'models/User'
 import Profile, { ProfileLoader } from 'models/Profile'
 import StudioEvent from 'models/StudioEvent'
+import MusicEvent from 'models/MusicEvent'
 import { formatError } from 'apollo-errors'
 import { logger } from 'io'
 
-export const setupSubscriptionContext = () => {
+export const setupSubscriptionContext = () =>
   // @NOTE since we're handling user context on a field level we'll
   // have to handle the User and Profile connectors on a field level
-  //const profileLoader = new ProfileLoader({ userId: user && user.id })
-  //const userLoader = new UserLoader({ userId: user && user.id })
-  return {
+  // const profileLoader = new ProfileLoader({ userId: user && user.id })
+  // const userLoader = new UserLoader({ userId: user && user.id })
+   ({
     // User: new User({ loader: userLoader }),
     // Profile: new Profile({ loader: profileLoader }),
-    Channel: new Channel(),
-    Message: new Message(),
-    Release: new Release(),
-    AssistantMessage: new AssistantMessage()
-  }
-}
+     Channel: new Channel(),
+     Message: new Message(),
+     Release: new Release(),
+     AssistantMessage: new AssistantMessage()
+   })
 
-export default graphqlExpress(req => {
+export default graphqlExpress((req) => {
   const user = req.user
   const profileLoader = new ProfileLoader({ userId: user && user.id })
   const userLoader = new UserLoader({ userId: user && user.id })
@@ -40,6 +40,7 @@ export default graphqlExpress(req => {
       Release: new Release(),
       StudioEvent: new StudioEvent(),
       AssistantMessage: new AssistantMessage(),
+      MusicEvent: new MusicEvent()
     },
     formatError,
     logger

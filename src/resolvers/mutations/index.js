@@ -8,6 +8,7 @@ import studioEvent from './studioEvent'
 import updateAssistantContext from './updateAssistantContext'
 import sendAssistantMessage from './sendAssistantMessage'
 import postback from './postback'
+import createMusicEvent from './musicEvent'
 
 const resolvers = {
   Mutation: merge(
@@ -20,6 +21,7 @@ const resolvers = {
     release,
     studioEvent,
     postback,
+    createMusicEvent,
   )
 }
 

@@ -1,0 +1,7 @@
+input MusicEventInput {
+    startDate: Int,
+    endDate: Int,
+    description: String,
+    location: String,
+    eventName: String
+  }

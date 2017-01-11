@@ -12,6 +12,7 @@ import AssistantTyping from './AssistantTyping'
 import StudioEvent from './StudioEvent'
 import StudioEventInput from './StudioEventInput'
 import AssistantInput from './AssistantInput'
+import MusicEvent from './MusicEvent'
 
 export default {
   Channel: channelResolver,
@@ -24,4 +25,5 @@ export default {
   StudioEvent,
   StudioEventInput,
   AssistantInput
+  // MusicEvent,
 }
