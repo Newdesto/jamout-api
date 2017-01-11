@@ -34,6 +34,7 @@ dependencies:
 # For now, we'll test the app locally
 test:
   override:
+    - yarn test
     - NODE_ENV=production pm2 start ./build/index.js
     - curl --retry 10 --retry-delay 5 -v http://localhost:3000/check
 
