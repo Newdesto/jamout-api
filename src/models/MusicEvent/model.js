@@ -2,9 +2,9 @@ import vogels from 'io/vogels'
 import Joi from 'joi'
 
 const MusicEvent = vogels.define('StudioEvent', {
-  hashKey: 'userId',
+  hashKey: 'id',
   rangeKey: 'createdAt',
-  tableName: 'studio.event',
+  tableName: 'event',
   timestamps: true,
   schema: {
     id: vogels.types.uuid(), // id

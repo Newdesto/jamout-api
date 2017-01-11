@@ -1,9 +1,7 @@
 const resolvers = {
-  createStudioEvent(root, { eventData }, { user, MusicEvent }) {
-    console.log('Create a new event.')
-    console.log(user.roles.includes('partner:events'))
-
-    if (!user || !user.roles.includes('partner:events')) {
+  createMusicEvent(root, { eventData }, { user, MusicEvent }) {
+    //@TODO change to partmer:events
+    if (!user || !user.roles.includes('partner:studio')) {
       throw new Error('Authentication failed.')
     }
     console.log(eventData)
