@@ -5,6 +5,7 @@ import release from './release'
 import releases from './releases'
 import studioEvent from './studioEvent'
 import assistantMessages from './assistantMessages'
+import musicEvent from './musicEvent'
 
 const resolvers = {
   Query: merge(
@@ -14,6 +15,7 @@ const resolvers = {
     release,
     releases,
     studioEvent,
+    musicEvent,
   )
 }
 

@@ -9,69 +9,62 @@ export default class StudioEvent {
       .execAsync()
 
     console.log(Items)
-    return this.sortStudioEvents(Items);
+    return this.sortStudioEvents(Items)
   }
 
   async fetchByUserId(userId) {
-    if(!userId)
-      throw new Error('User ID is undefined.')
+    if (!userId) { throw new Error('User ID is undefined.') }
     const { Items } = await studioEventModel
       .scan()
       .where('userId').equals(userId)
       .execAsync()
 
-    return this.sortStudioEvents(Items);
+    return this.sortStudioEvents(Items)
   }
 
 
-sortStudioEvents(items) {
-  let events = items.map(i => i.attrs);
-  let sortedEvents = [];
+  sortStudioEvents(items) {
+    let events = items.map(i => i.attrs)
+    const sortedEvents = []
 
-  while (events.length !== 0) {
+    while (events.length !== 0) {
+      const sortedEvent = events.filter(e => e.sessionId === events[0].sessionId).sort((a, b) => {
+        const date1 = new Date(a.createdAt)
+        const date2 = new Date(a.createdAt)
+        return date1 - date2
+      })
 
-    let sortedEvent = events.filter(e => {
-      return e.sessionId === events[0].sessionId;
-    }).sort((a, b) => {
-      const date1 = new Date(a.createdAt)
-      const date2 = new Date(a.createdAt)
-      return date1  - date2;
-    })
-
-    events = events.filter(e => {
-      return e.sessionId !== events[0].sessionId;
-    })
-    sortedEvents.push(sortedEvent)
+      events = events.filter(e => e.sessionId !== events[0].sessionId)
+      sortedEvents.push(sortedEvent)
+    }
+    return sortedEvents
   }
-  return sortedEvents;
-}
 
 
   async createStudioEvent(user, type, payload) {
-
   // probably better way to get this shit
-  const { Items } = await userModel
+    const { Items } = await userModel
     .scan()
     .where('id').equals(payload.userId)
     .execAsync()
 
-  const artist = Items[0].attrs
+    const artist = Items[0].attrs
 
-  let attrs = null;
-  const preferredDate = new Date(payload.date + ' ' + payload.time)
+    let attrs = null
+    const preferredDate = new Date(`${payload.date} ${payload.time}`)
 
   // session types: inquiry pending, inquiry denied, inquiry accepted, session planned, artist paid, session completed, review
-    switch(type) {
+    switch (type) {
       case 'new-inquiry':
         attrs = await studioEventModel.createAsync({
           userId: artist.id, // id the user who made the request
           studioId: this.idStudio(payload.studio), // id of the studio?
           studio: payload.studio,
           type: 'inquiry pending',
-          preferredDate: preferredDate,
-          username: artist.username,
+          preferredDate,
+          username: artist.username
         })
-        return attrs.attrs;
+        return attrs.attrs
       case 'inquiry accepted':
         attrs = await studioEventModel.createAsync({
           userId: artist.id, // id the user who made the request
@@ -79,9 +72,9 @@ sortStudioEvents(items) {
           studioId: payload.studioId, // id of the studio?
           studio: payload.studio,
           type: 'inquiry accepted',
-          sessionId: payload.sessionId,
+          sessionId: payload.sessionId
         })
-        return attrs.attrs;
+        return attrs.attrs
       /*
       case 'inquiry accepted':
         attrs = await studioEventModel.createAsync({
@@ -109,11 +102,11 @@ sortStudioEvents(items) {
       default:
         return attrs
     }
-    return attrs;
+    return attrs
   }
 
   idStudio(studio) {
-    return studio.toLowerCase().replace(' ', '-');
+    return studio.toLowerCase().replace(' ', '-')
   }
 
 }
