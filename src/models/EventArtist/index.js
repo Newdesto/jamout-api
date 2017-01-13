@@ -31,18 +31,9 @@ export default class EventArtist {
       .where('partnerId').equals(partner.id)
       .execAsync()
 
-    const events = {}
-    Items.forEach((e) => {
-      const event = e.attrs
-      if (events[event.eventId]) {
-        events[event.eventId].push(event)
-      } else {
-        events[event.eventId] = [event]
-      }
-    })
+    const events = Items.map(e => e.attrs)
 
-    console.log(events)
-    // return this.sortMusicEvents(Items)
+    return events
   }
 
   async acceptArtist(partner, payload) {
