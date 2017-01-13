@@ -1,0 +1,8 @@
+type EventArtist {
+  createdAt: String!
+  id: ID!
+  eventId: ID!
+  partnerId: ID!
+  userId: ID!
+  status: String!
+}

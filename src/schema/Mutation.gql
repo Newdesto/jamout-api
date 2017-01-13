@@ -15,4 +15,5 @@ type Mutation {
   deleteRelease(id: ID!): ID!
   payForRelease(id: ID!, stripeToken: String!, saveSource: Boolean!): Release
   createMusicEvent(eventData: MusicEventInput): MusicEvent!
+  createEventArtist(artistData: EventArtistInput): EventArtist!
 }

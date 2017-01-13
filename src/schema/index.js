@@ -26,6 +26,8 @@ import Assistant from './Assistant.gql'
 import Postback from './Postback.gql'
 import MusicEvent from './MusicEvent.gql'
 import MusicEventInput from './MusicEventInput.gql'
+import EventArtist from './EventArtist.gql'
+import EventArtistInput from './EventArtistInput.gql'
 
 // @TODO combine schemas by module (e.g.; combine all release defs)
 const typeDefs = [
@@ -49,7 +51,9 @@ const typeDefs = [
   StudioEvent,
   StudioEventInput,
   MusicEvent,
-  MusicEventInput
+  MusicEventInput,
+  EventArtist,
+  EventArtistInput
 ]
 
 export default makeExecutableSchema({

@@ -1,10 +1,11 @@
 const resolvers = {
   createMusicEvent(root, { eventData }, { user, MusicEvent }) {
-    //@TODO change to partmer:events
-    if (!user || !user.roles.includes('partner:studio')) {
+    // @TODO change to partmer:events
+    console.log(eventData)
+
+    if (!user || !user.roles.includes('partner:events')) {
       throw new Error('Authentication failed.')
     }
-    console.log(eventData)
     return MusicEvent.createMusicEvent(user, eventData)
   }
 }
