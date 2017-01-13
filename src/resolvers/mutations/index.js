@@ -9,7 +9,7 @@ import updateAssistantContext from './updateAssistantContext'
 import sendAssistantMessage from './sendAssistantMessage'
 import postback from './postback'
 import createMusicEvent from './musicEvent'
-import createEventArtist from './eventArtist'
+import eventArtist from './eventArtist'
 
 const resolvers = {
   Mutation: merge(
@@ -23,7 +23,7 @@ const resolvers = {
     studioEvent,
     postback,
     createMusicEvent,
-    createEventArtist,
+    eventArtist,
   )
 }
 

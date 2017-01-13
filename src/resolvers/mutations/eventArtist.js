@@ -5,8 +5,14 @@ const resolvers = {
     if (!user) {
       throw new Error('Authentication failed.')
     }
-    console.log(artistData)
     return EventArtist.createEventArtist(user, artistData)
+  },
+
+  updateEventArtist(root, { musicEvent, response }, { partner, EventArtist }) {
+    if (!partner) {
+      throw new Error('Authentication failed.')
+    }
+    return EventArtist.updateEventArtist(partner, musicEvent, response)
   }
 }
 

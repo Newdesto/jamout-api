@@ -1,9 +1,9 @@
-import musicEventModel from './model'
+import eventArtistModel from './model'
 
 export default class EventArtist {
 
   async createEventArtist(user, payload) {
-    const { attrs } = await musicEventModel.createAsync({
+    const { attrs } = await eventArtistModel.createAsync({
       userId: user.id,
       username: user.username,
       status: 'pending',
@@ -15,7 +15,7 @@ export default class EventArtist {
   async fetchByEventId(partner, payload) {
     if (!partner.id) { throw new Error('User ID is undefined.') }
 
-    const { Items } = await musicEventModel
+    const { Items } = await eventArtistModel
       .scan()
       .where('eventId').equals(payload.eventId)
       .execAsync()
@@ -26,7 +26,7 @@ export default class EventArtist {
   async fetchAll(partner) {
     if (!partner.id) { throw new Error('User ID is undefined.') }
 
-    const { Items } = await musicEventModel
+    const { Items } = await eventArtistModel
       .scan()
       .where('partnerId').equals(partner.id)
       .execAsync()
@@ -36,8 +36,16 @@ export default class EventArtist {
     return events
   }
 
-  async acceptArtist(partner, payload) {
-    // @todo update async
+  async updateArtist(partner, musicEvent, response) {
+    if (!partner.id) { throw new Error('User ID is undefined.') }
+    const artist = await eventArtistModel
+      .update({
+        eventId: musicEvent.id,
+        status: response },
+        { expected: { userId: musicEvent.userId } })
+      .execAsync(
+console.log(artist);
+      )
   }
 
 }
