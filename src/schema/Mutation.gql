@@ -16,5 +16,5 @@ type Mutation {
   payForRelease(id: ID!, stripeToken: String!, saveSource: Boolean!): Release
   createMusicEvent(eventData: MusicEventInput): MusicEvent!
   createEventArtist(artistData: EventArtistInput): EventArtist!
-  updateEventArtist(musicEvent: UpdateEventArtistInput!, response: String!): EventArtist!
+  updateEventArtist(eventArtist: UpdateEventArtistInput!, response: String!): EventArtist!
 }
