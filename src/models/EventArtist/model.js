@@ -9,6 +9,7 @@ const EventArtist = vogels.define('EventArtist', {
   schema: {
     id: vogels.types.uuid(), // id
     eventId: Joi.string(),
+    username: Joi.string(),
     partnerId: Joi.string(),
     userId: Joi.string(),
     status: Joi.string()

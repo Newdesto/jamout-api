@@ -11,8 +11,8 @@ const MusicEvent = vogels.define('StudioEvent', {
     partner: Joi.string(),
     partnerId: Joi.string(),
     eventName: Joi.string(),
-    startDate: Joi.date().timestamp(),
-    endDate: Joi.date().timestamp(),
+    startDate: Joi.string(),
+    endDate: Joi.string(),
     description: Joi.string(),
     location: Joi.string()
   }
