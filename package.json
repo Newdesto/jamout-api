@@ -4,7 +4,7 @@
   "description": "The API for Jamout - Built using GraphQL, DataLoader, Dgraph, DynamoDB, etc",
   "main": "src/index.js",
   "scripts": {
-    "dev": "BABEL_DISABLE_CACHE=1 nodemon ./src/index.babel.js",
+    "dev": "BABEL_DISABLE_CACHE=1 nodemon --inspect ./src/index.babel.js",
     "clean": "rm -rf build && mkdir build",
     "build": "babel -d ./build ./src",
     "prod": "NODE_ENV=production DEBUG=* pm2 start --no-daemon ./index.js",

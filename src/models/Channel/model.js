@@ -7,16 +7,18 @@ const Channel = vogels.define('Channel', {
   timestamps: true,
   schema: {
     id: vogels.types.uuid(), // index
-    type: Joi.string(), // 'dm', 'group'
-    name: Joi.string(), // null if DM, can't index because can be null
+    type: Joi.string().valid(['a', 'd', 'g']), // a: Assistant, d: DM, g: Group
+    name: Joi.string(), // DM: null, Assistant: Assistant, Group: *
     lastMessage: Joi.date(),
     messageCount: Joi.number(),
-    ownerUserId: Joi.string(), // null if DM
-    users: vogels.types.stringSet(), // array of userId's in the convos
+    ownerUserId: Joi.string(), // DM: null, Assistant: *, Group: *
+    // @NOTE If channel is assistant type then assistant is first element in the
+    // array and the user is second element.
+    users: vogels.types.stringSet(), // array of userIds in channel
     usersHash: Joi.string()
   },
-  indexes : [{
-    hashKey : 'usersHash', name : 'usersHash-index', type : 'global'
+  indexes: [{
+    hashKey: 'usersHash', name: 'usersHash-index', type: 'global'
   }]
 })
 

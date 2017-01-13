@@ -46,5 +46,5 @@ const typeDefs = [
 
 export default makeExecutableSchema({
   typeDefs,
-  resolvers: merge(queryResolvers, mutationResolvers, subscriptionsResolvers, typeResolvers, scalarResolvers),
+  resolvers: merge(queryResolvers, mutationResolvers, subscriptionsResolvers, typeResolvers, scalarResolvers)
 })

@@ -7,6 +7,7 @@ import signUp from './signUp'
 import updateAssistantContext from './updateAssistantContext'
 import sendAssistantMessage from './sendAssistantMessage'
 import postback from './postback'
+import assistantInput from './assistantInput'
 
 const resolvers = {
   Mutation: merge(
@@ -17,7 +18,8 @@ const resolvers = {
     openChannel,
     sendMessage,
     release,
-    postback
+    postback,
+    assistantInput
   )
 }
 
