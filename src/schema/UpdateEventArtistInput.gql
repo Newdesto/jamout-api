@@ -1,9 +1,9 @@
 input UpdateEventArtistInput {
-  createdAt: String!
+  createdAt: String
   id: ID!
-  username: String!
+  username: String
   eventId: ID!
-  partnerId: ID!
-  userId: ID!
-  status: String!
+  partnerId: ID
+  userId: ID
+  status: String
   }

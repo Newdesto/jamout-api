@@ -36,16 +36,16 @@ export default class EventArtist {
     return events
   }
 
-  async updateArtist(partner, eventArtist, response) {
+  async updateEventArtist(partner, eventArtist, response) {
     if (!partner.id) { throw new Error('User ID is undefined.') }
-    const artist = await eventArtistModel
-      .update({
-        eventId: eventArtist.eventId,
-        status: response },
-        { expected: { id: eventArtist.id } })
-      .execAsync()
 
-    console.log(artist)
+    const { attrs } = await eventArtistModel
+      .updateAsync({
+        id: eventArtist.id,
+        status: response
+      })
+
+    return attrs
   }
 
 }

@@ -8,11 +8,11 @@ const resolvers = {
     return EventArtist.createEventArtist(user, artistData)
   },
 
-  updateEventArtist(root, { eventArtist, response }, { partner, EventArtist }) {
-    if (!partner) {
+  updateEventArtist(root, { eventArtist, response }, { user, EventArtist }) {
+    if (!user) {
       throw new Error('Authentication failed.')
     }
-    return EventArtist.updateEventArtist(partner, eventArtist, response)
+    return EventArtist.updateEventArtist(user, eventArtist, response)
   }
 }
 

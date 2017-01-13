@@ -2,7 +2,7 @@ import vogels from 'io/vogels'
 import Joi from 'joi'
 
 const EventArtist = vogels.define('EventArtist', {
-  hashKey: 'eventId',
+  hashKey: 'id',
   rangeKey: 'createdAt',
   tableName: 'event.artist',
   timestamps: true,
