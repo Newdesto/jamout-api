@@ -9,11 +9,11 @@ const Channel = vogels.define('Channel', {
     id: vogels.types.uuid(), // index
     type: Joi.string().valid(['a', 'd', 'g']), // a: Assistant, d: DM, g: Group
     name: Joi.string(), // DM: null, Assistant: Assistant, Group: *
-    lastMessage: Joi.date(),
+    lastMessageId: Joi.string(), // ID of the last message sent in the channel.
     messageCount: Joi.number(),
     ownerUserId: Joi.string(), // DM: null, Assistant: *, Group: *
     // @NOTE If channel is assistant type then assistant is first element in the
-    // array and the user is second element.
+    // array and the userId is second element.
     users: vogels.types.stringSet(), // array of userIds in channel
     usersHash: Joi.string()
   },

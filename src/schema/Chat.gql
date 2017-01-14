@@ -1,0 +1,46 @@
+# @NOTE that chat subscriptions objects function as an index for user's and their
+# channels. They are merged into channel objects after the query. The GQL and
+# the schema are blind to them.
+type Channel {
+  createdAt: String!
+  updatedAt: String
+  id: ID!
+  type: ChannelType!
+  name: String # null if type === DM
+  lastMessage: Message
+  messageCount: Int
+  ownerUserId: String # null if type === DM
+  # @NOTE If channel is assistant type then assistant is first element in the
+  # array and the userId is second element.
+  users: [ID!]! # array of userIds in channel
+}
+
+# A summary of a channel that can be embedded in the Message type or any other object.
+type ChannelSummary {
+  id: ID!
+  type: ChannelType!
+  name: String # null if channel type = DM
+}
+
+# The different types of channels, dude.
+enum ChannelType {
+  ASSISTANT
+  DM
+  GROUP
+}
+
+# A chat message or action.
+type Message {
+  createdAt: String!
+  updatedAt: String
+  id: ID!
+  # ID of the channel it was sent in.
+  channelId: ID!
+  channel: Channel!
+  # ID of the user who sent the message.
+  # 'assistant' if the bot is a sender.
+  senderId: ID!
+  action: String
+  text: String
+  # @TODO attachments for images, cards, etc.
+}

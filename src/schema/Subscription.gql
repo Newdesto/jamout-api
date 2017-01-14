@@ -1,8 +1,8 @@
 type Subscription {
   # A note on user context
-  # There's not reliable way to pass a JWT through web sockets so the best solution
+  # There's not a reliable way to pass a JWT through web sockets so the best solution
   # is to pass in the JWT as an argument, decode it within the resolver, init
-  # any connectors that require a decoded JWT and carry on.
+  # any connectors that require a decoded JWT and move on.
 
 
   # Subs current users to events emitted by assistant
@@ -14,11 +14,11 @@ type Subscription {
   # an anonymous JWT to derive the anonymous ID from. Though, if you can get a
   # hold of the anonymous ID you can probably get a hold of the anonymous JWT.
 
-  # Subs current user to a chat channel
+  # Subscribes current user to a chat channel
   # Publishes everything but new messages, with the exception of the latest message
   channel(channelId: ID!): Channel!
 
-  # Subs the current user to messages within a new chat channel
+  # Subscribes the current user to messages within a chat channel
   # Publishes messages
   messages(channelId: ID!): Message!
 }

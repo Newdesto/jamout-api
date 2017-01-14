@@ -10,9 +10,7 @@ import scalar from './scalar.gql'
 import Mutation from './Mutation.gql'
 import Query from './Query.gql'
 import Subscription from './Subscription.gql'
-import Channel from './Channel.gql'
-import ChannelType from './ChannelType.gql'
-import Message from './Message.gql'
+import Chat from './Chat.gql'
 import Profile from './Profile.gql'
 import Release from './Release.gql'
 import ReleaseInput from './ReleaseInput.gql'
@@ -22,6 +20,7 @@ import ReleaseTrack from './ReleaseTrack.gql'
 import ReleaseType from './ReleaseType.gql'
 import Assistant from './Assistant.gql'
 import Postback from './Postback.gql'
+import RTE from './RTE.gql'
 
 // @TODO combine schemas by module (e.g.; combine all release defs)
 const typeDefs = [
@@ -32,19 +31,24 @@ const typeDefs = [
   Subscription,
   Assistant,
   Postback,
-  Channel,
-  ChannelType,
-  Message,
+  Chat,
   Profile,
   Release,
   ReleaseInput,
   ReleaseInputTrack,
   ReleaseStatus,
   ReleaseTrack,
-  ReleaseType
+  ReleaseType,
+  RTE
 ]
 
 export default makeExecutableSchema({
   typeDefs,
-  resolvers: merge(queryResolvers, mutationResolvers, subscriptionsResolvers, typeResolvers, scalarResolvers)
+  resolvers: merge(
+    queryResolvers,
+    mutationResolvers,
+    subscriptionsResolvers,
+    typeResolvers,
+    scalarResolvers
+  )
 })
