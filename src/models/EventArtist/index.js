@@ -19,7 +19,9 @@ export default class EventArtist {
       .scan()
       .where('eventId').equals(payload)
       .execAsync()
-    return this.sortMusicEvents(Items)
+    const events = Items.map(e => e.attrs)
+
+    return events
   }
 
   async fetchByPartnerId(partner) {
