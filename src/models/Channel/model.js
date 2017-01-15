@@ -8,6 +8,7 @@ const Channel = vogels.define('Channel', {
   schema: {
     id: vogels.types.uuid(), // index
     type: Joi.string().valid(['a', 'd', 'g']), // a: Assistant, d: DM, g: Group
+    // @TODO restrict name "assistant" if the type is not "a"
     name: Joi.string(), // DM: null, Assistant: Assistant, Group: *
     lastMessageId: Joi.string(), // ID of the last message sent in the channel.
     messageCount: Joi.number(),

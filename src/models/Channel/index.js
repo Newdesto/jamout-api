@@ -18,7 +18,18 @@ export default class Channel {
     const channels = await channelModel.getItemsAsync(channelIds)
     return channels.map(item => item.attrs)
   }
+  async getById(id) {
+    const channel = await channelModel.getAsync(id)
+    // @TODO Check if the user has a subscription
+
+    if(channel && channel.attrs) {
+      return channel.attrs
+    }
+
+    return null
+  }
   async createChannel(type, users) {
+    // Sort the user's who are in the channel and create a unique hash.
     const sortedUsers = users.sort()
     const usersHash = crypto.createHash('sha1').update(JSON.stringify(sortedUsers)).digest('hex')
 

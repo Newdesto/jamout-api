@@ -12,19 +12,12 @@ import Joi from 'joi'
 // which means we'll have to index the channelId
 const Message = vogels.define('Message', {
   hashKey: 'createdAt',
-  rangeKey: 'userId',
+  rangeKey: 'senderId',
   tableName: 'chat.message',
   timestamps: true,
   schema: {
     id: vogels.types.uuid(), // ID of the message
     channelId: Joi.string(), // ID of the channel it was sent in.
-    // Summary of the Channel the message was sent in.
-    // @TODO Worker to update these when a channel is updated.
-    channel: {
-      id: vogels.types.uuid(),
-      type: Joi.string().valid(['a', 'd', 'g']),
-      name: Joi.string()
-    },
     senderId: Joi.string(), // ID of the sender
     // @TODO Figure out if actions need to be persisted. If so this action
     // attribute would only be validated in an input type resolver as a real
