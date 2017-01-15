@@ -22,5 +22,5 @@ type Subscription {
   # Subscribes the current user to messages within a certain chat channel
   # Publishes messages in a RTE wrapper
   # This is used for a channel that is open and the assistant.
-  messages(channelId: ID!): Message!
+  messages(jwt: String!, channelId: ID!): Message!
 }

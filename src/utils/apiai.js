@@ -1,6 +1,54 @@
 import { logger } from 'io'
-import { eventRequest, textRequest } from 'io/apiai'
+import { textRequest } from 'io/apiai'
 import { flatten, omitBy, mapValues } from 'lodash'
+
+/**
+ * Converts an array of API.ai messages to message objects we can persist
+ * and publish.
+ * @param  {Array} fulfillments Array of API.ai message objects (https://docs.api.ai/docs/query#section-message-objects)
+ * @return {Array}              Array of Jamout message objects.
+ */
+export const fulfillmentToMessages = function fulfillmentToMessages(channelId, { speech, messages }) {
+  if (!channelId) {
+    throw new Error('No channel ID provided.')
+  }
+
+  // If no speech and message objects were given just return an empty array.
+  if ((!messages || messages.length === 0) && !speech) {
+    return []
+  }
+
+  // If there are no message objects just convert the speech fulfillment
+  // and return the single item array.
+  if(!messages || messages.length === 0) {
+    // Returns an array by default.
+    return convertTextMessage(channelId, speech)
+  }
+
+  // Convert all the message objects and return them.
+  return flatten(messages.map(m => convertMessage(channelId, m)))
+}
+
+const convertMessage = function convertMessage(channelId, message) {
+  switch(message.type) {
+    case 0:
+      // Text Message
+      return convertTextMessage(channelId, message.speech)
+      break
+    default:
+     throw new Error('API.ai message type not recognized.')
+  }
+}
+
+const convertTextMessage = function convertTextMessage(channelId, speech) {
+  const speeches = speech.split('\\n')
+  return speeches.map(s => ({
+    channelId, // sessionId = userId, both auth and anon
+    //isAnon: data.isAnon, // @TODO work anon into context
+    senderId: 'assistant',
+    text: s
+  }))
+}
 
 /**
  * Sends an event request to API.ai and processes the response, throwing an error
