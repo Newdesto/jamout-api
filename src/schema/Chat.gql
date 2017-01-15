@@ -72,6 +72,8 @@ input ChatInput {
   id: ID!
   # Channel ID
   channelId: ID!
+  # User who sent the input
+  userId: ID!
   # An open ended object of values that can be used
   # by the input handlers.
   values: JSON

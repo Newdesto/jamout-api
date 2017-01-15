@@ -29,7 +29,7 @@ const textboxHandler = async function textboxHandler(input, done) {
       contexts: [
         { name: 'authenticated' }
       ],
-      sessionId: input.senderId
+      sessionId: input.userId
     })
     console.log(apiaiResponse)
     // Take the response and route
