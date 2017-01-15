@@ -1,5 +1,6 @@
 import userModel from './model'
 import profileModel from '../Profile/model'
+import Channel from '../Channel'
 export UserLoader from './loader'
 import jwt from 'jsonwebtoken'
 import { createCustomer } from '../../utils/stripe'
@@ -45,15 +46,22 @@ export default class User {
       password: hashedPassword,
     })
 
+    // Creates a Stripe customer for the new user.
+    // @TODO queue a job.
     const stripeCustomer = await createCustomer({
       description: user.id, // @TODO figure out if this is good lol
     })
+
+    // Create an assistant channel for the new user.
+    const channel = new Channel()
+    const assistantChannel = await channel.createChannel('a', ['assistant', user.id])
 
     const { attrs: userStripe } = await userModel.updateAsync({
       id: user.id,
       stripe: {
         customerId: stripeCustomer.id
-      }
+      },
+      assistantChannelId: assistantChannel.id
     })
 
     delete userStripe.password
