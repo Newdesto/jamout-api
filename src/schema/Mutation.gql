@@ -1,6 +1,6 @@
 type Mutation {
   # Authentication + Utils
-  login(email: String!, password: String!): String!,
+  login(email: String!, password: String!): String!
   signUp(email: String!, username: String!, password: String!): String!
   generateS3Signature(stringToSign: String!, datetime: String!): String!
   # Chat

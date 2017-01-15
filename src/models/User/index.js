@@ -4,7 +4,7 @@ import Channel from '../Channel'
 export UserLoader from './loader'
 import jwt from 'jsonwebtoken'
 import { createCustomer } from '../../utils/stripe'
-import { hashPassword } from '../../utils/auth'
+import { hashPassword, authenticate } from '../../utils/auth'
 const secret = process.env.JWT_SECRET
 
 export default class User {
@@ -30,8 +30,33 @@ export default class User {
       .execAsync()
 
     if(existingEmails.Count !== 0)
-      return true
+      return existingEmails.Items[0].attrs
     return false
+  }
+  async login({ email, password }) {
+    let user = await this.emailExists(email)
+    if(!user) {
+      throw new Error('Invalid email or password.')
+    }
+
+    // Compare the passwords.
+    await authenticate(password, user.password)
+
+    // Make sure they have an assistant channel.
+    // @TODO Remove when all early adopters have a channel.
+    if(!user.assistantChannelId) {
+      const channel = new Channel()
+      const assistantChannel = await channel.createChannel('a', ['assistant', user.id])
+      const { attrs: updatedUser } = await userModel.updateAsync({
+        id: user.id,
+        assistantChannelId: assistantChannel.id
+      })
+      user = updatedUser
+    }
+
+    delete user.password
+    const accessToken = jwt.sign(user, secret)
+    return accessToken
   }
   async create({email, username, password}) {
     if(await this.emailExists(email))
