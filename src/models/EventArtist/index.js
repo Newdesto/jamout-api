@@ -12,23 +12,35 @@ export default class EventArtist {
     return attrs
   }
 
-  async fetchByEventId(partner, payload) {
-    if (!partner.id) { throw new Error('User ID is undefined.') }
+  async fetchByEventId(user, payload) {
+    if (!user.id) { throw new Error('User ID is undefined.') }
 
     const { Items } = await eventArtistModel
       .scan()
-      .where('eventId').equals(payload.eventId)
+      .where('eventId').equals(payload)
       .execAsync()
-
     return this.sortMusicEvents(Items)
   }
 
-  async fetchAll(partner) {
+  async fetchByPartnerId(partner) {
     if (!partner.id) { throw new Error('User ID is undefined.') }
 
     const { Items } = await eventArtistModel
       .scan()
       .where('partnerId').equals(partner.id)
+      .execAsync()
+
+    const events = Items.map(e => e.attrs)
+
+    return events
+  }
+
+  async fetchByUserId(user) {
+    if (!user.id) { throw new Error('User ID is undefined.') }
+
+    const { Items } = await eventArtistModel
+      .scan()
+      .where('partnerId').equals(user.id)
       .execAsync()
 
     const events = Items.map(e => e.attrs)

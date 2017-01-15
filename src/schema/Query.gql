@@ -6,5 +6,5 @@ type Query {
   releases: [Release!]!,
   studioEvent: [[StudioEvent]],
   musicEvents: [MusicEvent],
-  eventArtist: [EventArtist]
+  eventArtist(eventId: ID): [EventArtist]
 }
