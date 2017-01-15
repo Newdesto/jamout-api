@@ -12,11 +12,10 @@ import { flatten, omitBy, mapValues } from 'lodash'
 export async function eventRequestAndProcess(event, options) {
   try {
     const response = await eventRequest(event, options)
-    const strippedResponse = stripEmptyParameters(response)
-    const events = mapResponseToEvents(strippedResponse)
+    //const strippedResponse = stripEmptyParameters(response)
+    //const events = mapResponseToEvents(strippedResponse)
     return {
-      response: strippedResponse,
-      events
+      response
     }
   } catch(e) {
     logger.error(e)
@@ -34,13 +33,10 @@ export async function eventRequestAndProcess(event, options) {
 export async function textRequestAndProcess(text, options) {
   try {
     const response = await textRequest(text, options)
-    const strippedResponse = stripEmptyParameters(response)
-    const events = mapResponseToEvents(strippedResponse)
+    //const strippedResponse = stripEmptyParameters(response)
+    //const events = mapResponseToEvents(strippedResponse)
 
-    return {
-      response: strippedResponse,
-      events
-    }
+    return response
   } catch(e) {
     logger.error(e)
     throw e
