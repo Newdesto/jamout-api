@@ -17,9 +17,13 @@ const resolvers = {
     return User.create(args)
   },
   async verifyToken(root, { token }, context) {
-    // Verify will handle both signature and expiration
-    const decoded = await jwt.verify(token, secret)
-    return true
+    try {
+      // Verify will handle both signature and expiration
+      const decoded = await jwt.verify(token, secret)
+      return true
+    } catch (e) {
+      return false
+    }
   }
 }
 
