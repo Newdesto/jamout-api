@@ -1,0 +1,28 @@
+# A Real Time Event is a GQL type that is published to a user's private channel
+# to trigger an update on the client. These events are generally chat related:
+# channel updates, new messages, typing indicators, read receipts, etc.
+#
+# RTE's function as a wrapper for other GQL types. Most subscription fields
+# defined in Subscription.gql will return an RTE! type. 
+#
+# Defined in this file is the RTE type and RTE data union.
+
+# The event object that is sent to a user.
+type RTE {
+  # ISO date string
+  createdAt: String!
+  # UUID for this event
+  id: ID!
+  # Data that is relevant to this event (e.g.; message object).
+  data: RTEData!
+}
+
+# The possible GQL types that can be sent within an RTE event. Instead of having
+# to define a typing.start or input.component GQL type, we define the action
+# in a message object and send it out. These aren't persisted in the database,
+# but it makes sense these are embedded in messages since typing or action
+# events are closely related to chat.
+#
+# If any RTE event is needed that isn't a GQL defined type it's okay to
+# create a unique RTE sub type and include it in the union below.
+union RTEData = Channel | Message

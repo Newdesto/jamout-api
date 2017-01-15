@@ -1,8 +1,10 @@
 import { includes, merge } from 'lodash'
 import * as assistant from './assistant'
+import * as messages from './messages'
 
 export const setupFunctions = merge(
-  assistant.mapper
+  assistant.mapper,
+  messages.mapper
 )
 
 /**
@@ -20,5 +22,6 @@ export const setupFunctions = merge(
 export const resolvers = {
   Subscription: merge(
     assistant.resolvers,
+    messages.resolvers
   )
 }

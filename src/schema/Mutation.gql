@@ -1,14 +1,14 @@
 type Mutation {
+  # Authentication + Utils
   login(email: String!, password: String!): String!,
   signUp(email: String!, username: String!, password: String!): String!
   generateS3Signature(stringToSign: String!, datetime: String!): String!
+  # Chat
   openChannel(type: ChannelType!, users: [ID!]!): Channel
+  sendInput(input: ChatInput!): Message # Most inputs should persist a message....
   updateAssistantContext(input: AssistantContextInput!): Boolean # null or true = success
   sendAssistantMessage(anonId: ID, input: AssistantMessageInput!): AssistantMessage!
-  # Publishes postback in redis postback.userId channel
-  # Used by client side assistant inputs (cards, date, etc.)
-  postback(input: PostbackInput!): AssistantMessage
-  sendMessage(channelId: ID!, text: String!): Message
+  # Distribution
   createRelease(input: ReleaseInput!): Release
   updateRelease(id: ID!, input: ReleaseInput!): Release
   deleteRelease(id: ID!): ID!
