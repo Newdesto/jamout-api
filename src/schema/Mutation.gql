@@ -2,6 +2,7 @@ type Mutation {
   # Authentication + Utils
   login(email: String!, password: String!): String!
   signUp(email: String!, username: String!, password: String!): String!
+  verifyToken(token: String!): Boolean!
   generateS3Signature(stringToSign: String!, datetime: String!): String!
   # Chat
   openChannel(type: ChannelType!, users: [ID!]!): Channel
