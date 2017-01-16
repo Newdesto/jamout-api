@@ -1,6 +1,9 @@
 import { pubsub } from 'io'
 import { fulfillmentToMessages } from 'utils/apiai'
 import Message from 'models/Message/model'
+import Promise from 'bluebird'
+import delay from 'lodash/delay'
+import uuid from 'uuid'
 
 /**
  * Parses API.ai's result and handles any logic and publishing.
@@ -19,7 +22,22 @@ const fulfill = async function fulfill(input, result) {
     messages = Items.map(i => i.attrs)
 
     // Publish the messages to the channel's pubsub channel
-    messages.forEach(m => pubsub.publish(`messages.${input.channelId}`, m))
+    messages.forEach(async (m) => {
+      pubsub.publish(`messages.${input.channelId}`, {
+        id: uuid(),
+        createdAt: new Date().toISOString(),
+        senderId: 'assistant',
+        action: 'typing.start'
+      })
+      await Promise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * .5)
+      pubsub.publish(`messages.${input.channelId}`, {
+        id: uuid(),
+        createdAt: new Date().toISOString(),
+        senderId: 'assistant',
+        action: 'typing.stop'
+      })
+      pubsub.publish(`messages.${input.channelId}`, m)
+    })
   }
 
   // Split up the namespaced action.
@@ -37,7 +55,24 @@ const fulfill = async function fulfill(input, result) {
       messages = Items.map(i => i.attrs)
 
       // Publish the messages to the channel's pubsub channel
-      messages.forEach(m => pubsub.publish(`messages.${input.channelId}`, m))
+      messages.forEach(async (m) => {
+        pubsub.publish(`messages.${input.channelId}`, {
+          id: uuid(),
+          createdAt: new Date().toISOString(),
+          channelId: input.channelId,
+          senderId: 'assistant',
+          action: 'typing.start'
+        })
+        await Promise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * .75 * 1000)
+        pubsub.publish(`messages.${input.channelId}`, {
+          id: uuid(),
+          createdAt: new Date().toISOString(),
+          channelId: input.channelId,
+          senderId: 'assistant',
+          action: 'typing.stop'
+        })
+        pubsub.publish(`messages.${input.channelId}`, m)
+      })
   }
 
   return messages

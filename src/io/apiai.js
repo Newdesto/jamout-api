@@ -24,7 +24,7 @@ export const textRequest = function textRequest(text, options) {
       } else if (body.status.code !== 200) {
         reject(new Error(body.status.errorDetails))
       } else if (body.status.errorType === 'deprecated') {
-        logger.warning('API.ai returned a deprecated error type.')
+        logger.warn('API.ai returned a deprecated error type.')
       }
 
       resolve(body)

@@ -31,7 +31,7 @@ queue.process('chat.input', async function chatInputWorker({ id, data: input }, 
   // call done. It's a weird use case if we a component-less input gets
   // queued, so just throw a warning.
   if(!input.component) {
-    logger.warning(`A chat input was queued for processing but didnt't have a
+    logger.warn(`A chat input was queued for processing but didnt't have a
     component.`)
     return done()
   }
