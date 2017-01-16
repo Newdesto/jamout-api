@@ -1,6 +1,3 @@
-import Message from './Message'
-import Profile from './Profile'
-
 const resolvers = {
   type({ type }) {
     return {
@@ -9,11 +6,17 @@ const resolvers = {
       g: 'GROUP'
     }[type]
   },
-  async messages({ id }, args, { Message }) {
-    return Message.getMessages(id, args.messageLimit)
+  async lastMessage(channel, args, { Message }) {
+    const lastMessage = await Message.getMessages(channel.id, 1)
+    return lastMessage[0]
   },
-  async users(channel, args, { Profile }) {
-    return Profile.fetchByIds(channel.users)
+  async messages(channel, args, { Message }) {
+    return Message.getMessages(channel.id, args.messageLimit)
+  },
+  users(channel, args, { Profile }) {
+    // Filter out the assistant user...
+    const users = channel.users.filter(u => u !== 'assistant')
+    return Profile.fetchByIds(users)
   }
 }
 

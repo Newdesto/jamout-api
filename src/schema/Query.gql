@@ -1,7 +1,8 @@
 type Query {
-  assistantMessages(anonId: ID): [AssistantMessage!]!,
-  channels(messageLimit: Int): [Channel!]!,
-  messages(channelId: ID!, limit: Int): [Message!]!,
-  release(id: ID!): Release,
+  me: Profile!
+  assistantMessages(anonId: ID): [AssistantMessage!]!
+  channels(excludeAssistant: Boolean, messageLimit: Int): [Channel!]!
+  messages(channelId: ID!, limit: Int): [Message!]!
+  release(id: ID!): Release
   releases: [Release!]!
 }

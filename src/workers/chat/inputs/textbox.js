@@ -16,7 +16,7 @@ const textboxHandler = async function textboxHandler(input, done) {
   try {
     // Be sure the channel type is 'a'
     if (input.channel.type !== 'a') {
-      logger.warning('Textbox handler received an input not intended for assistant.')
+      logger.warn('Textbox handler received an input not intended for assistant.')
     }
 
     // Make sure we have a text value or else stuff won't work

@@ -7,7 +7,7 @@ import AssistantMessage from 'models/AssistantMessage'
 import User, { UserLoader } from 'models/User'
 import Profile, { ProfileLoader } from 'models/Profile'
 import { formatError } from 'apollo-errors'
-import { logger } from 'io'
+import { logger, pubsub } from 'io'
 import { createJob } from 'io/queue'
 
 export const setupSubscriptionContext = () => {
@@ -35,6 +35,7 @@ export default graphqlExpress(req => {
       user,
       createJob,
       logger,
+      pubsub,
       User: new User({ loader: userLoader }),
       Profile: new Profile({ loader: profileLoader }),
       Channel: new Channel(),

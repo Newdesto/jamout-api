@@ -13,7 +13,7 @@ type Channel {
   ownerUserId: String # null if type === DM
   # @NOTE If channel is assistant type then assistant is first element in the
   # array and the userId is second element.
-  users: [ID!]! # array of userIds in channel
+  users: [Profile!]!
 }
 
 # A summary of a channel that can be embedded in the Message type or any other object.
