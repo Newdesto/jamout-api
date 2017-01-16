@@ -4,6 +4,7 @@ import Message from 'models/Message/model'
 import Promise from 'bluebird'
 import delay from 'lodash/delay'
 import uuid from 'uuid'
+import onboarding from './onboarding'
 
 /**
  * Parses API.ai's result and handles any logic and publishing.
@@ -27,17 +28,20 @@ const fulfill = async function fulfill(input, result) {
         id: uuid(),
         createdAt: new Date().toISOString(),
         senderId: 'assistant',
-        action: 'typing.start'
+        action: 'typing.start',
+        channelId: input.channelId
       })
       await Promise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * .5)
       pubsub.publish(`messages.${input.channelId}`, {
         id: uuid(),
         createdAt: new Date().toISOString(),
         senderId: 'assistant',
-        action: 'typing.stop'
+        action: 'typing.stop',
+        channelId: input.channelId
       })
       pubsub.publish(`messages.${input.channelId}`, m)
     })
+    return messages
   }
 
   // Split up the namespaced action.
@@ -46,7 +50,7 @@ const fulfill = async function fulfill(input, result) {
   // Route by on base type
   switch(actions[0]) {
     case 'onboarding':
-      messages = onboarding(input, result, messages)
+      onboarding(input, result, messages)
       break
     default:
       // If we can't figure out what action to take just persist and publish.
