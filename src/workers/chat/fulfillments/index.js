@@ -1,9 +1,15 @@
-import { pubsub } from 'io'
+import { pubsub, logger } from 'io'
+import { createJob } from 'io/queue'
 import { fulfillmentToMessages } from 'utils/apiai'
 import Message from 'models/Message/model'
 import Promise from 'bluebird'
 import delay from 'lodash/delay'
 import uuid from 'uuid'
+import onboarding from './onboarding'
+
+const actionFunctions = {
+  ...onboarding
+}
 
 /**
  * Parses API.ai's result and handles any logic and publishing.
@@ -18,64 +24,34 @@ const fulfill = async function fulfill(input, result) {
   // so just persist, publish and dip.
   if(!result.action) {
     // Persist the messages in DDB.
-    const Items = await Message.createAsync(messages)
-    messages = Items.map(i => i.attrs)
+    await Promise.all(messages.map(message => createJob('chat.persistMessage', {
+      message
+    })))
 
     // Publish the messages to the channel's pubsub channel
-    messages.forEach(async (m) => {
-      pubsub.publish(`messages.${input.channelId}`, {
-        id: uuid(),
-        createdAt: new Date().toISOString(),
-        senderId: 'assistant',
-        action: 'typing.start'
-      })
-      await Promise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * .5)
-      pubsub.publish(`messages.${input.channelId}`, {
-        id: uuid(),
-        createdAt: new Date().toISOString(),
-        senderId: 'assistant',
-        action: 'typing.stop'
-      })
-      pubsub.publish(`messages.${input.channelId}`, m)
-    })
+    await publishMessages(channelId, 'assistant', messages)
+    return
   }
 
-  // Split up the namespaced action.
-  const actions = result.action.split('.')
+  // Get the action function
+  const actionFunction = actionFunctions[result.action]
 
-  // Route by on base type
-  switch(actions[0]) {
-    case 'onboarding':
-      messages = onboarding(input, result, messages)
-      break
-    default:
-      // If we can't figure out what action to take just persist and publish.
-      // Persist the messages in DDB.
-      const Items = await Message.createAsync(messages)
-      messages = Items.map(i => i.attrs)
+  // If there was an action, but there is no action funcion recognized log an
+  // error and default to persistence and publishing.
+  if(!actionFunction) {
+    logger.error(`No action function set for the action ${result.action}.`)
+    // Persist the messages in DDB.
+    await Promise.all(messages.map(message => createJob('chat.persistMessage', {
+      message
+    })))
 
-      // Publish the messages to the channel's pubsub channel
-      messages.forEach(async (m) => {
-        pubsub.publish(`messages.${input.channelId}`, {
-          id: uuid(),
-          createdAt: new Date().toISOString(),
-          channelId: input.channelId,
-          senderId: 'assistant',
-          action: 'typing.start'
-        })
-        await Promise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * .75 * 1000)
-        pubsub.publish(`messages.${input.channelId}`, {
-          id: uuid(),
-          createdAt: new Date().toISOString(),
-          channelId: input.channelId,
-          senderId: 'assistant',
-          action: 'typing.stop'
-        })
-        pubsub.publish(`messages.${input.channelId}`, m)
-      })
+    // Publish the messages to the channel's pubsub channel
+    await publishMessages(channelId, 'assistant', messages)
+    return
   }
 
-  return messages
+  // Call the action function...
+  await actionFunction(input, result, messages)
 }
 
 export default fulfill

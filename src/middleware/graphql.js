@@ -18,6 +18,8 @@ export const setupSubscriptionContext = () => {
   return {
     // User: new User({ loader: userLoader }),
     // Profile: new Profile({ loader: profileLoader }),
+    logger,
+    createJob,
     Channel: new Channel(),
     Message: new Message(),
     Release: new Release(),
