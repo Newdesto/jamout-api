@@ -8,6 +8,8 @@ import assistantMessages from './assistantMessages'
 import musicEvent from './musicEvent'
 import eventArtist from './eventArtist'
 import me from './me'
+import profile from './profile'
+import track from './track'
 
 const resolvers = {
   Query: merge(
@@ -20,6 +22,8 @@ const resolvers = {
     studioEvent,
     musicEvent,
     eventArtist,
+    profile,
+    track
   )
 }
 

@@ -28,6 +28,7 @@ import EventArtist from './EventArtist.gql'
 import EventArtistInput from './EventArtistInput.gql'
 import UpdateEventArtistInput from './UpdateEventArtistInput.gql'
 import RTE from './RTE.gql'
+import track from './track.gql'
 
 // @TODO combine schemas by module (e.g.; combine all release defs)
 const typeDefs = [
@@ -53,7 +54,8 @@ const typeDefs = [
   EventArtist,
   EventArtistInput,
   UpdateEventArtistInput,
-  RTE
+  RTE,
+  track
 ]
 
 export default makeExecutableSchema({

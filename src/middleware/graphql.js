@@ -8,6 +8,7 @@ import User, { UserLoader } from 'models/User'
 import Profile, { ProfileLoader } from 'models/Profile'
 import StudioEvent from 'models/StudioEvent'
 import MusicEvent from 'models/MusicEvent'
+import Track from 'models/Track'
 import EventArtist from 'models/EventArtist'
 import { formatError } from 'apollo-errors'
 import { logger, pubsub } from 'io'
@@ -47,7 +48,8 @@ export default graphqlExpress((req) => {
       StudioEvent: new StudioEvent(),
       AssistantMessage: new AssistantMessage(),
       MusicEvent: new MusicEvent(),
-      EventArtist: new EventArtist()
+      EventArtist: new EventArtist(),
+      Track: new Track()
     },
     formatError,
     logger
