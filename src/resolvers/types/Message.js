@@ -13,7 +13,7 @@ const Message = `
 `
 
 export const resolver = {
-  async user({ userId }, arg, { Profile } ) {
+  async sender({ userId }, arg, { Profile } ) {
     return Profile.fetchById(userId)
   }
 }

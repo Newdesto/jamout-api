@@ -7,9 +7,11 @@ import studioEvent from './studioEvent'
 import assistantMessages from './assistantMessages'
 import musicEvent from './musicEvent'
 import eventArtist from './eventArtist'
+import me from './me'
 
 const resolvers = {
   Query: merge(
+    me,
     assistantMessages,
     channels,
     messages,

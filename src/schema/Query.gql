@@ -1,10 +1,11 @@
 type Query {
-  assistantMessages(anonId: ID): [AssistantMessage!]!,
-  channels(messageLimit: Int): [Channel!]!,
-  messages(channelId: ID!, limit: Int): [Message!]!,
-  release(id: ID!): Release,
-  releases: [Release!]!,
-  studioEvent: [[StudioEvent]],
-  musicEvents: [MusicEvent],
+  me: Profile!
+  assistantMessages(anonId: ID): [AssistantMessage!]!
+  channels(excludeAssistant: Boolean, messageLimit: Int): [Channel!]!
+  messages(channelId: ID!, limit: Int): [Message!]!
+  release(id: ID!): Release
+  releases: [Release!]!
+  studioEvent: [[StudioEvent]]
+  musicEvents: [MusicEvent]
   eventArtist(eventId: ID): [EventArtist]
 }

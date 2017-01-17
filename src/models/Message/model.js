@@ -12,50 +12,22 @@ import Joi from 'joi'
 // which means we'll have to index the channelId
 const Message = vogels.define('Message', {
   hashKey: 'createdAt',
-  rangeKey: 'userId',
+  rangeKey: 'senderId',
   tableName: 'chat.message',
   timestamps: true,
   schema: {
-    id: vogels.types.uuid(), // index
-    channelId: Joi.string(), // id of channel message was sent in
-    userId: Joi.string(), // id of user who sent message
-    text: Joi.string(), // text of the message
-    attachments: Joi.array().items(Joi.object().keys({
-      callbackId: Joi.string(), // unique id for the set of actions
-      // callbackId might correspond to a specific studio request
-      isEphemeral: Joi.boolean(),
-      fallback: Joi.string(), // plain-text fallback
-      color: Joi.string(), // attachment color
-      author: Joi.string(),
-      authorLink: Joi.string(),
-      title: Joi.string(),
-      titleLink: Joi.string(),
-      text: Joi.string(),
-      imageUrl: Joi.string(),
-      thumbnailUrl: Joi.string(),
-      footer: Joi.string(),
-      fields: Joi.array().items(Joi.object().keys({
-        title: Joi.string(),
-        value: Joi.string(),
-        isShort: Joi.boolean() // can be put side by side with others
-      })),
-      actions: Joi.array().items(Joi.object().keys({
-        name: Joi.string(),
-        text: Joi.string(),
-        type: Joi.string(), // button, date selector, etc
-        style: Joi.string(), // default, primary, danger
-        value: Joi.string(),
-        confirmation: Joi.object().keys({
-          title: Joi.string(),
-          text: Joi.string(),
-          confirmText: Joi.string(),
-          cancelText: Joi.string()
-        })
-      }))
-    }))
+    id: vogels.types.uuid(), // ID of the message
+    channelId: Joi.string(), // ID of the channel it was sent in.
+    senderId: Joi.string(), // ID of the sender
+    // @TODO Figure out if actions need to be persisted. If so this action
+    // attribute would only be validated in an input type resolver as a real
+    // time event.
+    action: Joi.string(), // typing.start, typing.stop, mark.read
+    text: Joi.string() // Message text
+    // @TODO attachments for images, cards, etc.
   },
-  indexes : [{
-    hashKey : 'channelId', rangeKey: 'createdAt', name : 'channelId-createdAt-index', type : 'global'
+  indexes: [{
+    hashKey: 'channelId', rangeKey: 'createdAt', name: 'channelId-createdAt-index', type: 'global'
   }]
 })
 

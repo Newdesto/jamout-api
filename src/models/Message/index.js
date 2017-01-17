@@ -14,16 +14,14 @@ export default class Message {
 
     return Items.map(i => i.attrs)
   }
-  async createMessage(userId, channelId, text) {
-    const subscription = await subscriptionModel.getAsync({ userId, channelId })
-    if(!subscription)
+  async create(input) {
+    const subscription = await subscriptionModel.getAsync({ userId: input.senderId, channelId: input.channelId })
+    if(!subscription) {
       throw new Error('Authorization failed.')
+    }
 
-    const { attrs } = await messageModel.createAsync({
-      userId,
-      channelId,
-      text
-    })
+    // Throws an error if something fails.
+    const { attrs } = await messageModel.createAsync(input)
 
     return attrs
   }
