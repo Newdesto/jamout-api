@@ -8,6 +8,8 @@ import { createServer } from 'http'
 import { setupSubscriptionContext } from 'middleware/graphql'
 import JWT from 'jsonwebtoken'
 import { createJob } from 'io/queue'
+import User from 'models/User/model'
+import { restoreInput } from 'utils/chat'
 let server;
 
 const subscriptionManager = new SubscriptionManager({
@@ -21,7 +23,10 @@ const subscriptionManager = new SubscriptionManager({
 const onSubscribe = async (msg, params, req) => {
   // Triggers onboarding when an assistant sub starts
   if(msg.type === 'subscription_start' && msg.variables.assistantChannelId) {
-    const user = JWT.verify(msg.variables.jwt, process.env.JWT_SECRET)
+    // Verify the JWT
+    const verified = JWT.verify(msg.variables.jwt, process.env.JWT_SECRET)
+    // The JWT can be outdated so check out the DB
+    const { attrs:user } = await User.getAsync(verified.id)
     if(!user.didOnboard) {
       const job = await createJob('chat.event', {
         userId: user.id,

@@ -16,19 +16,24 @@ const Channel = new channelModel()
  * @type {Object}
  */
 queue.process('chat.event', async function chatEventWorker({ data: { userId, event, channelId } }, done) {
-  logger.debug('Processing chat.event job.')
+  try {
+    logger.debug('Processing chat.event job.')
 
-  // Query API.ai without any additional contexts.
-  const apiaiResponse = await eventRequest({
-    name: event
-  }, {
-    contexts: [
-      { name: 'authenticated' }
-    ],
-    sessionId: userId
-  })
+    // Query API.ai without any additional contexts.
+    const apiaiResponse = await eventRequest({
+      name: event
+    }, {
+      contexts: [
+        { name: 'authenticated' }
+      ],
+      sessionId: userId
+    })
 
-  // Take the result and fulfill the action
-  fulfill({ channelId }, apiaiResponse.result)
-  done()
+    // Take the result and fulfill the action
+    await fulfill({ channelId, userId }, apiaiResponse.result)
+    done()
+  } catch (e) {
+    logger.error(e)
+    done(e)
+  }
 })
