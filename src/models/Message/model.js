@@ -23,8 +23,11 @@ const Message = vogels.define('Message', {
     // attribute would only be validated in an input type resolver as a real
     // time event.
     action: Joi.string(), // typing.start, typing.stop, mark.read
-    text: Joi.string() // Message text
-    // @TODO attachments for images, cards, etc.
+    text: Joi.string(), // Message text
+    attachment: Joi.object().keys({
+      type: Joi.string().valid(['image']),
+      key: Joi.string()
+    })
   },
   indexes: [{
     hashKey: 'channelId', rangeKey: 'createdAt', name: 'channelId-createdAt-index', type: 'global'

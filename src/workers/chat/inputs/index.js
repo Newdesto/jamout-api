@@ -10,7 +10,7 @@ const Channel = new channelModel()
 // Input Handlers
 import textbox from './textbox'
 import onboarding from './onboarding'
-const importHandlers = {
+const inputHandlers = {
   'Textbox': textbox,
   ...onboarding
 }
@@ -22,7 +22,7 @@ const importHandlers = {
 queue.process('chat.input', async function chatInputWorker({ id, data: input }, done) {
   try {
     logger.debug('Processing chat.input job.')
-
+    logger.debug(input)
     // Query for the channel details. This is where cache comes in handy.
     const channel = await Channel.getById(input.channelId)
 
@@ -42,13 +42,13 @@ queue.process('chat.input', async function chatInputWorker({ id, data: input }, 
       return done()
     }
 
-    const importHandler = importHandlers[input.component]
+    const inputHandler = inputHandlers[input.component]
 
-    if (!importHandler) {
+    if (!inputHandler) {
       throw new Error(`No handler registered for the component: ${input.component}`)
     }
 
-    await importHandler(input)
+    await inputHandler(input)
     done()
   } catch (e) {
     logger.error(e)

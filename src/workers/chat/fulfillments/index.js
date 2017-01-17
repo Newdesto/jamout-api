@@ -6,6 +6,7 @@ import Promise from 'bluebird'
 import delay from 'lodash/delay'
 import uuid from 'uuid'
 import onboarding from './onboarding'
+import { publishMessages, publishInput } from 'utils/chat'
 
 const actionFunctions = {
   ...onboarding

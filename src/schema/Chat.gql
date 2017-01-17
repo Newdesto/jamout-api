@@ -43,8 +43,14 @@ type Message {
   senderId: ID!
   sender: Profile!
   action: String
+  metadata: JSON
   text: String
-  # @TODO attachments for images, cards, etc.
+  attachment: MessageAttachment
+}
+
+type MessageAttachment {
+  type: String!
+  key: String
 }
 
 input MessageInput {
@@ -55,7 +61,12 @@ input MessageInput {
   senderId: ID!
   action: String
   text: String
-  # @TODO attachments for images, cards, etc.
+  attachment: MessageAttachmentInput
+}
+
+input MessageAttachmentInput {
+  type: String!
+  key: String
 }
 
 # Messages are sent inside a wrapped Input GQL type. We use an Input wrapper

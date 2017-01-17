@@ -21,7 +21,7 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
         createdAt: new Date().toISOString(),
         action: 'typing.start'
       })
-      await Promise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * .35 * 1000)
+      await Promise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * .25 * 1000)
       pubsub.publish(`messages.${channelId}`, {
         channelId,
         senderId,
@@ -51,7 +51,7 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
  * Also, caches the latest input that was sent to the channel.
  * @return {[type]} [description]
  */
-export const publishInput = function publishInput(channelId, component) {
+export const publishInput = function publishInput(channelId, component, metadata) {
   if(!channelId || !component) {
     logger.error('Missing one or more arguments to publish input.')
     throw new Error('Missing one or more arguments.')
@@ -64,6 +64,7 @@ export const publishInput = function publishInput(channelId, component) {
     id: uuid(),
     createdAt: new Date().toISOString(),
     channelId,
+    metadata,
     senderId: 'assistant',
     action: `input.${component}`
   })

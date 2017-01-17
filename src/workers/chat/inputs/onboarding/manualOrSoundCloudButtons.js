@@ -1,6 +1,7 @@
 // IO
 import { logger, queue, pubsub, apiai } from 'io'
 import { eventRequest } from 'io/apiai'
+import fulfill from 'workers/chat/fulfillments'
 
 export const manualOrSoundCloudButtons = async function manualOrSoundCloudButtons({ userId, channelId, values }) {
   logger.debug('Processing onboarding.ManualOrSoundCloudButtons input.')
