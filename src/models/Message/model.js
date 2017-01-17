@@ -26,7 +26,8 @@ const Message = vogels.define('Message', {
     text: Joi.string(), // Message text
     attachment: Joi.object().keys({
       type: Joi.string().valid(['image']),
-      key: Joi.string()
+      key: Joi.string(),
+      bucket: Joi.string()
     })
   },
   indexes: [{

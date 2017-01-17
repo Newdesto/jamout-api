@@ -50,7 +50,7 @@ type Message {
 
 type MessageAttachment {
   type: String!
-  key: String
+  url: String
 }
 
 input MessageInput {
@@ -67,6 +67,7 @@ input MessageInput {
 input MessageAttachmentInput {
   type: String!
   key: String
+  bucket: String
 }
 
 # Messages are sent inside a wrapped Input GQL type. We use an Input wrapper
