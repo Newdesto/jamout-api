@@ -1,5 +1,3 @@
-import logger from 'io/logger'
-import uuid from 'uuid'
 import JWT from 'jsonwebtoken'
 
 export const resolvers = {

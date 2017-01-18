@@ -20,14 +20,16 @@ export const setupSubscriptionContext = () =>
   // const profileLoader = new ProfileLoader({ userId: user && user.id })
   // const userLoader = new UserLoader({ userId: user && user.id })
 
-   ({
+    ({
     // User: new User({ loader: userLoader }),
     // Profile: new Profile({ loader: profileLoader }),
-     Channel: new Channel(),
-     Message: new Message(),
-     Release: new Release(),
-     AssistantMessage: new AssistantMessage()
-   })
+      logger,
+      createJob,
+      Channel: new Channel(),
+      Message: new Message(),
+      Release: new Release(),
+      AssistantMessage: new AssistantMessage()
+    })
 
 export default graphqlExpress((req) => {
   const user = req.user

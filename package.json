@@ -106,6 +106,7 @@
     "apiai": "^3.0.3",
     "apollo-errors": "^1.0.2",
     "app-module-path": "^2.1.0",
+    "async": "^2.1.4",
     "aws-sdk": "^2.6.9",
     "bcryptjs": "^2.3.0",
     "bluebird": "^3.4.6",
