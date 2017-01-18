@@ -5,7 +5,6 @@ import Message from 'models/Message/model'
 import Promise from 'bluebird'
 import delay from 'lodash/delay'
 import uuid from 'uuid'
-import { publishMessages } from 'utils/chat'
 import onboarding from './onboarding'
 import { publishMessages, publishInput } from 'utils/chat'
 
