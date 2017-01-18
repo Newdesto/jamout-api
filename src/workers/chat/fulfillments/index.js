@@ -18,11 +18,11 @@ const actionFunctions = {
  */
 const fulfill = async function fulfill(input, result) {
   // Convert the messages to Jamout's format.
-  let messages = fulfillmentToMessages(input.channelId, result.fulfillment)
+  const messages = fulfillmentToMessages(input.channelId, result.fulfillment)
 
   // If no action was returned that means there's no logic to carry out,
   // so just persist, publish and dip.
-  if(!result.action) {
+  if (!result.action) {
     // Persist the messages in DDB.
     await Promise.all(messages.map(message => createJob('chat.persistMessage', {
       message
@@ -38,7 +38,7 @@ const fulfill = async function fulfill(input, result) {
 
   // If there was an action, but there is no action funcion recognized log an
   // error and default to persistence and publishing.
-  if(!actionFunction) {
+  if (!actionFunction) {
     logger.error(`No action function set for the action ${result.action}.`)
     // Persist the messages in DDB.
     await Promise.all(messages.map(message => createJob('chat.persistMessage', {

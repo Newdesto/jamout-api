@@ -5,4 +5,9 @@ type Query {
   messages(channelId: ID!, limit: Int): [Message!]!
   release(id: ID!): Release
   releases: [Release!]!
+  studioEvent: [[StudioEvent]]
+  musicEvents: [MusicEvent]
+  eventArtist(eventId: ID): [EventArtist]
+  profile(userId: ID): Profile!
+  track(userId: ID): [Track]
 }

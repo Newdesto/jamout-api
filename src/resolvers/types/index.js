@@ -9,6 +9,9 @@ import { resolver as releaseResolver } from './Release'
 import AssistantEvent from './AssistantEvent'
 import AssistantMessage from './AssistantMessage'
 import AssistantTyping from './AssistantTyping'
+import StudioEvent from './StudioEvent'
+import StudioEventInput from './StudioEventInput'
+import MusicEvent from './MusicEvent'
 
 export default {
   Channel,
@@ -17,5 +20,8 @@ export default {
   Release: releaseResolver,
   AssistantEvent,
   AssistantMessage,
-  AssistantTyping
+  StudioEvent,
+  StudioEventInput,
+  AssistantTyping,
+  MusicEvent
 }

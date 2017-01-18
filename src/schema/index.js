@@ -18,9 +18,17 @@ import ReleaseInputTrack from './ReleaseInputTrack.gql'
 import ReleaseStatus from './ReleaseStatus.gql'
 import ReleaseTrack from './ReleaseTrack.gql'
 import ReleaseType from './ReleaseType.gql'
+import StudioEvent from './StudioEvent.gql'
+import StudioEventInput from './StudioEventInput.gql'
 import Assistant from './Assistant.gql'
 import Postback from './Postback.gql'
+import MusicEvent from './MusicEvent.gql'
+import MusicEventInput from './MusicEventInput.gql'
+import EventArtist from './EventArtist.gql'
+import EventArtistInput from './EventArtistInput.gql'
+import UpdateEventArtistInput from './UpdateEventArtistInput.gql'
 import RTE from './RTE.gql'
+import track from './track.gql'
 
 // @TODO combine schemas by module (e.g.; combine all release defs)
 const typeDefs = [
@@ -39,7 +47,15 @@ const typeDefs = [
   ReleaseStatus,
   ReleaseTrack,
   ReleaseType,
-  RTE
+  StudioEvent,
+  StudioEventInput,
+  MusicEvent,
+  MusicEventInput,
+  EventArtist,
+  EventArtistInput,
+  UpdateEventArtistInput,
+  RTE,
+  track
 ]
 
 export default makeExecutableSchema({

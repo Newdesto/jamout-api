@@ -6,8 +6,12 @@ import release from './release'
 import authentication from './authentication'
 import login from './login'
 import signUp from './signUp'
+import studioEvent from './studioEvent'
 import updateAssistantContext from './updateAssistantContext'
 import sendAssistantMessage from './sendAssistantMessage'
+import createMusicEvent from './musicEvent'
+import eventArtist from './eventArtist'
+
 
 const resolvers = {
   Mutation: merge(
@@ -15,6 +19,9 @@ const resolvers = {
     updateAssistantContext,
     sendAssistantMessage,
     generateS3Signature,
+    studioEvent,
+    createMusicEvent,
+    eventArtist,
     chat,
     release
   )

@@ -34,7 +34,7 @@ const resolvers = {
       text,
       type: 'message.text'
     })
-
+    console.log(next)
     // queue the next job and pass the postback along with it
     const job = await createJob(next, {
       userId,

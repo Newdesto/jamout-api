@@ -1,0 +1,13 @@
+type StudioEvent {
+    id: ID!,
+    createdAt: String,
+    userId: ID!,
+    username: String,
+    studioId: ID!,
+    studio: String,
+    type: String!,
+    startDate: String,
+    endDate: String,
+    sessionId: ID!,
+    preferredDate: String,
+  }

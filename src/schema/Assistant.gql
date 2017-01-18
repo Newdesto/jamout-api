@@ -48,7 +48,6 @@ type AssistantTyping implements AssistantEvent{
 }
 
 
-
 type AssistantRedirect implements AssistantEvent {
   createdAt: String!
   id: ID!
