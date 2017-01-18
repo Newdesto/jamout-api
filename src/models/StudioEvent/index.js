@@ -93,17 +93,6 @@ export default class StudioEvent {
           sessionId: payload.sessionId
         })
         return attrs.attrs
-/*      case 'inquiry accepted':
-        attrs = await studioEventModel.createAsync({
-          userId: user.id, // id the user who made the request
-          studioId: currentEvent.studioId, // id of the studio?
-          studio: currentEvent.studio,
-          startDate: nextEvent.startDate,
-          endDate: nextEvent.endDate,
-          type: 'session planned',
-          sessionId: currentEvent.sessionId,
-        })
-        return attrs.attrs;
       case 'session planned':
         attrs = await studioEventModel.createAsync({
           userId: user.id, // id the user who made the request
@@ -111,10 +100,21 @@ export default class StudioEvent {
           studio: currentEvent.studio,
           startDate: nextEvent.startDate,
           endDate: nextEvent.endDate,
-          type: 'artist paid',
-          sessionId: currentEvent.sessionId,
+          type: 'session planned',
+          sessionId: currentEvent.sessionId
         })
-        return attrs.attrs;*/
+        return attrs.attrs
+      case 'artist paid':
+        attrs = await studioEventModel.createAsync({
+          userId: user.id, // id the user who made the request
+          studioId: currentEvent.studioId, // id of the studio?
+          studio: currentEvent.studio,
+          startDate: nextEvent.startDate,
+          endDate: nextEvent.endDate,
+          type: 'artist paid',
+          sessionId: currentEvent.sessionId
+        })
+        return attrs.attrs
       default:
         return attrs
     }
