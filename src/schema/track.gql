@@ -6,4 +6,5 @@ type Track {
   audioKey: String!,
   type: String!,
   title: String!,
+  playCount: Int,
 }
