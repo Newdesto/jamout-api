@@ -1,5 +1,6 @@
 import studioEventModel from './model'
 import userModel from 'models/User/model'
+import Channel from '../Channel'
 
 export default class StudioEvent {
   async fetchAll() {
@@ -8,7 +9,6 @@ export default class StudioEvent {
       .loadAll()
       .execAsync()
 
-    console.log(Items)
     return this.sortStudioEvents(Items)
   }
 
@@ -51,7 +51,15 @@ export default class StudioEvent {
     const artist = Items[0].attrs
 
     let attrs = null
+
     const preferredDate = new Date(`${payload.date} ${payload.time}`)
+
+    const users = [artist.id, payload.studioId]
+    if (type === 'inquiry accepted') {
+      // create channel
+      const channel = new Channel()
+      await channel.createChannel('d', users)
+    }
 
   // session types: inquiry pending, inquiry denied, inquiry accepted, session planned, artist paid, session completed, review
     switch (type) {
@@ -75,8 +83,17 @@ export default class StudioEvent {
           sessionId: payload.sessionId
         })
         return attrs.attrs
-      /*
-      case 'inquiry accepted':
+      case 'inquiry denied':
+        attrs = await studioEventModel.createAsync({
+          userId: artist.id, // id the user who made the request
+          username: artist.username,
+          studioId: payload.studioId, // id of the studio?
+          studio: payload.studio,
+          type: 'inquiry denied',
+          sessionId: payload.sessionId
+        })
+        return attrs.attrs
+/*      case 'inquiry accepted':
         attrs = await studioEventModel.createAsync({
           userId: user.id, // id the user who made the request
           studioId: currentEvent.studioId, // id of the studio?
@@ -86,7 +103,6 @@ export default class StudioEvent {
           type: 'session planned',
           sessionId: currentEvent.sessionId,
         })
-      /*
         return attrs.attrs;
       case 'session planned':
         attrs = await studioEventModel.createAsync({

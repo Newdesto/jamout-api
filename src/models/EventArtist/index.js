@@ -1,4 +1,5 @@
 import eventArtistModel from './model'
+import Channel from '../Channel'
 
 export default class EventArtist {
 
@@ -58,6 +59,12 @@ export default class EventArtist {
         id: eventArtist.id,
         status: response
       })
+    const users = [eventArtist.userId, eventArtist.partnerId]
+
+    if (response === 'accepted') {
+      const channel = new Channel()
+      await channel.createChannel('d', users)
+    }
 
     return attrs
   }
