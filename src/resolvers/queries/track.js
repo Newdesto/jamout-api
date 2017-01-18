@@ -5,6 +5,7 @@ export default {
     }
     if (userId) {
       const tracks = await Track.fetchByUserId(userId)
+      console.log(tracks)
       return tracks
     }
     const tracks = Track.fetchByUserId(user.id)

@@ -2,10 +2,8 @@ type Track {
   createdAt: String!,
   id: ID!,
   userId: ID!,
-  playCount: Int,
-  status: String,
-  artworkKey: String,
-  audioKey: String,
+  artworkKey: String!,
+  audioKey: String!,
   type: String!,
   title: String!,
 }
