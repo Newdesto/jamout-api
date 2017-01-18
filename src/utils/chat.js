@@ -14,27 +14,37 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
 
   return new Promise((resolve, reject) => {
     eachSeries(messages, async (m, cb) => {
-      pubsub.publish(`messages.${channelId}`, {
-        channelId,
-        senderId,
-        id: uuid(),
-        createdAt: new Date().toISOString(),
-        action: 'typing.start'
-      })
-      await Promise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * .25 * 1000)
-      pubsub.publish(`messages.${channelId}`, {
-        channelId,
-        senderId,
-        id: uuid(),
-        createdAt: new Date().toISOString(),
-        action: 'typing.stop'
-      })
-      pubsub.publish(`messages.${channelId}`, {
-        ...m,
-        id: uuid(),
-        createdAt: new Date().toISOString()
-      })
-      cb()
+      // If the message is not a text message publish it and callback.
+      if(!m.text) {
+        pubsub.publish(`messages.${channelId}`, {
+          ...m,
+          id: uuid(),
+          createdAt: new Date().toISOString()
+        })
+        cb()
+      } else {
+        pubsub.publish(`messages.${channelId}`, {
+          channelId,
+          senderId,
+          id: uuid(),
+          createdAt: new Date().toISOString(),
+          action: 'typing.start'
+        })
+        await Promise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * .25 * 1000)
+        pubsub.publish(`messages.${channelId}`, {
+          channelId,
+          senderId,
+          id: uuid(),
+          createdAt: new Date().toISOString(),
+          action: 'typing.stop'
+        })
+        pubsub.publish(`messages.${channelId}`, {
+          ...m,
+          id: uuid(),
+          createdAt: new Date().toISOString()
+        })
+        cb()
+      }
     }, err => {
       if (err) {
         reject(err)

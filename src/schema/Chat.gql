@@ -51,6 +51,28 @@ type Message {
 type MessageAttachment {
   type: String!
   url: String
+  elements: [MessageAttachmentElement!]
+}
+
+type MessageAttachmentElement {
+  title: String
+  imageKey: String
+  subtitle: String
+  defaultAction: MessageAttachmentElementDefaultAction
+  buttons: [MessageAttachmentElementButton!]
+}
+
+type MessageAttachmentElementDefaultAction {
+  type: String
+  url: String
+  text: String
+}
+
+type MessageAttachmentElementButton {
+  type: String
+  url: String
+  text: String
+  title: String
 }
 
 input MessageInput {
@@ -69,6 +91,8 @@ input MessageAttachmentInput {
   key: String
   bucket: String
 }
+
+
 
 # Messages are sent inside a wrapped Input GQL type. We use an Input wrapper
 # because the chat UI on the client side may be something other than a textbox,

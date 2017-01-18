@@ -20,7 +20,7 @@ export const welcomeButtonHandler = async function welcomeButtonHandler({ userId
 
   // Query API.ai without any additional contexts.
   const apiaiResponse = await eventRequest({
-    name: 'onboarding/welcomeAndReady'
+    name: 'onboarding/todos'
   }, {
     contexts: [
       { name: 'authenticated' }

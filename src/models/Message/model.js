@@ -25,9 +25,31 @@ const Message = vogels.define('Message', {
     action: Joi.string(), // typing.start, typing.stop, mark.read
     text: Joi.string(), // Message text
     attachment: Joi.object().keys({
-      type: Joi.string().valid(['image']),
+      type: Joi.string().valid(['image', 'card']),
+      subtype: Joi.string(),
+      // image type metadata
       key: Joi.string(),
-      bucket: Joi.string()
+      bucket: Joi.string(),
+      // card type metadata
+      elements: Joi.array().items(Joi.object().keys({
+        title: Joi.string(),
+        imageKey: Joi.string(),
+        subtitle: Joi.string(),
+        // action when the whole card is clicked
+        defaultAction: Joi.object().keys({
+          type: Joi.string().valid(['routerRedirect', 'redirect', 'message']),
+          url: Joi.string(),
+          text: Joi.string()
+        }),
+        buttons: Joi.array().items(Joi.object().keys({
+          // If action + metadata isn't defined the action defaults to the
+          // default action above.
+          type: Joi.string().valid(['routerRedirect', 'redirect', 'message']),
+          url: Joi.string(),
+          text: Joi.string(),
+          title: Joi.string()
+        }))
+      }))
     })
   },
   indexes: [{
