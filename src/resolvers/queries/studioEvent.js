@@ -4,7 +4,7 @@ export default {
       throw new Error('Authentication failed.')
     }
 
-    if (user.roles.includes('partner:srudio')) {
+    if (user.roles.includes('partner:studio')) {
       return StudioEvent.fetchAll()
     }
 
