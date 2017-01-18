@@ -8,14 +8,17 @@ export default class Release {
   async fetchAll() {
     const { Items } = await releaseModel
       .scan()
-      .loadAll()
+      .where('status').notNull()
+      .where('type').notNull()
+      .where('tracklist').notNull()
       .execAsync()
+
+    return Items.map(r => r.attrs)
   }
   // @TODO index the userId
   // scans are costly
   async fetchByUserId(userId) {
-    if(!userId)
-      throw new Error('User ID is undefined.')
+    if (!userId) { throw new Error('User ID is undefined.') }
     const { Items } = await releaseModel
       .scan()
       .where('userId').equals(userId)
@@ -28,8 +31,9 @@ export default class Release {
       .getAsync(id)
 
     // @NOTE: quickfix so we can send a null
-    if(!Item)
+    if (!Item) {
       return null
+    }
     return Item.attrs
   }
   async create(input) {
@@ -39,7 +43,7 @@ export default class Release {
         .createAsync(input)
       console.log(attrs)
       return attrs
-    } catch(e) {
+    } catch (e) {
       console.error(e)
     }
   }
@@ -50,7 +54,7 @@ export default class Release {
       const { attrs } = await releaseModel
         .updateAsync(Object.assign(input, { id }))
       return attrs
-    } catch(e) {
+    } catch (e) {
       console.error(e)
       throw e
     }
@@ -59,13 +63,14 @@ export default class Release {
     try {
       const params = {}
       params.ConditionExpression = '#userId = :userId'
-      params.ExpressionAttributeNames = {'#userId' : 'userId'}
-      params.ExpressionAttributeValues = {':userId' : userId}
+      params.ExpressionAttributeNames = { '#userId': 'userId' }
+      params.ExpressionAttributeValues = { ':userId': userId }
       await releaseModel.destroyAsync(id, params)
       return id
-    } catch(e) {
-      if(e.code === 'ConditionalCheckFailedException')
+    } catch (e) {
+      if (e.code === 'ConditionalCheckFailedException') {
         throw new Error('Authorization failed.')
+      }
       console.error(e)
       throw e
     }
