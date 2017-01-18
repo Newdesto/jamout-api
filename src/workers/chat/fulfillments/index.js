@@ -7,6 +7,7 @@ import delay from 'lodash/delay'
 import uuid from 'uuid'
 import { publishMessages } from 'utils/chat'
 import onboarding from './onboarding'
+import { publishMessages, publishInput } from 'utils/chat'
 
 const actionFunctions = {
   ...onboarding
@@ -47,7 +48,7 @@ const fulfill = async function fulfill(input, result) {
     })))
 
     // Publish the messages to the channel's pubsub channel
-    await publishMessages(channelId, 'assistant', messages)
+    await publishMessages(input.channelId, 'assistant', messages)
     return
   }
 

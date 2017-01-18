@@ -23,8 +23,34 @@ const Message = vogels.define('Message', {
     // attribute would only be validated in an input type resolver as a real
     // time event.
     action: Joi.string(), // typing.start, typing.stop, mark.read
-    text: Joi.string() // Message text
-    // @TODO attachments for images, cards, etc.
+    text: Joi.string(), // Message text
+    attachment: Joi.object().keys({
+      type: Joi.string().valid(['image', 'card']),
+      subtype: Joi.string(),
+      // image type metadata
+      key: Joi.string(),
+      bucket: Joi.string(),
+      // card type metadata
+      elements: Joi.array().items(Joi.object().keys({
+        title: Joi.string(),
+        imageKey: Joi.string(),
+        subtitle: Joi.string(),
+        // action when the whole card is clicked
+        defaultAction: Joi.object().keys({
+          type: Joi.string().valid(['routerRedirect', 'redirect', 'message']),
+          url: Joi.string(),
+          text: Joi.string()
+        }),
+        buttons: Joi.array().items(Joi.object().keys({
+          // If action + metadata isn't defined the action defaults to the
+          // default action above.
+          type: Joi.string().valid(['routerRedirect', 'redirect', 'message']),
+          url: Joi.string(),
+          text: Joi.string(),
+          title: Joi.string()
+        }))
+      }))
+    })
   },
   indexes: [{
     hashKey: 'channelId', rangeKey: 'createdAt', name: 'channelId-createdAt-index', type: 'global'
