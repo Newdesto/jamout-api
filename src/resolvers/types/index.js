@@ -13,6 +13,7 @@ import AssistantTyping from './AssistantTyping'
 import StudioEvent from './StudioEvent'
 import StudioEventInput from './StudioEventInput'
 import MusicEvent from './MusicEvent'
+import Connection from './Connection'
 
 export default {
   Channel,
@@ -25,5 +26,6 @@ export default {
   StudioEvent,
   StudioEventInput,
   AssistantTyping,
-  MusicEvent
+  MusicEvent,
+  Connection
 }

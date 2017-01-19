@@ -9,4 +9,5 @@ type Profile {
   location: String,
   avatarKey: String,
   avatarUrl: String
+  connections: [Connection!]
 }
