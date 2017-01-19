@@ -1,6 +1,5 @@
 type Track {
-  createdAt: String!,
-  id: ID!,
+ar  id: ID!,
   userId: ID!,
   artworkKey: String,
   audioKey: String!,
