@@ -3,7 +3,7 @@ export default {
     if (!user) {
       throw new Error('Authentication failed.')
     }
-    if (user.roles.includes('partner:distribution')) {
+    if (user.roles && user.roles.includes('partner:distribution')) {
       return Release.fetchAll()
     }
     return Release.fetchByUserId(user.id)
