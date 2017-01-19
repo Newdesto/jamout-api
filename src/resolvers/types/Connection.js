@@ -1,5 +1,5 @@
 const resolvers = {
-  type({ status }) {
+  status({ status }) {
     return {
       confirmed: 'CONFIRMED',
       action: 'ACTION',
