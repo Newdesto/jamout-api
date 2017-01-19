@@ -2,7 +2,7 @@ type Track {
   createdAt: String!,
   id: ID!,
   userId: ID!,
-  artworkKey: String!,
+  artworkKey: String,
   audioKey: String!,
   type: String!,
   title: String!,
