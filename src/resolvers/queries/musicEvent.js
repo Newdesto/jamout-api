@@ -4,7 +4,7 @@ export default {
       throw new Error('Authentication failed.')
     }
 
-    if (user.roles.includes('partner:events')) {
+    if (user.roles && user.roles.includes('partner:events')) {
       return MusicEvent.fetchByPartnerId(user.id)
     }
 
