@@ -1,7 +1,22 @@
-export queue from './queue'
-export vogels from './vogels'
-export app from './app'
-export logger from './logger'
-export pubsub from './pubsub'
-export redis from './redis'
-//export apiai from './apiai'
+/**
+ * Exports IO modules for clean importing.
+ */
+import queue from './queue'
+import vogels from './vogels'
+import app from './app'
+import logger from './logger'
+import pubsub from './pubsub'
+import redis from './redis'
+import apiai from './apiai'
+import subscription from './subscription'
+
+export {
+  queue,
+  vogels,
+  app,
+  logger,
+  pubsub,
+  redis,
+  apiai,
+  subscription
+}
