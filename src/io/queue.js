@@ -8,7 +8,10 @@ import redis from 'redis'
 // https://github.com/Automattic/kue#redis-connection-settings
 const queue = kue.createQueue({
   redis: {
-     createClientFactory: () => redis.createClient() // @TODO production connection
+    createClientFactory: () => redis.createClient({
+      host: process.env.REDIS_HOST,
+      port: process.env.REDIS_PORT
+    }) // @TODO production connection
   }
 })
 
@@ -17,11 +20,11 @@ const queue = kue.createQueue({
 export const createJob = (name, data, delay) => new Promise((resolve, reject) => {
   const job = queue.create(name, data)
 
-  if(delay)
+  if (delay)
     job.delay(delay)
 
   return job.save(error => {
-    if(error)
+    if (error)
       reject(error)
     resolve(job)
   })
