@@ -3,7 +3,7 @@ export default {
     if (!user) {
       throw new Error('Authentication failed.')
     }
-    if (user.roles.includes('partner:eventss')) {
+    if (user.roles && user.roles && user.roles.includes('partner:events')) {
       return EventArtist.fetchByPartnerId(user)
     }
     if (eventId) {
