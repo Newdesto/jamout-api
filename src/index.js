@@ -1,9 +1,14 @@
 import 'app-module-path/register'
-import { app, logger, subscriptionServer, ioReadyPromise } from './io'
+import { app, logger, ioReadyPromise } from './io'
 import { jwt, graphql, graphiql } from './middleware'
+import { SubscriptionServer } from 'subscriptions-transport-ws'
+import { onSubscribe, subscriptionManager } from 'io/subscription'
+import http from 'http'
 import 'workers'
 
 logger.info('Starting Jamout API, woohoo!')
+
+const httpServer = http.createServer()
 
 // jwt authentication
 logger.info('Mounting JWT authentication.')
@@ -20,8 +25,9 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // setup the ws subscription server
-logger.info('Binding web socket server to port 3005.')
-subscriptionServer(app)
+logger.info('Binding web socket server to http server.')
+const subscriptionServer = new SubscriptionServer({ subscriptionManager, onSubscribe }, httpServer)
 
-logger.info('Binding HTTP server to port 3000.')
-app.listen(3000, () => logger.info('HTTP Server listening on port 3000.'))
+logger.info('Binding express app to http server.')
+httpServer.on('request', app)
+httpServer.listen(3000, () => logger.info('HTTP Server listening on port 3000.'))

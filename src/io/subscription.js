@@ -12,7 +12,7 @@ import User from 'models/User/model'
 import { restoreInput } from 'utils/chat'
 let server;
 
-const subscriptionManager = new SubscriptionManager({
+export const subscriptionManager = new SubscriptionManager({
   schema,
   pubsub,
   setupFunctions
@@ -20,7 +20,7 @@ const subscriptionManager = new SubscriptionManager({
 
 // Sets context for the gql request
 // @NOTE See the Subscription schema for user context info
-const onSubscribe = async (msg, params, req) => {
+export const onSubscribe = async (msg, params, req) => {
   // Triggers onboarding when an assistant sub starts
   if(msg.type === 'subscription_start' && msg.variables.assistantChannelId) {
     // Verify the JWT
@@ -39,23 +39,4 @@ const onSubscribe = async (msg, params, req) => {
     ...params,
     context: setupSubscriptionContext()
   }
-}
-
-const websocketServer = createServer((request, response) => {
-  response.writeHead(404);
-  response.end();
-});
-
-websocketServer.listen(3005, () => logger.info(
-  `Websocket Server listening on port 3005.`
-))
-
-export default httpServer => {
-  if(server)
-    return
-
-  new SubscriptionServer({
-    subscriptionManager,
-    onSubscribe
-  }, websocketServer)
 }
