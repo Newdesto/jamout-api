@@ -1,0 +1,12 @@
+type Connection {
+  id: ID!
+  userId: ID!
+  friendId: ID!
+  status: ConnectionStatus!
+}
+
+enum ConnectionStatus {
+  CONFIRMED
+  PENDING
+  ACTION
+}
