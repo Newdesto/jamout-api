@@ -7,9 +7,6 @@ import { resolver as messageResolver } from './Message'
 import MessageAttachment from './MessageAttachment'
 import { resolver as profileResolver } from './Profile'
 import { resolver as releaseResolver } from './Release'
-import AssistantEvent from './AssistantEvent'
-import AssistantMessage from './AssistantMessage'
-import AssistantTyping from './AssistantTyping'
 import StudioEvent from './StudioEvent'
 import StudioEventInput from './StudioEventInput'
 import MusicEvent from './MusicEvent'
@@ -21,11 +18,8 @@ export default {
   MessageAttachment,
   Profile: profileResolver,
   Release: releaseResolver,
-  AssistantEvent,
-  AssistantMessage,
   StudioEvent,
   StudioEventInput,
-  AssistantTyping,
   MusicEvent,
   Connection
 }

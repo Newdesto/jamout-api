@@ -4,7 +4,6 @@ import messages from './messages'
 import release from './release'
 import releases from './releases'
 import studioEvent from './studioEvent'
-import assistantMessages from './assistantMessages'
 import musicEvent from './musicEvent'
 import eventArtist from './eventArtist'
 import me from './me'
@@ -14,7 +13,6 @@ import track from './track'
 const resolvers = {
   Query: merge(
     me,
-    assistantMessages,
     channels,
     messages,
     release,

@@ -7,8 +7,6 @@ type Mutation {
   # Chat
   openChannel(type: ChannelType!, users: [ID!]!): Channel
   sendInput(input: ChatInput!): Message # Most inputs should persist a message....
-  updateAssistantContext(input: AssistantContextInput!): Boolean # null or true = success
-  sendAssistantMessage(anonId: ID, input: AssistantMessageInput!): AssistantMessage!
   # Distribution
   createRelease(input: ReleaseInput!): Release
   createStudioEvent(type: String, nextEvent: StudioEventInput): StudioEvent

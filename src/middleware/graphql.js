@@ -3,7 +3,6 @@ import schema from 'schema'
 import Channel from 'models/Channel'
 import Message from 'models/Message'
 import Release from 'models/Release'
-import AssistantMessage from 'models/AssistantMessage'
 import User, { UserLoader } from 'models/User'
 import Profile, { ProfileLoader } from 'models/Profile'
 import StudioEvent from 'models/StudioEvent'
@@ -27,8 +26,7 @@ export const setupSubscriptionContext = () =>
       createJob,
       Channel: new Channel(),
       Message: new Message(),
-      Release: new Release(),
-      AssistantMessage: new AssistantMessage()
+      Release: new Release()
     })
 
 export default graphqlExpress((req) => {
@@ -48,7 +46,6 @@ export default graphqlExpress((req) => {
       Message: new Message(),
       Release: new Release(),
       StudioEvent: new StudioEvent(),
-      AssistantMessage: new AssistantMessage(),
       MusicEvent: new MusicEvent(),
       EventArtist: new EventArtist(),
       Track: new Track()

@@ -1,4 +1,4 @@
-import { merge } from 'lodash'
+import merge from 'lodash/merge'
 import { makeExecutableSchema } from 'graphql-tools'
 import queryResolvers from 'resolvers/queries'
 import mutationResolvers from 'resolvers/mutations'
@@ -20,14 +20,11 @@ import ReleaseTrack from './ReleaseTrack.gql'
 import ReleaseType from './ReleaseType.gql'
 import StudioEvent from './StudioEvent.gql'
 import StudioEventInput from './StudioEventInput.gql'
-import Assistant from './Assistant.gql'
-import Postback from './Postback.gql'
 import MusicEvent from './MusicEvent.gql'
 import MusicEventInput from './MusicEventInput.gql'
 import EventArtist from './EventArtist.gql'
 import EventArtistInput from './EventArtistInput.gql'
 import UpdateEventArtistInput from './UpdateEventArtistInput.gql'
-import RTE from './RTE.gql'
 import track from './track.gql'
 import Connection from './Connection.gql'
 
@@ -38,8 +35,6 @@ const typeDefs = [
   Mutation,
   Query,
   Subscription,
-  Assistant,
-  Postback,
   Chat,
   Profile,
   Release,
@@ -55,7 +50,6 @@ const typeDefs = [
   EventArtist,
   EventArtistInput,
   UpdateEventArtistInput,
-  RTE,
   track,
   Connection
 ]

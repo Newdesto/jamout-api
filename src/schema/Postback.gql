@@ -1,6 +1,0 @@
-input PostbackInput {
-  dialog: String
-  next: String
-  text: String
-  input: JSON
-}

@@ -4,10 +4,6 @@ type Subscription {
   # is to pass in the JWT as an argument, decode it within the resolver, init
   # any connectors that require a decoded JWT and move on.
 
-
-  # Subs current users to events emitted by assistant
-  # Publishes messages, ui updates, redirects, typing indicator, etc
-  assistant(jwt: String!): AssistantEvent!
   # Trusting an anonymous ID argument poses a security risk.
   # If you get a hold of an anonymous ID you can pass it to the GQL server
   # and receive the messages related to it. A possible solution is to generate
