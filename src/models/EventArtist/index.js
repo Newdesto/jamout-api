@@ -43,7 +43,7 @@ export default class EventArtist {
 
     const { Items } = await eventArtistModel
       .scan()
-      .where('partnerId').equals(user.id)
+      .where('userId').equals(user.id)
       .execAsync()
 
     const events = Items.map(e => e.attrs)
