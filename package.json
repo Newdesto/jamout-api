@@ -7,7 +7,7 @@
     "dev": "BABEL_DISABLE_CACHE=1 nodemon --inspect ./src/index.babel.js",
     "clean": "rm -rf build && mkdir build",
     "build": "babel -d ./build ./src",
-    "prod": "NODE_ENV=production DEBUG=* pm2 start --no-daemon ./index.js",
+    "prod": "NODE_ENV=production pm2-docker ./index.js",
     "test": "NODE_ENV=test nyc ava -v",
     "watch:test": "NODE_ENV=test ava -w -v"
   },
