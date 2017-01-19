@@ -14,7 +14,7 @@ logger.info('Mounting GraphQL endpoint to /graphql.')
 app.use('/graphql', graphql)
 
 // graphiql
-if(process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   logger.info('Mounting GraphiQL endpoint to /graphiql.')
   app.use('/graphiql', graphiql)
 }

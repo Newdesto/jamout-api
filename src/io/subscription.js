@@ -1,7 +1,6 @@
 import { PubSub, SubscriptionManager } from 'graphql-subscriptions'
 import { SubscriptionServer } from 'subscriptions-transport-ws'
 import schema from 'schema'
-import pubsub from './pubsub'
 import { setupFunctions } from 'resolvers/subscriptions'
 import logger from './logger'
 import { createServer } from 'http'
@@ -14,7 +13,7 @@ let server;
 
 const subscriptionManager = new SubscriptionManager({
   schema,
-  pubsub,
+  pubsub: new PubSub(),
   setupFunctions
 })
 
