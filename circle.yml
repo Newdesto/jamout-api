@@ -35,7 +35,7 @@ dependencies:
 test:
   override:
     - yarn test
-    - NODE_ENV=production pm2 start ./build/index.js
+    - NODE_ENV=production pm2 start ./build/index.js --no-daemon
     - curl --retry 10 --retry-delay 5 -v http://localhost:3000/check
 
 # we will always overwrite the production tag with the latest image build
