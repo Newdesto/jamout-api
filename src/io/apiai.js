@@ -15,9 +15,8 @@ import request from 'request'
  */
 export const textRequest = function textRequest(text, options) {
   return new Promise((resolve, reject) => {
-    request({
+    request.post({
       url: 'https://api.api.ai/v1/query?v=20150910',
-      method: 'POST',
       headers: {
         Authorization: 'Bearer 44b5077dd1fb4b9e9672965a99cbc353',
         'Content-Type': 'application/json'
@@ -54,9 +53,8 @@ export const textRequest = function textRequest(text, options) {
  */
 export const eventRequest = function eventRequest(event, options) {
   return new Promise((resolve, reject) => {
-    request({
+    request.post({
       url: 'https://api.api.ai/v1/query?v=20150910',
-      method: 'POST',
       headers: {
         Authorization: 'Bearer 44b5077dd1fb4b9e9672965a99cbc353',
         'Content-Type': 'application/json'

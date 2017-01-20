@@ -99,7 +99,8 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0",
-    "nyc": "^10.0.0"
+    "nyc": "^10.0.0",
+    "sinon": "^1.17.7"
   },
   "dependencies": {
     "apiai": "^3.0.3",
