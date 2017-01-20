@@ -29,48 +29,62 @@ const welcome = async function welcome({ userId, channelId }, result, messages) 
           title: 'Go to your profile'
         }]
       }, {
-        title: 'Your catalogue',
-        subtitle: 'Store all your work in the cloud. Upload everything from samples to finished tracks.',
+        title: 'Checkout upcoming events',
+        subtitle: 'Join us at a networking event or be considered for a partner event.',
         defaultAction: {
           type: 'routerRedirect',
-          url: '/me/discography'
+          url: '/services/events'
         },
         buttons: [{
-          title: 'Go to your catalogue'
-        }]
-      }, {
-        title: 'Studio sessions',
-        subtitle: 'Schedule a studio session with one of our partnered studios at a discounted rate.',
-        defaultAction: {
-          type: 'message',
-          text: 'I want schedule a studio session.'
-        },
-        buttons: [{
-          title: 'Start an inquiry'
-        }]
-      }, {
-        title: 'Discover',
-        subtitle: 'Discover the music of other Jamout artists. Connect and chat with them.',
-        defaultAction: {
-          type: 'routerRedirect',
-          url: '/discover'
-        },
-        buttons: [{
-          title: 'View other artists'
-        }]
-      }, {
-        title: 'Digital Distribution',
-        subtitle: 'Distribute your new release to over 150 platforms.',
-        defaultAction: {
-          type: 'message',
-          url: 'I want to distribute a new release.'
-        },
-        buttons: [{
-          title: 'Distribute a release'
+          title: 'Go to events'
         }]
       }]
     }
   }
+
+  /**
+   * {
+     title: 'Your catalogue',
+     subtitle: 'Store all your work in the cloud. Upload everything from samples to finished tracks.',
+     defaultAction: {
+       type: 'routerRedirect',
+       url: '/me/discography'
+     },
+     buttons: [{
+       title: 'Go to your catalogue'
+     }]
+   }, {
+     title: 'Studio sessions',
+     subtitle: 'Schedule a studio session with one of our partnered studios at a discounted rate.',
+     defaultAction: {
+       type: 'message',
+       text: 'I want schedule a studio session.'
+     },
+     buttons: [{
+       title: 'Start an inquiry'
+     }]
+   }, {
+     title: 'Discover',
+     subtitle: 'Discover the music of other Jamout artists. Connect and chat with them.',
+     defaultAction: {
+       type: 'routerRedirect',
+       url: '/discover'
+     },
+     buttons: [{
+       title: 'View other artists'
+     }]
+   }, {
+     title: 'Digital Distribution',
+     subtitle: 'Distribute your new release to over 150 platforms.',
+     defaultAction: {
+       type: 'message',
+       url: 'I want to distribute a new release.'
+     },
+     buttons: [{
+       title: 'Distribute a release'
+     }]
+   }
+   */
 
   // Merge the todos message into the API.ai defined messages.
   messages.push(todos)
