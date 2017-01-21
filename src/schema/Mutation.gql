@@ -18,4 +18,5 @@ type Mutation {
   updateEventArtist(eventArtist: UpdateEventArtistInput!, response: String!): EventArtist!
   editTrack(trackId: ID!, updatedTrack: updatedTrack): Track!
   createTrack(title: String!, isPublic: Boolean!): Track!
+  deleteTrack(trackId: ID!): String!
 }

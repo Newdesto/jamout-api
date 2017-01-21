@@ -70,5 +70,14 @@ export default class track {
     return attrs
   }
 
+  async deleteTrack(user, trackId) {
+    if (!user) { throw new Error('User ID is undefined.') }
+    try {
+      await trackModel.destroyAsync(trackId, { expected: { userId: user.id } })
+      return 'Deleted'
+    } catch (e) {
+      return 'Failed'
+    }
+  }
 
 }

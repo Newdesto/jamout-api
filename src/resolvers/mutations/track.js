@@ -13,5 +13,14 @@ export default {
     }
 
     return Track.createTrack(user, title, isPublic)
+  },
+
+  deleteTrack(root, { trackId }, { user, Track }) {
+    if (!user) {
+      throw new Error('Authentication failed.')
+    }
+
+    return Track.deleteTrack(user, trackId)
   }
+
 }
