@@ -15,25 +15,73 @@ export default class Chat {
     this.userId = userId
   }
   /**
-   * Creates a new channel using the channel type and an array of users. Checks
-   * to see if a channel already exists for the set of users. If so, it returns
-   * it.
+   * Sorts an array of user IDs and creates a unique SHA1 hash.
    */
-  async createChannel({ type, users, name }) {
-    // Sort the users array and hash that shit.
+  sortUsersAndHash({ users }) {
+    if(!users || !Array.isArray(users)) {
+      throw new Error('Invalid argument: users.')
+    }
+
     const sortedUsers = users.sort()
     const usersHash = crypto.createHash('sha1').update(JSON.stringify(sortedUsers)).digest('hex')
 
-    // Query the usersHash index for any existing conversations
+    return {
+      usersHash,
+      users: sortedUsers
+    }
+  }
+  /**
+   * Returns the channel of a user hash if it exists, and returns false
+   * if it doesn't.
+   */
+  async channelExistsByHash({ usersHash }) {
+    if(!usersHash) {
+      throw new Error('The argument userHash is undefined.')
+    }
+
     const { Items } = await Channel
       .query(usersHash)
       .usingIndex('usersHash-index')
       .execAsync()
 
     if(Items.length !== 0) {
-      // Return the existing channel, there should never be more than one so
-      // the first element should do.
       return Items[0].attrs
+    }
+
+    return false
+  }
+  /**
+   * Creates subscriptions to a single channel for a set of users.
+   */
+  async createSubscriptions({ users, channelId }) {
+    if(!Array.isArray(users) || !channelId) {
+      throw new Error('Invalid arguments to create channel subscriptions.')
+    }
+
+    const subscriptions = await Promise.all(
+      users.map(userId => Subscription.createAsync({
+        userId,
+        channelId: channel.id
+      }))
+    )
+  }
+  /**
+   * Creates a new channel using the channel type and an array of users. Checks
+   * to see if a channel already exists for the set of users. If so, it returns
+   * it.
+   */
+  async createChannel({ type, users, name }) {
+    // Sort the users array and hash that shit.
+    const sorted = this.sortUsersAndHash({ users })
+
+    // Check if a channel already exists for this user set.
+    const existingChannel = await this.channelExistsByHash({
+      usersHash: sorted.usersHash
+    })
+
+    // Return the existing channel, dude.
+    if (existingChannel) {
+      return existingChannel
     }
 
     // No channels exist so let's create one.
@@ -47,12 +95,10 @@ export default class Chat {
     })
 
     // Let's create a subscription for each user in the set.
-    const subscriptions = await Promise.all(
-      users.map(userId => Subscription.createAsync({
-        userId,
-        channelId: channel.id
-      }))
-    )
+    const subscriptions = await this.createSubscriptions({
+      users: sorted.users,
+      channelId: channel.id
+    })
 
     // Return the channel and subscription for the user.
     return {
