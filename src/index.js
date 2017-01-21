@@ -5,6 +5,8 @@ import { SubscriptionServer } from 'subscriptions-transport-ws'
 import { onSubscribe, subscriptionManager } from 'io/subscription'
 import http from 'http'
 import 'workers'
+import microtime from 'microtime'
+logger.info(microtime.nowDouble())
 
 logger.info('Starting Jamout API, woohoo!')
 
