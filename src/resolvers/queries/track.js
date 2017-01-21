@@ -7,7 +7,7 @@ export default {
       const tracks = await Track.fetchByUserId(userId)
       return tracks
     }
-    const tracks = Track.fetchByUserId(user.id)
+    const tracks = Track.fetchMyTracks(user.id)
     return tracks
   }
 }
