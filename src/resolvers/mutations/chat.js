@@ -3,19 +3,30 @@
  */
 
 export default {
-  openChannel(root, args, { user, Channel }) {
+  openChannel(root, args, { user, Chat }) {
     if (!user) {
       throw new Error('Authentication failed.')
     }
 
-    // ChannelType Enum
+    // Get the ENUM values.
     const type = {
       DM: 'd',
       GROUP: 'g',
       ASSISTANT: 'a'
     }[args.type]
 
-    return Channel.createChannel(type, args.users)
+    // Do some name validation.
+    if (type === 'a') {
+      args.name = 'assistant'
+    } else if (type === 'd') {
+      delete args.name
+    }
+
+    return Chat.createChannel({
+      type,
+      name: args.name,
+      users: args.users
+    })
   },
   async sendInput(root, { input }, { user, createJob, logger, pubsub, Message }) {
     // @TODO Create a base resolver to handle try/catch and error handling.
