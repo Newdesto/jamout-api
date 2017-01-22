@@ -124,7 +124,7 @@ export default class Chat {
       if (!subscription) {
         throw new Error('Authorization failed.')
       }
-      console.log(subscription)
+
       // Throws an error if something fails.
       const { attrs } = await Message.createAsync({
         ...input.message,
@@ -159,6 +159,23 @@ export default class Chat {
     const job = await createJob('chat.postback', postback)
   }
   /**
+   * Get's a channel by its ID.
+   */
+  async getChannelById({ channelId }) {
+    // Check if the user is subscribed to this channel.
+    const subscription = await Subscription.getAsync({ userId: this.userId, channelId })
+    if (!subscription) {
+      throw new Error('Authorization failed.')
+    }
+
+    const channel = await Channel.getAsync({ id: channelId })
+    if (!channel) {
+      throw new Error('Invalid channel.')
+    }
+
+    return channel.attrs
+  }
+  /**
    * Gets a user's channels.
    */
   async getChannels() {
@@ -177,7 +194,6 @@ export default class Chat {
   async getMessagesByChannelId({ channelId, limit }) {
     const { Items } = await Message
       .query(channelId)
-      .usingIndex('channelId-createdAt-index')
       .limit(limit)
       .descending()
       .execAsync()

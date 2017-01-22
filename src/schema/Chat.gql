@@ -44,7 +44,6 @@ type Message {
   timestamp: String!
   # ID of the channel it was sent in.
   channelId: ID!
-  channel: Channel!
   # ID of the user who sent the message.
   # 'assistant' if the bot is a sender.
   senderId: ID!

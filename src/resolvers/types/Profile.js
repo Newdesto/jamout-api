@@ -17,6 +17,16 @@ const Profile = `
 `
 
 export const resolver = {
+  async assistantChannel(profile, args, { user, Chat }) {
+    if (!user) {
+      throw new Error('Authentication failed.')
+    }
+    if (profile.userId !== user.id) {
+      return null
+    }
+    const channel = await Chat.getAssistantChannel()
+    return channel
+  },
   avatarUrl(profile, args, context) {
     const params = { Bucket: 'jamout-profile', Key: `${profile.userId}/avatar.png` }
     const url = s3.getSignedUrl('getObject', params)

@@ -10,4 +10,5 @@ type Profile {
   avatarKey: String,
   avatarUrl: String
   connections: [Connection!]
+  assistantChannel: Channel
 }

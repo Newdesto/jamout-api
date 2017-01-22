@@ -6,7 +6,7 @@ const resolvers = {
       g: 'GROUP'
     }[type]
   },
-  async lastMessage(channel, args, { Message }) {
+  async lastMessage(channel, args, { Chat }) {
     const lastMessage = await Chat.getMessagesByChannelId({
       channelId: channel.id,
       limit: 1
@@ -18,9 +18,11 @@ const resolvers = {
       channelId: channel.id,
       limit: args.messageLimit
     })
+
+    return messages
   },
   users(channel, args, { Profile }) {
-    return Profile.fetchByIds(users)
+    return Profile.fetchByIds(channel.users)
   }
 }
 

@@ -61,10 +61,7 @@ const Message = vogels.define('Message', {
         }))
       }))
     })
-  },
-  indexes: [{
-    hashKey: 'channelId', rangeKey: 'createdAt', name: 'channelId-createdAt-index', type: 'global'
-  }]
+  }
 })
 
 export default Message
