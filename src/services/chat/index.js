@@ -4,6 +4,8 @@ import Subscription from './Subscription'
 import crypto from 'crypto'
 import R from 'ramda'
 import shortid from 'shortid'
+import pubsub from 'io/pubsub'
+import { createJob } from 'io/queue'
 
 /**
  * The chat service which is injected into the context of GQL queries. It's
@@ -64,6 +66,8 @@ export default class Chat {
         userId: this.userId
       }))
     )
+
+    return subscriptions
   }
   /**
    * Creates a new channel using the channel type and an array of users. Checks
@@ -106,16 +110,85 @@ export default class Chat {
       ...channel
     }
   }
-  sendMessage() {
+  /**
+   * Process an input object. Generally this will be a Textbox but in some cases
+   * it could be some other component. See the Input type in the GQL schema.
+   * Returns the persisted message.
+   */
+  async sendInput({ input }) {
+    // Persist the message in DDB.
+    if (input.message) {
+      // Check if the user is subscribed to this channel.
+      const subscription = await subscriptionModel.getAsync({ userId: input.senderId, channelId: input.channelId })
+      if (!subscription) {
+        throw new Error('Authorization failed.')
+      }
 
+      // Throws an error if something fails.
+      const { attrs } = await messageModel.createAsync(input)
+
+      // Anti-immutability = bad but oh well
+      input.message = attrs
+    }
+
+    if(!input.bypassQueue) {
+      // Create a job to process the text. This is generally used
+      // in assistant channels.
+      const job = await createJob('chat.input', input)
+    } else {
+      // If we're skipping the job just publish the message in the pubsub.
+      // This is generally used in DMs or Groups.
+      pubsub.publish(`messages.${message.channelId}`, message)
+    }
+
+    return input.message
   }
-  getChannels() {
-
+  /**
+   * Processes a postback object. A postback object is sent from a message
+   * attachment (this is different than an input). The postback object will
+   * look similar to an input. This method queues a job to process postbacks
+   * and nothing more. We could register function for a more immediate
+   * execution, but that's lame.
+   */
+  async postback({ postback }) {
+    const job = await createJob('chat.postback', postback)
   }
-  getMessages() {
+  /**
+   * Gets a user's channels.
+   */
+  async getChannels() {
+    const { Items } = await Subscription
+      .query(this.userId)
+      .execAsync()
 
+    // Then get the related channels
+    const channelIds = Items.map(i => i.attrs.channelId)
+    const channels = await Channel.getItemsAsync(channelIds)
+    return channels.map(item => item.attrs)
   }
-  getAssistantChannel() {
+  /**
+   * Gets a channel's messages.
+   */
+  async getMessagesByChannelId({ channelId, limit }) {
+    const { Items } = await Message
+      .query(channelId)
+      .usingIndex('channelId-createdAt-index')
+      .limit(limit)
+      .descending()
+      .execAsync()
 
+    return Items.map(i => i.attrs)
+  }
+  /**
+   * This is just a front function for createChannel aimed specifically at
+   * a user's assistant channel.
+   */
+  async getAssistantChannel() {
+    const channel = await this.createChannel({
+      type: 'a',
+      name: 'assistant',
+      users: [this.userId]
+    })
+    return channel
   }
 }

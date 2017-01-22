@@ -1,5 +1,6 @@
 type Query {
   me: Profile!
+  assistantChannel: Channel!
   channels(excludeAssistant: Boolean, messageLimit: Int): [Channel!]!
   messages(channelId: ID!, limit: Int): [Message!]!
   release(id: ID!): Release
