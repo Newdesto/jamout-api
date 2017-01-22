@@ -7,15 +7,19 @@ const resolvers = {
     }[type]
   },
   async lastMessage(channel, args, { Message }) {
-    const lastMessage = await Message.getMessages(channel.id, 1)
+    const lastMessage = await Chat.getMessagesByChannelId({
+      channelId: channel.id,
+      limit: 1
+    })
     return lastMessage[0]
   },
-  async messages(channel, args, { Message }) {
-    return Message.getMessages(channel.id, args.messageLimit)
+  async messages(channel, args, { Chat }) {
+    const messages =  await Chat.getMessagesByChannelId({
+      channelId: channel.id,
+      limit: args.messageLimit
+    })
   },
   users(channel, args, { Profile }) {
-    // Filter out the assistant user...
-    const users = channel.users.filter(u => u !== 'assistant')
     return Profile.fetchByIds(users)
   }
 }
