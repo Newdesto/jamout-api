@@ -5,5 +5,7 @@ type Track {
   audioKey: String,
   type: String!,
   title: String!,
-  playCount: Int,
+  playCount: Int
+  audioUrl: String,
+  artworkUrl: String,
 }
