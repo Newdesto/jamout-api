@@ -27,21 +27,7 @@ export const subscriptionManager = new SubscriptionManager({
  * This job sends some onboarding messages.
  * @TODO Refactor this because it's booty.
  */
-export const onSubscribe = async (msg, params, req) => {
-  // Triggers onboarding when an assistant sub starts.
-  if(msg.type === 'subscription_start' && msg.variables.assistantChannelId) {
-    // Verify the JWT.
-    const verified = JWT.verify(msg.variables.jwt, process.env.JWT_SECRET)
-    // The JWT can be outdated so check out the DB.
-    const { attrs:user } = await User.getAsync(verified.id)
-    if(!user.didOnboard) {
-      const job = await createJob('chat.event', {
-        userId: user.id,
-        channelId: msg.variables.assistantChannelId,
-        event: 'onboarding/welcome'
-      }, 5000)
-    }
-  }
+export const onSubscribe = (msg, params, req) => {
   return {
     ...params,
     context: setupSubscriptionContext()
