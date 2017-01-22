@@ -7,6 +7,7 @@ export default class track {
     const { Items } = await trackModel
       .scan()
       .loadAll()
+      .where('isPublic').equals(true)
       .execAsync()
 
     return Items.map(t => t.attrs)
