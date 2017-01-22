@@ -33,7 +33,7 @@ export default {
       throw e
     }
   },
-  async sendInput(root, { input }, { user, Chat }) {
+  async sendInput(root, { input }, { user, Chat, logger }) {
     // @TODO Create a base resolver to handle try/catch and error handling.
     try {
       if (!user) {

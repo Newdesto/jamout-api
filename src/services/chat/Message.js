@@ -1,6 +1,5 @@
 import vogels from 'io/vogels'
 import Joi from 'joi'
-import shortid from 'shortid'
 
 const Message = vogels.define('Message', {
   /*
@@ -16,7 +15,7 @@ const Message = vogels.define('Message', {
   timestamps: true,
   schema: {
     // ID of the message.
-    id: shortid.generate(),
+    id: Joi.string(),
     // The microtime timestamp in microseconds. We don't define a default
     // function because the message timestamps would be totally off
     // since our writes are queued. Instead they should be generated on job

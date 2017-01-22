@@ -41,6 +41,7 @@ type Message {
   createdAt: String!
   updatedAt: String
   id: ID!
+  timestamp: String!
   # ID of the channel it was sent in.
   channelId: ID!
   channel: Channel!

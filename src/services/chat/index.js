@@ -5,6 +5,7 @@ import crypto from 'crypto'
 import R from 'ramda'
 import shortid from 'shortid'
 import pubsub from 'io/pubsub'
+import microtime from 'microtime'
 import { createJob } from 'io/queue'
 
 /**
@@ -119,13 +120,17 @@ export default class Chat {
     // Persist the message in DDB.
     if (input.message) {
       // Check if the user is subscribed to this channel.
-      const subscription = await subscriptionModel.getAsync({ userId: input.senderId, channelId: input.channelId })
+      const subscription = await Subscription.getAsync({ userId: this.userId, channelId: input.channelId })
       if (!subscription) {
         throw new Error('Authorization failed.')
       }
-
+      console.log(subscription)
       // Throws an error if something fails.
-      const { attrs } = await messageModel.createAsync(input)
+      const { attrs } = await Message.createAsync({
+        ...input.message,
+        id: shortid.generate(),
+        timestamp: microtime.nowDouble().toString()
+      })
 
       // Anti-immutability = bad but oh well
       input.message = attrs
