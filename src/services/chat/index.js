@@ -60,8 +60,8 @@ export default class Chat {
 
     const subscriptions = await Promise.all(
       users.map(userId => Subscription.createAsync({
-        userId,
-        channelId: channel.id
+        channelId,
+        userId: this.userId
       }))
     )
   }
@@ -88,10 +88,10 @@ export default class Chat {
     const { attrs: channel } = await Channel.createAsync({
       type,
       name,
-      usersHash,
-      users: sortedUsers,
+      users: sorted.users,
       ownerId: this.userId,
-      id: shortid.generate()
+      id: shortid.generate(),
+      usersHash: sorted.usersHash
     })
 
     // Let's create a subscription for each user in the set.
