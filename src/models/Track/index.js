@@ -52,8 +52,6 @@ export default class track {
 
   async createTrack(user, title, isPublic) {
     if (!user) { throw new Error('User ID is undefined.') }
-    console.log(title)
-    console.log(isPublic)
 
     const { attrs } = await trackModel.createAsync({
       userId: user.id, // assumes JWT is up to date
