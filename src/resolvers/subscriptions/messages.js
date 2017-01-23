@@ -17,7 +17,7 @@ export const mapper = {
     const user = JWT.verify(jwt, process.env.JWT_SECRET)
     return {
       messages: {
-        channelOptions: { path: [channelId] }
+        filter: message => message.channelId === channelId
       }
     }
   }

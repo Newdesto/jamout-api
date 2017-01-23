@@ -54,7 +54,6 @@ const typeDefs = [
   Connection
 ]
 
-console.log(subscriptionsResolvers)
 export default makeExecutableSchema({
   typeDefs,
   resolvers: merge(

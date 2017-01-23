@@ -17,11 +17,24 @@ const Profile = `
 `
 
 export const resolver = {
+  /**
+   * Returns the JWT if the current user is querying their own profile. This
+   * is used by subscription functions on the client side since authentication
+   * over websockets is hacked together.
+   */
+  jwt(profile, args, { jwt, user }) {
+    if (!user) {
+      throw new Error('Authentication failed.')
+    } else if (profile.userId !== user.id) {
+      return null
+    }
+
+    return jwt
+  },
   async assistantChannel(profile, args, { user, Chat }) {
     if (!user) {
       throw new Error('Authentication failed.')
-    }
-    if (profile.userId !== user.id) {
+    } else if (profile.userId !== user.id) {
       return null
     }
     const channel = await Chat.getAssistantChannel()

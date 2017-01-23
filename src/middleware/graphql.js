@@ -41,6 +41,7 @@ export default graphqlExpress((req) => {
       createJob,
       logger,
       pubsub,
+      jwt: user && req.headers.authorization.slice(7),
       User: new User({ loader: userLoader }),
       Profile: new Profile({ loader: profileLoader }),
       Channel: new Channel(),
