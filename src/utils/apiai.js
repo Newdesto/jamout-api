@@ -1,6 +1,8 @@
 import { logger } from 'io'
 import { textRequest } from 'io/apiai'
 import { flatten, omitBy, mapValues } from 'lodash'
+import shortid from 'shortid'
+import microtime from 'microtime'
 
 /**
  * Converts an array of API.ai messages to message objects we can persist
@@ -45,8 +47,10 @@ const convertTextMessage = function convertTextMessage(channelId, speech) {
   return speeches.map(s => ({
     channelId, // sessionId = userId, both auth and anon
     //isAnon: data.isAnon, // @TODO work anon into context
+    text: s,
     senderId: 'assistant',
-    text: s
+    id: shortid.generate(),
+    timestamp: microtime.nowDouble().toString()
   }))
 }
 
@@ -154,6 +158,8 @@ function mapSpeech(speech, sessionId, contexts) {
     //isAnon: data.isAnon, // @TODO work anon into context
     sender: 'a',
     text: s,
+    id: shortid.generate(),
+    timestamp: microtime.nowDouble().toString(),
     contexts
   }))
 }
@@ -177,6 +183,8 @@ function mapRichMessages(messages, sessionId, contexts) {
           //isAnon: data.isAnon, // @TODO work anon into context
           sender: 'a',
           text: s,
+          id: shortid.generate(),
+          timestamp: microtime.nowDouble().toString(),
           contexts
         }))
 
@@ -187,6 +195,8 @@ function mapRichMessages(messages, sessionId, contexts) {
           type: 'message.card',
           userId: sessionId,
           sender: 'a',
+          id: shortid.generate(),
+          timestamp: microtime.nowDouble().toString(),
           contexts
         }
       // log an error

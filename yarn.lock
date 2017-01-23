@@ -15,6 +15,10 @@
     "@types/express-serve-static-core" "*"
     "@types/serve-static" "*"
 
+"@types/graphql@^0.8.5":
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.8.6.tgz#b34fb880493ba835b0c067024ee70130d6f9bb68"
+
 "@types/mime@*":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-0.0.29.tgz#fbcfd330573b912ef59eeee14602bface630754b"
@@ -2465,20 +2469,21 @@ graphql-redis-subscriptions@^1.1.5:
     graphql-subscriptions "^0.2.0"
     redis "^2.6.3"
 
-graphql-server-core@^0.4.4:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/graphql-server-core/-/graphql-server-core-0.4.4.tgz#d5b502f1300b4f775ee3dfa6f8a1bf9fb3cf48a9"
+graphql-server-core@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/graphql-server-core/-/graphql-server-core-0.5.1.tgz#86401ff99e301d6ea7980826e2ca4d6b42a9c5c3"
   optionalDependencies:
-    typed-graphql "^1.0.2"
+    "@types/graphql" "^0.8.5"
 
-graphql-server-express@^0.4.3:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/graphql-server-express/-/graphql-server-express-0.4.4.tgz#ed4c7b1cc158d03cc95e4eea712def4d1f46d9a0"
+graphql-server-express@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/graphql-server-express/-/graphql-server-express-0.5.1.tgz#916765caf24c4ac92342283f7c0b8950e82da064"
   dependencies:
-    graphql-server-core "^0.4.4"
+    graphql-server-core "^0.5.1"
     graphql-server-module-graphiql "^0.4.4"
   optionalDependencies:
     "@types/express" "^4.0.33"
+    "@types/graphql" "^0.8.5"
 
 graphql-server-module-graphiql@^0.4.4:
   version "0.4.4"
@@ -2490,15 +2495,15 @@ graphql-subscriptions@^0.2.0, graphql-subscriptions@^0.2.2:
   dependencies:
     es6-promise "^3.2.1"
 
-graphql-tools@^0.8.4:
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/graphql-tools/-/graphql-tools-0.8.4.tgz#3cf4b2a650e0322b655ca274ec24914b608fb562"
+graphql-tools@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/graphql-tools/-/graphql-tools-0.9.1.tgz#8cea09822ad8ece811299ad6b52e9c997cd51054"
   dependencies:
     deprecated-decorator "^0.1.6"
     lodash "^4.3.0"
     uuid "^3.0.1"
   optionalDependencies:
-    typed-graphql "^1.0.2"
+    "@types/graphql" "^0.8.5"
 
 graphql-type-json@^0.1.4:
   version "0.1.4"
@@ -4819,9 +4824,9 @@ stylus@0.54.5, stylus@~0.54.5:
     sax "0.5.x"
     source-map "0.1.x"
 
-subscriptions-transport-ws@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/subscriptions-transport-ws/-/subscriptions-transport-ws-0.3.1.tgz#b263d0147d47a1d109487633cf940a7907a9bdc0"
+subscriptions-transport-ws@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/subscriptions-transport-ws/-/subscriptions-transport-ws-0.4.0.tgz#71acf074d4e5ef84b6a0432e999a97b284d2f3f5"
   dependencies:
     backo2 "^1.0.2"
     graphql-subscriptions "^0.2.0"
@@ -5001,10 +5006,6 @@ type-is@~1.6.13:
 type-name@^2.0.1:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/type-name/-/type-name-2.0.2.tgz#efe7d4123d8ac52afff7f40c7e4dec5266008fb4"
-
-typed-graphql@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/typed-graphql/-/typed-graphql-1.0.2.tgz#4c0f788775d552df4d4ec3d73f25469252f40fb8"
 
 typedarray-to-buffer@^3.1.2:
   version "3.1.2"

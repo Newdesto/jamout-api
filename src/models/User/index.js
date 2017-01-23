@@ -1,6 +1,5 @@
 import userModel from './model'
 import profileModel from '../Profile/model'
-import Channel from '../Channel'
 export UserLoader from './loader'
 import jwt from 'jsonwebtoken'
 import { createCustomer } from '../../utils/stripe'
@@ -42,18 +41,6 @@ export default class User {
     // Compare the passwords.
     await authenticate(password, user.password)
 
-    // Make sure they have an assistant channel.
-    // @TODO Remove when all early adopters have a channel.
-    if(!user.assistantChannelId) {
-      const channel = new Channel()
-      const assistantChannel = await channel.createChannel('a', ['assistant', user.id])
-      const { attrs: updatedUser } = await userModel.updateAsync({
-        id: user.id,
-        assistantChannelId: assistantChannel.id
-      })
-      user = updatedUser
-    }
-
     delete user.password
     const accessToken = jwt.sign(user, secret)
     return accessToken
@@ -77,16 +64,11 @@ export default class User {
       description: user.id, // @TODO figure out if this is good lol
     })
 
-    // Create an assistant channel for the new user.
-    const channel = new Channel()
-    const assistantChannel = await channel.createChannel('a', ['assistant', user.id])
-
     const { attrs: userStripe } = await userModel.updateAsync({
       id: user.id,
       stripe: {
         customerId: stripeCustomer.id
-      },
-      assistantChannelId: assistantChannel.id
+      }
     })
 
     delete userStripe.password

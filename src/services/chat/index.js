@@ -4,7 +4,7 @@ import Subscription from './Subscription'
 import crypto from 'crypto'
 import R from 'ramda'
 import shortid from 'shortid'
-import pubsub from 'io/pubsub'
+import { pubsub } from 'io/subscription'
 import microtime from 'microtime'
 import { createJob } from 'io/queue'
 
@@ -121,7 +121,10 @@ export default class Chat {
     if (input.message) {
       // Check if the user is subscribed to this channel.
       const subscription = await Subscription.getAsync({ userId: this.userId, channelId: input.channelId })
-      if (!subscription) {
+
+      // If the sender was the assistnat don't throw an error.
+      // The 'assistant' user doesn't receive a subscription.
+      if (!subscription && input.message.senderId !== 'assistant') {
         throw new Error('Authorization failed.')
       }
 

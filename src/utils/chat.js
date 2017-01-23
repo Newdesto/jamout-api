@@ -67,9 +67,6 @@ export const publishInput = function publishInput(channelId, component, metadata
     throw new Error('Missing one or more arguments.')
   }
 
-  logger.debug('publishing input')
-  logger.debug(channelId)
-  logger.debug(component)
   pubsub.publish(`messages.${channelId}`, {
     id: uuid(),
     createdAt: new Date().toISOString(),
