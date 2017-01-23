@@ -40,7 +40,13 @@ export default {
         throw new Error('Authentication failed.')
       }
 
-      const message = await Chat.sendInput({ input })
+
+      const message = await Chat.sendInput({
+        input: {
+          ...input,
+          userId: user.id
+        }
+      })
       return message
     } catch (e) {
       logger.error(e)

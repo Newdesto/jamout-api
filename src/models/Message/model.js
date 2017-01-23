@@ -39,6 +39,7 @@ const Message = vogels.define('Message', {
       subtype: Joi.string(),
       // Image type metadata
       key: Joi.string(),
+      url: Joi.string(), // Remotely hosted images.
       bucket: Joi.string(),
       // Card type metadata
       elements: Joi.array().items(Joi.object().keys({

@@ -65,10 +65,12 @@ type Message {
 type MessageAttachment {
   # The component to be displayed. Could be generic or could be specific.
   type: String!
+  ### URL is unique to the image type.
+  url: String
   # Whether or not to disable the input that's displayed at the time the message
   # is received. If we're in the flow of things and don't want the using
   # messing it up we can disable the input. This happens often actually.
-  disabledInput: Boolean!
+  disabledInput: Boolean
   # The elements that are specific to the attachment. Things like texts,
   # buttons, and such.
   elements: [MessageAttachmentElement!]
@@ -118,8 +120,6 @@ input ChatInput {
   id: ID!
   # Channel ID
   channelId: ID!
-  # User who sent the input
-  userId: ID!
   # An open ended object of values that can be used
   # by the input handlers.
   values: JSON
