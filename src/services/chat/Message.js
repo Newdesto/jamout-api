@@ -1,6 +1,5 @@
 import vogels from 'io/vogels'
 import Joi from 'joi'
-import shortid from 'shortid'
 
 const Message = vogels.define('Message', {
   /*
@@ -39,8 +38,8 @@ const Message = vogels.define('Message', {
       subtype: Joi.string(),
       // Image type metadata
       key: Joi.string(),
-      url: Joi.string(), // Remotely hosted images.
       bucket: Joi.string(),
+      url: Joi.string(), // Remotely hosted image.
       // Card type metadata
       elements: Joi.array().items(Joi.object().keys({
         title: Joi.string(),
@@ -62,7 +61,10 @@ const Message = vogels.define('Message', {
         }))
       }))
     })
-  }
+  },
+  indexes: [{
+    hashKey: 'channelId', rangeKey: 'createdAt', name: 'channelId-createdAt-index', type: 'global'
+  }]
 })
 
 export default Message

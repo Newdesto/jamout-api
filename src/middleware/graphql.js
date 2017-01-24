@@ -3,6 +3,7 @@ import schema from 'schema'
 import Channel from 'models/Channel'
 import Message from 'models/Message'
 import Release from 'models/Release'
+import Chat from 'services/chat'
 import User, { UserLoader } from 'models/User'
 import Profile, { ProfileLoader } from 'models/Profile'
 import StudioEvent from 'models/StudioEvent'
@@ -40,6 +41,7 @@ export default graphqlExpress((req) => {
       createJob,
       logger,
       pubsub,
+      jwt: user && req.headers.authorization.slice(7),
       User: new User({ loader: userLoader }),
       Profile: new Profile({ loader: profileLoader }),
       Channel: new Channel(),
@@ -48,7 +50,8 @@ export default graphqlExpress((req) => {
       StudioEvent: new StudioEvent(),
       MusicEvent: new MusicEvent(),
       EventArtist: new EventArtist(),
-      Track: new Track()
+      Track: new Track(),
+      Chat: new Chat({ userId: user && user.id })
     },
     formatError,
     logger

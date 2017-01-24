@@ -40,7 +40,8 @@ const fulfill = async function fulfill(input, result) {
   // If there was an action, but there is no action funcion recognized log an
   // error and default to persistence and publishing.
   if (!actionFunction) {
-    logger.error(`No action function set for the action ${result.action}.`)
+    // Things like smalltalk and gretings don't have a fulfillment handler.
+    logger.info(`No action function set for the action ${result.action}.`)
     // Persist the messages in DDB.
     await Promise.all(messages.map(message => createJob('chat.persistMessage', {
       message

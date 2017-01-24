@@ -1,6 +1,8 @@
 import { logger } from 'io'
 import { textRequest } from 'io/apiai'
 import { flatten, omitBy, mapValues } from 'lodash'
+import shortid from 'shortid'
+import microtime from 'microtime'
 
 /**
  * Converts an array of API.ai messages to message objects we can persist
@@ -35,6 +37,9 @@ const convertMessage = function convertMessage(channelId, message) {
       // Text Message
       return convertTextMessage(channelId, message.speech)
       break
+    case 3:
+      return convertImageMessage(channelId, message.imageUrl)
+      break
     default:
      throw new Error('API.ai message type not recognized.')
   }
@@ -45,10 +50,27 @@ const convertTextMessage = function convertTextMessage(channelId, speech) {
   return speeches.map(s => ({
     channelId, // sessionId = userId, both auth and anon
     //isAnon: data.isAnon, // @TODO work anon into context
+    text: s,
     senderId: 'assistant',
-    text: s
+    id: shortid.generate(),
+    timestamp: microtime.nowDouble().toString()
   }))
 }
+
+const convertImageMessage = function convertImageMessage(channelId, url) {
+  return {
+    channelId, // sessionId = userId, both auth and anon
+    //isAnon: data.isAnon, // @TODO work anon into context
+    senderId: 'assistant',
+    id: shortid.generate(),
+    timestamp: microtime.nowDouble().toString(),
+    attachment: {
+      url,
+      type: 'image'
+    }
+  }
+}
+
 
 /**
  * Sends an event request to API.ai and processes the response, throwing an error
@@ -152,8 +174,10 @@ function mapSpeech(speech, sessionId, contexts) {
     type: 'message.text',
     userId: sessionId, // sessionId = userId, both auth and anon
     //isAnon: data.isAnon, // @TODO work anon into context
-    sender: 'a',
+    senderId: 'assistant',
     text: s,
+    id: shortid.generate(),
+    timestamp: microtime.nowDouble().toString(),
     contexts
   }))
 }
@@ -164,7 +188,6 @@ function mapRichMessages(messages, sessionId, contexts) {
     throw new Error('Session ID to map API.ai messages')
 
   const mapped =  messages.map(m => {
-    console.log(m.type)
     switch(m.type) {
 
       // text message
@@ -172,11 +195,12 @@ function mapRichMessages(messages, sessionId, contexts) {
         // split by line break
         const speeches = m.speech.split('\\n')
         return speeches.map(s => ({
-          type: 'message.text',
           userId: sessionId, // sessionId = userId, both auth and anon
           //isAnon: data.isAnon, // @TODO work anon into context
-          sender: 'a',
+          senderId: 'assistant',
           text: s,
+          id: shortid.generate(),
+          timestamp: microtime.nowDouble().toString(),
           contexts
         }))
 
@@ -184,11 +208,26 @@ function mapRichMessages(messages, sessionId, contexts) {
       case 1:
         return {
           ...m,
-          type: 'message.card',
           userId: sessionId,
-          sender: 'a',
+          senderId: 'assistant',
+          id: shortid.generate(),
+          timestamp: microtime.nowDouble().toString(),
           contexts
         }
+
+      // image message
+      case 3:
+        return {
+          userId: sessionId,
+          senderId: 'assistant',
+          id: shortid.generate(),
+          timestamp: microtime.nowDouble().toString(),
+          attachment: {
+            type: 'image',
+            url: m.imageUrl
+          }
+        }
+
       // log an error
       default:
         logger.error('Failed to match the API.ai message type.')

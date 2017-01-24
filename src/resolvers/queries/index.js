@@ -1,4 +1,5 @@
 import merge from 'lodash/merge'
+import assistantChannel from './assistantChannel'
 import channels from './channels'
 import messages from './messages'
 import release from './release'
@@ -13,6 +14,7 @@ import track from './track'
 const resolvers = {
   Query: merge(
     me,
+    assistantChannel,
     channels,
     messages,
     release,

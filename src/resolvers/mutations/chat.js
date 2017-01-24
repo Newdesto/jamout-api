@@ -3,47 +3,64 @@
  */
 
 export default {
-  openChannel(root, args, { user, Channel }) {
-    if (!user) {
-      throw new Error('Authentication failed.')
+  openChannel(root, args, { user, Chat, logger }) {
+    try {
+      if (!user) {
+        throw new Error('Authentication failed.')
+      }
+
+      // Get the ENUM values.
+      const type = {
+        DM: 'd',
+        GROUP: 'g',
+        ASSISTANT: 'a'
+      }[args.type]
+
+      // Do some name validation.
+      if (type === 'a') {
+        args.name = 'assistant'
+      } else if (type === 'd') {
+        delete args.name
+      }
+
+      return Chat.createChannel({
+        type,
+        name: args.name,
+        users: args.users
+      })
+    } catch (e) {
+      logger.error(e)
+      throw e
     }
-
-    // ChannelType Enum
-    const type = {
-      DM: 'd',
-      GROUP: 'g',
-      ASSISTANT: 'a'
-    }[args.type]
-
-    return Channel.createChannel(type, args.users)
   },
-  async sendInput(root, { input }, { user, createJob, logger, pubsub, Message }) {
+  async sendInput(root, { input }, { user, Chat, logger }) {
     // @TODO Create a base resolver to handle try/catch and error handling.
     try {
       if (!user) {
         throw new Error('Authentication failed.')
       }
 
-      // If there was a message, persist it. Some inputs might be message-less.
-      if(!input.message) {
-        return null
-      }
 
-      // Persist the message in DDB.
-      const message = await Message.create(input.message)
-
-
-      // Create a job unless we were explicitly told not to
-      // @TODO Send the job ID in the return?
-      if(!input.bypassQueue) {
-        const job = await createJob('chat.input', input)
-      } else {
-        // A bypassQueue is set true from the messages feature. So let's just
-        // publish the message
-        pubsub.publish(`messages.${message.channelId}`, message)
-      }
-
+      const message = await Chat.sendInput({
+        input: {
+          ...input,
+          userId: user.id
+        }
+      })
       return message
+    } catch (e) {
+      logger.error(e)
+      throw e
+    }
+  },
+  async postback(root, { input }, { user, Chat }) {
+    try {
+      if (!user) {
+        throw new Error('Authentication failed.')
+      }
+
+      const job = await Chat.postback({ postback: input })
+      return
     } catch (e) {
       logger.error(e)
       throw e

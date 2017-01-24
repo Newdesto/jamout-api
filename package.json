@@ -8,7 +8,7 @@
     "clean": "rm -rf build && mkdir build",
     "build": "babel -d ./build ./src",
     "prod": "NODE_ENV=production pm2-docker ./index.js",
-    "test": "NODE_ENV=test nyc ava -v",
+    "test": "NODE_ENV=test ava -v",
     "watch:test": "NODE_ENV=test ava -w -v"
   },
   "author": "gabriel p samson",
@@ -17,8 +17,7 @@
   "ava": {
     "files": "./src/**/__tests__/**/*.test.js",
     "require": [
-      "babel-register",
-      "babel-polyfill"
+      "./testSetup"
     ],
     "babel": "inherit"
   },
@@ -57,7 +56,7 @@
       "./src/**/__tests__/**/*.test.js"
     ],
     "require": [
-      "babel-register"
+      "./testSetup"
     ],
     "sourceMap": false,
     "instrument": false
@@ -88,18 +87,19 @@
   },
   "devDependencies": {
     "ava": "^0.17.0",
-    "babel-cli": "^6.16.0",
+    "babel-cli": "^6.22.2",
     "babel-plugin-inline-import": "^2.0.4",
     "babel-plugin-istanbul": "^3.1.2",
-    "babel-plugin-transform-runtime": "^6.15.0",
-    "babel-preset-es2015": "^6.16.0",
-    "babel-preset-stage-0": "^6.16.0",
-    "eslint": "^3.13.1",
+    "babel-plugin-transform-runtime": "^6.22.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "babel-register": "^6.22.0",
+    "eslint": "^3.14.0",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",
     "eslint-plugin-react": "^6.9.0",
-    "nyc": "^10.0.0",
+    "nyc": "^10.1.2",
     "sinon": "^1.17.7"
   },
   "dependencies": {
@@ -108,7 +108,7 @@
     "app-module-path": "^2.1.0",
     "async": "^2.1.4",
     "aws-sdk": "^2.6.9",
-    "babel-runtime": "^6.20.0",
+    "babel-runtime": "^6.22.0",
     "bcryptjs": "^2.3.0",
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
@@ -120,20 +120,23 @@
     "express-jwt": "^5.1.0",
     "graphql": "^0.8.2",
     "graphql-redis-subscriptions": "^1.1.5",
-    "graphql-server-express": "^0.4.3",
+    "graphql-server-express": "^0.5.1",
     "graphql-subscriptions": "^0.2.2",
-    "graphql-tools": "^0.8.4",
+    "graphql-tools": "^0.9.1",
     "graphql-type-json": "^0.1.4",
     "helmet": "^3.0.0",
     "joi": "^10.0.1",
     "jsonwebtoken": "^7.2.1",
     "kue": "^0.11.5",
     "lodash": "^4.17.2",
+    "microtime": "^2.1.2",
     "nodemon": "^1.11.0",
+    "ramda": "^0.23.0",
     "redis": "^2.6.3",
     "request": "^2.79.0",
+    "shortid": "^2.2.6",
     "stripe": "^4.14.0",
-    "subscriptions-transport-ws": "^0.3.1",
+    "subscriptions-transport-ws": "^0.4.0",
     "uuid": "^3.0.1",
     "vogels": "^2.2.0",
     "winston": "^2.3.0"

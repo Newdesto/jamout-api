@@ -1,7 +1,6 @@
 import { PubSub, SubscriptionManager } from 'graphql-subscriptions'
 import { SubscriptionServer } from 'subscriptions-transport-ws'
 import schema from 'schema'
-import pubsub from './pubsub'
 import { setupFunctions } from 'resolvers/subscriptions'
 import logger from './logger'
 import { createServer } from 'http'
@@ -11,9 +10,11 @@ import { createJob } from 'io/queue'
 import User from 'models/User/model'
 import { restoreInput } from 'utils/chat'
 
-// Create a GQL subscription manager using Redis as the pubsub
+// Create a GQL subscription manager using an EventEmitter as the pubsub
 // engine, the setupFunctions from our resolver/subscription
 // folder and our entire GQL schema.
+//export const pubsub = new PubSub()
+export const pubsub = new PubSub()
 export const subscriptionManager = new SubscriptionManager({
   schema,
   pubsub,
@@ -22,26 +23,10 @@ export const subscriptionManager = new SubscriptionManager({
 
 /**
  * An onSubscribe listener that initializes the context and parameters for
- * the resolvers. We also stuck in a conditional that creates a
- * chat.event job if the user hasn't been introduced to Jamout Assistant.
- * This job sends some onboarding messages.
- * @TODO Refactor this because it's booty.
+ * the resolvers.
  */
-export const onSubscribe = async (msg, params, req) => {
-  // Triggers onboarding when an assistant sub starts.
-  if(msg.type === 'subscription_start' && msg.variables.assistantChannelId) {
-    // Verify the JWT.
-    const verified = JWT.verify(msg.variables.jwt, process.env.JWT_SECRET)
-    // The JWT can be outdated so check out the DB.
-    const { attrs:user } = await User.getAsync(verified.id)
-    if(!user.didOnboard) {
-      const job = await createJob('chat.event', {
-        userId: user.id,
-        channelId: msg.variables.assistantChannelId,
-        event: 'onboarding/welcome'
-      }, 5000)
-    }
-  }
+export const onSubscribe = (msg, params, req) => {
+  console.log(params)
   return {
     ...params,
     context: setupSubscriptionContext()

@@ -13,8 +13,26 @@ const Message = `
 `
 
 export const resolver = {
-  async sender({ userId }, arg, { Profile } ) {
-    return Profile.fetchById(userId)
+  async sender({ senderId }, args, { Profile } ) {
+    try {
+      if(senderId === 'assistant') {
+        // @TODO Persist assistant profiles in chat service.
+        return {
+          id: 'assistant',
+          createdAt: new Date().toDateString(),
+          userId: 'assistant',
+          username: 'Jamout Assistant',
+          permalink: 'assistant',
+          displayName: 'Jamout Assistant',
+          location: 'jamout.co',
+          avatarKey: null
+        }
+      }
+      return Profile.fetchById(senderId)
+    } catch (e) {
+      logger.error(e)
+      throw e
+    }
   }
 }
 

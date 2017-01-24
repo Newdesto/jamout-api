@@ -1,13 +1,15 @@
 type Profile {
-  createdAt: String!,
-  updatedAt: String,
-  id: ID!,
-  userId: ID!,
-  username: String!,
-  permalink: String!,
-  displayName: String!,
-  location: String,
-  avatarKey: String,
+  jwt: String
+  createdAt: String!
+  updatedAt: String
+  id: ID!
+  userId: ID!
+  username: String!
+  permalink: String!
+  displayName: String!
+  location: String
+  avatarKey: String
   avatarUrl: String
   connections: [Connection!]
+  assistantChannel: Channel
 }
