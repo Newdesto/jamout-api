@@ -8,5 +8,7 @@ try {
   console.error(e)
 }
 require('app-module-path').addPath(__dirname + '/src')
-require('babel-register')
+require('babel-register')({
+  only: /graphql-server-core/
+})
 require('babel-polyfill')
