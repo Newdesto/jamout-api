@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk'
 const s3 = new AWS.S3()
 
-export const resolver = {
+const resolvers = {
   audioUrl(track, args, context) {
     const params = { Bucket: 'jamout-music', Key: `${track.audioKey}` }
     const url = s3.getSignedUrl('getObject', params)
@@ -14,6 +14,4 @@ export const resolver = {
   }
 }
 
-export default () => [
-  Track
-]
+export default resolvers
