@@ -56,7 +56,7 @@
       "./src/**/__tests__/**/*.test.js"
     ],
     "require": [
-      "babel-register"
+      "./testSetup"
     ],
     "sourceMap": false,
     "instrument": false
