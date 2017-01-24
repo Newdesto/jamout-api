@@ -8,7 +8,7 @@
     "clean": "rm -rf build && mkdir build",
     "build": "babel -d ./build ./src",
     "prod": "NODE_ENV=production pm2-docker ./index.js",
-    "test": "NODE_ENV=test nyc ava -v",
+    "test": "NODE_ENV=test ava -v",
     "watch:test": "NODE_ENV=test ava -w -v"
   },
   "author": "gabriel p samson",
