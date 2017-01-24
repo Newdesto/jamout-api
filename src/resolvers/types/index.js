@@ -11,7 +11,7 @@ import StudioEvent from './StudioEvent'
 import StudioEventInput from './StudioEventInput'
 import MusicEvent from './MusicEvent'
 import Connection from './Connection'
-import { resolver as trackResolver } from './Track'
+import Track from './Track'
 
 export default {
   Channel,
@@ -23,5 +23,5 @@ export default {
   StudioEventInput,
   MusicEvent,
   Connection,
-  Track: trackResolver
+  Track
 }
