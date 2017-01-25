@@ -8,10 +8,10 @@ export default class UserLoader {
     this.loadMany = ::this.loadMany
     this.loader = new DataLoader(ids => this.list(userId, ids))
   }
-  async list(userId, ids) {
+  static async list(userId, ids) {
     // @NOTE: Here is where we would do policy checks...
     // @TODO Password deletion
-    const users= await userModel.getItemsAsync(ids)
+    const users = await userModel.getItemsAsync(ids)
     return users
       .map(u => u.attrs)
   }

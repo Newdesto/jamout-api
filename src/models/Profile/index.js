@@ -1,5 +1,4 @@
-import profileModel from './model'
-export ProfileLoader from './loader'
+import ProfileLoader from './loader'
 
 export default class Profile {
   constructor({ loader }) {
@@ -13,4 +12,8 @@ export default class Profile {
   fetchByIds(ids) {
     return this.loader.loadMany(ids)
   }
+}
+
+export {
+  ProfileLoader
 }

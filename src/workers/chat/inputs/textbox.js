@@ -19,9 +19,9 @@ const textboxHandler = async function textboxHandler(input) {
   }
 
   // Make sure we have a text value or else stuff won't work
-  if(!input.values.text) {
-    loggger.error('No text value was sent from the Textbox component.')
-    done('No text value was sent from the Textbox component.')
+  if (!input.values.text) {
+    logger.error('No text value was sent from the Textbox component.')
+    throw new Error('No text value was sent from the Textbox component.')
   }
 
   // Query API.ai without any additional contexts.

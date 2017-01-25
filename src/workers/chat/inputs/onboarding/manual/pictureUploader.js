@@ -1,11 +1,10 @@
 // IO
-import { logger, queue, pubsub, apiai } from 'io'
+import { logger } from 'io'
 import { eventRequest } from 'io/apiai'
-import uuid from 'uuid'
 import fulfill from 'workers/chat/fulfillments'
 import Profile from 'models/Profile/model'
 
-export const pictureUploader = async function pictureUploader({ userId, channelId, values }) {
+const pictureUploader = async function pictureUploader({ userId, channelId, values }) {
   logger.debug('Processing onboarding.manual.PictureUploader input.')
 
   // If later = true but there's also a bucket or key PANIC!
@@ -21,7 +20,7 @@ export const pictureUploader = async function pictureUploader({ userId, channelI
   }
 
   // Save the artist name to their profile if they uploaded a picture.
-  if(!values.later) {
+  if (!values.later) {
     await Profile.updateAsync({
       userId,
       avatarKey: values.key // The bucket is only used for the message attachment
@@ -30,7 +29,7 @@ export const pictureUploader = async function pictureUploader({ userId, channelI
 
 
   // If the user skipped we have to trigger an extra event.
-  if(values.later) {
+  if (values.later) {
     const laterResponse = await eventRequest({
       name: 'onboarding/profileSetup--manual#pictureLater'
     }, {

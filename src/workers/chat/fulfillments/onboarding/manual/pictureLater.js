@@ -1,4 +1,4 @@
-import { publishMessages, publishInput } from 'utils/chat'
+import { publishMessages } from 'utils/chat'
 import { createJob } from 'io/queue'
 import { logger } from 'io'
 

@@ -1,21 +1,14 @@
 // IO
-import { logger, queue, pubsub, apiai } from 'io'
+import { logger, queue } from 'io'
 import { eventRequest } from 'io/apiai'
-import uuid from 'uuid'
 import fulfill from '../fulfillments'
-
-// Connectors
-import channelModel from 'models/Channel'
-import Message from 'models/Message'
-const Channel = new channelModel()
-
 
 /**
  * This worker processes the `chat.events` job which sends an event request to
  * API.ai and routes the response to workers/chat/fulfillments.
  * @type {Object}
  */
-queue.process('chat.event', async function chatEventWorker({ data: { userId, event, channelId } }, done) {
+queue.process('chat.event', async ({ data: { userId, event, channelId } }, done) => {
   try {
     logger.debug('Processing chat.event job.')
 
@@ -32,8 +25,8 @@ queue.process('chat.event', async function chatEventWorker({ data: { userId, eve
     // Take the result and fulfill the action
     await fulfill({ channelId, userId }, apiaiResponse.result)
     done()
-  } catch (e) {
-    logger.error(e)
-    done(e)
+  } catch (err) {
+    logger.error(err)
+    done(err)
   }
 })

@@ -3,25 +3,25 @@
  * configures AWS.
  */
 import vogels from 'vogels'
-import Promise from 'bluebird'
+import BPromise from 'bluebird'
 
 // Promisify that shit.
-Promise.promisifyAll(require('vogels/lib/table').prototype)
-Promise.promisifyAll(require('vogels/lib/item').prototype)
-Promise.promisifyAll(require('vogels/lib/query').prototype)
-Promise.promisifyAll(require('vogels/lib/scan').prototype)
-Promise.promisifyAll(require('vogels/lib/parallelScan').prototype)
+BPromise.promisifyAll(require('vogels/lib/table').prototype)
+BPromise.promisifyAll(require('vogels/lib/item').prototype)
+BPromise.promisifyAll(require('vogels/lib/query').prototype)
+BPromise.promisifyAll(require('vogels/lib/scan').prototype)
+BPromise.promisifyAll(require('vogels/lib/parallelScan').prototype)
 
 // Promisify our models too, bro.
-let vmodel = vogels.model
-vogels.model = function (name, model) {
-  if (model) {
-    Promise.promisifyAll(model)
+const vmodel = vogels.model
+vogels.model = function promisifyModel(...args) {
+  if (args[1]) {
+    BPromise.promisifyAll(args[1])
   }
-  return vmodel.apply(vogels, arguments)
+  return vmodel.apply(vogels, args)
 }
 
-Promise.promisifyAll(vogels)
+BPromise.promisifyAll(vogels)
 
 // Configure AWS, dude.
 vogels.AWS.config.update({

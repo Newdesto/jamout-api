@@ -25,7 +25,7 @@ export default {
       }
 
       // If there was a message, persist it. Some inputs might be message-less.
-      if(!input.message) {
+      if (!input.message) {
         return null
       }
 
@@ -35,8 +35,8 @@ export default {
 
       // Create a job unless we were explicitly told not to
       // @TODO Send the job ID in the return?
-      if(!input.bypassQueue) {
-        const job = await createJob('chat.input', input)
+      if (!input.bypassQueue) {
+        await createJob('chat.input', input)
       } else {
         // A bypassQueue is set true from the messages feature. So let's just
         // publish the message
@@ -44,9 +44,9 @@ export default {
       }
 
       return message
-    } catch (e) {
-      logger.error(e)
-      throw e
+    } catch (err) {
+      logger.error(err)
+      throw err
     }
   }
 }

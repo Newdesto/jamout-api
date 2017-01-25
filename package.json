@@ -8,23 +8,33 @@
     "clean": "rm -rf build && mkdir build",
     "build": "babel -d ./build ./src",
     "prod": "NODE_ENV=production pm2-docker ./index.js",
+    "lint": "xo",
     "test": "NODE_ENV=test nyc xo && ava -v",
-    "watch:test": "NODE_ENV=test xo && ava -w -v"
+    "watch:test": "NODE_ENV=test ava -w -v"
   },
   "author": "gabriel p samson",
   "private": true,
   "license": "ISC",
   "ava": {
-    "files": "./src/**/__tests__/**/*.test.js",
+    "files": "src/**/__tests__/**/*.test.js",
     "require": [
       "./testSetup"
     ],
     "babel": "inherit"
   },
   "xo": {
-    "envs": ["node"],
+    "envs": [
+      "node"
+    ],
+    "parser": "babel-eslint",
     "extends": "airbnb",
     "rules": {
+      "no-loop-func": "off",
+      "unicorn/filename-case": ["error", {"case": "camelCase"}],
+      "func-names": [
+        "error",
+        "always"
+      ],
       "comma-dangle": [
         "error",
         "never"
@@ -86,11 +96,13 @@
   "devDependencies": {
     "ava": "^0.17.0",
     "babel-cli": "^6.16.0",
+    "babel-eslint": "^7.1.1",
     "babel-plugin-inline-import": "^2.0.4",
     "babel-plugin-istanbul": "^3.1.2",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
+    "eslint": "^3.14.0",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^3.0.2",

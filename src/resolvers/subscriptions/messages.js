@@ -8,11 +8,10 @@ export const resolvers = {
 
 export const mapper = {
   messages(root, { jwt, channelId }) {
-    if (!jwt)
-      throw new Error('Authentication failed.')
+    if (!jwt) { throw new Error('Authentication failed.') }
 
     // Throws an error if invalid
-    const user = JWT.verify(jwt, process.env.JWT_SECRET)
+    JWT.verify(jwt, process.env.JWT_SECRET)
 
     return {
       messages: {

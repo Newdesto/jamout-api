@@ -2,7 +2,8 @@ import { publishMessages, publishInput } from 'utils/chat'
 import { createJob } from 'io/queue'
 import { logger } from 'io'
 
-const manualOrSoundCloud = async function manualOrSoundCloud({ userId, channelId }, result, messages) {
+const manualOrSoundCloud =
+async function manualOrSoundCloud({ userId, channelId }, result, messages) {
   logger.debug('Processing onboarding.profile.manualOrSoundCloud action.')
 
   // Schedule persistence

@@ -14,8 +14,8 @@ const Profile = vogels.define('Profile', {
     location: Joi.string(),
     avatarKey: Joi.string() // avatars are stored in the jamout-profile bucket
   },
-  indexes : [{
-    hashKey : 'permalink', name : 'permalink-index', type : 'global'
+  indexes: [{
+    hashKey: 'permalink', name: 'permalink-index', type: 'global'
   }]
 })
 

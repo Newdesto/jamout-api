@@ -5,28 +5,31 @@ import { createOrder, payOrder, distroSkus } from '../../utils/stripe'
 // @TODO caching as update + pay can be batched
 export default class Release {
   // @TODO add a limit + pagination
-  async fetchAll() {
+  static async fetchAll() {
     const { Items } = await releaseModel
       .scan()
-      .where('status').notNull()
-      .where('type').notNull()
-      .where('tracklist').notNull()
+      .where('status')
+      .notNull()
+      .where('type')
+      .notNull()
+      .where('tracklist')
+      .notNull()
       .execAsync()
 
     return Items.map(r => r.attrs)
   }
   // @TODO index the userId
   // scans are costly
-  async fetchByUserId(userId) {
+  static async fetchByUserId(userId) {
     if (!userId) { throw new Error('User ID is undefined.') }
     const { Items } = await releaseModel
       .scan()
       .where('userId').equals(userId)
       .execAsync()
-    console.log(Items)
+
     return Items.map(i => i.attrs)
   }
-  async fetchById(id, userId) {
+  static async fetchById(id) {
     const Item = await releaseModel
       .getAsync(id)
 
@@ -36,30 +39,29 @@ export default class Release {
     }
     return Item.attrs
   }
-  async create(input) {
+  static async create(input) {
     try {
-      console.log(input)
       const { attrs } = await releaseModel
         .createAsync(input)
-      console.log(attrs)
+
       return attrs
-    } catch (e) {
-      console.error(e)
+    } catch (err) {
+      console.error(err)
+      throw err
     }
   }
-  async update(id, input, userId) {
+  static async update(id, input) {
     // @TODO expression statement for userId
-    console.log(input)
     try {
       const { attrs } = await releaseModel
         .updateAsync(Object.assign(input, { id }))
       return attrs
-    } catch (e) {
-      console.error(e)
-      throw e
+    } catch (err) {
+      console.error(err)
+      throw err
     }
   }
-  async delete(userId, id) {
+  static async delete(userId, id) {
     try {
       const params = {}
       params.ConditionExpression = '#userId = :userId'
@@ -67,18 +69,17 @@ export default class Release {
       params.ExpressionAttributeValues = { ':userId': userId }
       await releaseModel.destroyAsync(id, params)
       return id
-    } catch (e) {
-      if (e.code === 'ConditionalCheckFailedException') {
+    } catch (err) {
+      if (err.code === 'ConditionalCheckFailedException') {
         throw new Error('Authorization failed.')
       }
-      console.error(e)
-      throw e
+      console.error(err)
+      throw err
     }
   }
   async pay({ id, email, customerId, source }) {
     // get the order
     const order = await this.fetchById(id)
-    console.log(order)
 
     // create the order
     const newOrder = await createOrder({
@@ -89,20 +90,17 @@ export default class Release {
         parent: distroSkus[order.type]
       }]
     })
-    console.log(newOrder)
 
     // pay the order
-    const paidOrder = await payOrder(newOrder.id, {
+    await payOrder(newOrder.id, {
       customer: customerId, // attach customer regardless
       source
     })
 
-    console.log(paidOrder)
-
     // update the status of release
     const { attrs } = await releaseModel
       .updateAsync({ id: order.id, status: 'p' })
-    console.log(attrs)
+
     return attrs
   }
 }

@@ -1,10 +1,11 @@
+import jwt from 'jsonwebtoken'
 import userModel from './model'
 import profileModel from '../Profile/model'
 import Channel from '../Channel'
-export UserLoader from './loader'
-import jwt from 'jsonwebtoken'
+import UserLoader from './loader'
 import { createCustomer } from '../../utils/stripe'
 import { hashPassword, authenticate } from '../../utils/auth'
+
 const secret = process.env.JWT_SECRET
 
 export default class User {
@@ -13,29 +14,27 @@ export default class User {
     this.fetchByIds = ::this.fetchByIds
     this.fetchById = :: this.fetchById
   }
-  async usernameExists(username) {
+  static async usernameExists(username) {
     const existingUsernames = await userModel
       .query(username)
       .usingIndex('username-index')
       .execAsync()
 
-    if(existingUsernames.Count !== 0)
-      return true
+    if (existingUsernames.Count !== 0) { return true }
     return false
   }
-  async emailExists(email) {
+  static async emailExists(email) {
     const existingEmails = await userModel
       .query(email)
       .usingIndex('email-index')
       .execAsync()
 
-    if(existingEmails.Count !== 0)
-      return existingEmails.Items[0].attrs
+    if (existingEmails.Count !== 0) { return existingEmails.Items[0].attrs }
     return false
   }
   async login({ email, password }) {
     let user = await this.emailExists(email)
-    if(!user) {
+    if (!user) {
       throw new Error('Invalid email or password.')
     }
 
@@ -44,7 +43,7 @@ export default class User {
 
     // Make sure they have an assistant channel.
     // @TODO Remove when all early adopters have a channel.
-    if(!user.assistantChannelId) {
+    if (!user.assistantChannelId) {
       const channel = new Channel()
       const assistantChannel = await channel.createChannel('a', ['assistant', user.id])
       const { attrs: updatedUser } = await userModel.updateAsync({
@@ -58,23 +57,21 @@ export default class User {
     const accessToken = jwt.sign(user, secret)
     return accessToken
   }
-  async create({email, username, password}) {
-    if(await this.emailExists(email))
-      throw new Error('Email already exists.')
-    if(await this.usernameExists(username))
-      throw new Error('Username already exists.')
+  async create({ email, username, password }) {
+    if (await this.emailExists(email)) { throw new Error('Email already exists.') }
+    if (await this.usernameExists(username)) { throw new Error('Username already exists.') }
 
     const hashedPassword = await hashPassword(password)
     const { attrs: user } = await userModel.createAsync({
       email,
       username,
-      password: hashedPassword,
+      password: hashedPassword
     })
 
     // Creates a Stripe customer for the new user.
     // @TODO queue a job.
     const stripeCustomer = await createCustomer({
-      description: user.id, // @TODO figure out if this is good lol
+      description: user.id // @TODO figure out if this is good lol
     })
 
     // Create an assistant channel for the new user.
@@ -93,15 +90,14 @@ export default class User {
     const accessToken = jwt.sign(userStripe, secret)
 
     // @TODO move this to a background worker
-    const { attrs: profile } = await profileModel.createAsync({
+    await profileModel.createAsync({
       userId: userStripe.id,
       permalink: userStripe.username,
       displayName: userStripe.username,
-      username: userStripe.username,
+      username: userStripe.username
     })
 
     return accessToken
-
   }
   fetchById(id) {
     return this.loader.load(id)
@@ -121,4 +117,7 @@ export default class User {
 
     return attrs
   }
+}
+export {
+  UserLoader
 }

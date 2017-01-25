@@ -8,7 +8,7 @@ export default class ProfileLoader {
     this.loadMany = ::this.loadMany
     this.loader = new DataLoader(ids => this.list(userId, ids))
   }
-  async list(userId, ids) {
+  static async list(userId, ids) {
     // @NOTE: Here is where we would do policy checks...
     const profiles = await profileModel.getItemsAsync(ids)
     return profiles.map(p => p.attrs)
