@@ -38,7 +38,7 @@ export default class MusicEvent {
     const sortedEvents = events.sort((a, b) => {
       const date1 = new Date(a.createdAt)
       const date2 = new Date(b.createdAt)
-      return date1 - date2
+      return date2 - date1
     })
 
     return sortedEvents
