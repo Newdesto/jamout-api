@@ -7,6 +7,7 @@ import release from './release'
 import studioEvent from './studioEvent'
 import createMusicEvent from './musicEvent'
 import eventArtist from './eventArtist'
+import track from './track'
 
 
 const resolvers = {
@@ -17,7 +18,8 @@ const resolvers = {
     createMusicEvent,
     eventArtist,
     chat,
-    release
+    release,
+     track
   )
 }
 

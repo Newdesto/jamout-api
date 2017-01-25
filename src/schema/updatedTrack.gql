@@ -1,0 +1,8 @@
+input updatedTrack {
+  title: String
+  artworkKey: String
+  type: String
+  isPublic: Boolean
+  status: String
+  audioKey: String
+}

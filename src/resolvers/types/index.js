@@ -11,6 +11,7 @@ import StudioEvent from './StudioEvent'
 import StudioEventInput from './StudioEventInput'
 import MusicEvent from './MusicEvent'
 import Connection from './Connection'
+import Track from './Track'
 
 export default {
   Channel,
@@ -21,5 +22,6 @@ export default {
   StudioEvent,
   StudioEventInput,
   MusicEvent,
-  Connection
+  Connection,
+  Track
 }
