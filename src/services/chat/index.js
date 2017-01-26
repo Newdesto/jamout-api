@@ -1,12 +1,12 @@
-import Channel from './Channel'
-import Message from './Message'
-import Subscription from './Subscription'
 import crypto from 'crypto'
 import R from 'ramda'
 import shortid from 'shortid'
 import { pubsub } from 'io/subscription'
 import microtime from 'microtime'
 import { createJob } from 'io/queue'
+import Channel from './channel'
+import Message from './message'
+import Subscription from './subscription'
 
 /**
  * The chat service which is injected into the context of GQL queries. It's
@@ -20,8 +20,8 @@ export default class Chat {
   /**
    * Sorts an array of user IDs and creates a unique SHA1 hash.
    */
-  sortUsersAndHash({ users }) {
-    if(!users || !Array.isArray(users)) {
+  static sortUsersAndHash({ users }) {
+    if (!users || !Array.isArray(users)) {
       throw new Error('Invalid argument: users.')
     }
 
@@ -37,8 +37,8 @@ export default class Chat {
    * Returns the channel of a user hash if it exists, and returns false
    * if it doesn't.
    */
-  async channelExistsByHash({ usersHash }) {
-    if(!usersHash) {
+  static async channelExistsByHash({ usersHash }) {
+    if (!usersHash) {
       throw new Error('The argument userHash is undefined.')
     }
 
@@ -47,7 +47,7 @@ export default class Chat {
       .usingIndex('usersHash-index')
       .execAsync()
 
-    if(Items.length !== 0) {
+    if (Items.length !== 0) {
       return Items[0].attrs
     }
 
@@ -57,12 +57,12 @@ export default class Chat {
    * Creates subscriptions to a single channel for a set of users.
    */
   async createSubscriptions({ users, channelId }) {
-    if(!Array.isArray(users) || !channelId) {
+    if (!Array.isArray(users) || !channelId) {
       throw new Error('Invalid arguments to create channel subscriptions.')
     }
 
     const subscriptions = await Promise.all(
-      users.map(userId => Subscription.createAsync({
+      users.map(() => Subscription.createAsync({
         channelId,
         userId: this.userId
       }))
@@ -77,10 +77,10 @@ export default class Chat {
    */
   async createChannel({ type, users, name }) {
     // Sort the users array and hash that shit.
-    const sorted = this.sortUsersAndHash({ users })
+    const sorted = Chat.sortUsersAndHash({ users })
 
     // Check if a channel already exists for this user set.
-    const existingChannel = await this.channelExistsByHash({
+    const existingChannel = await Chat.channelExistsByHash({
       usersHash: sorted.usersHash
     })
 
@@ -116,11 +116,13 @@ export default class Chat {
    * it could be some other component. See the Input type in the GQL schema.
    * Returns the persisted message.
    */
-  async sendInput({ input }) {
+  async sendInput({ input: i }) {
+    const input = i
     // Persist the message in DDB.
     if (input.message) {
       // Check if the user is subscribed to this channel.
-      const subscription = await Subscription.getAsync({ userId: this.userId, channelId: input.channelId })
+      const subscription =
+      await Subscription.getAsync({ userId: this.userId, channelId: input.channelId })
 
       // If the sender was the assistnat don't throw an error.
       // The 'assistant' user doesn't receive a subscription.
@@ -139,14 +141,14 @@ export default class Chat {
       input.message = attrs
     }
 
-    if(!input.bypassQueue) {
+    if (!input.bypassQueue) {
       // Create a job to process the text. This is generally used
       // in assistant channels.
-      const job = await createJob('chat.input', input)
+      await createJob('chat.input', input)
     } else {
       // If we're skipping the job just publish the message in the pubsub.
       // This is generally used in DMs or Groups.
-      pubsub.publish(`messages.${message.channelId}`, message)
+      pubsub.publish('messages', input.message)
     }
 
     return input.message
@@ -158,8 +160,8 @@ export default class Chat {
    * and nothing more. We could register function for a more immediate
    * execution, but that's lame.
    */
-  async postback({ postback }) {
-    const job = await createJob('chat.postback', postback)
+  static async postback({ postback }) {
+    await createJob('chat.postback', postback)
   }
   /**
    * Get's a channel by its ID.
@@ -194,7 +196,7 @@ export default class Chat {
   /**
    * Gets a channel's messages.
    */
-  async getMessagesByChannelId({ channelId, limit }) {
+  static async getMessagesByChannelId({ channelId, limit }) {
     const { Items } = await Message
       .query(channelId)
       .limit(limit)

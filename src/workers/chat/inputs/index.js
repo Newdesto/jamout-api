@@ -1,17 +1,10 @@
-// IO
-import { logger, queue, pubsub, apiai } from 'io'
-import { textRequest } from 'io/apiai'
-
-// Connectors
-import channelModel from 'models/Channel'
-import Message from 'models/Message'
-const Channel = new channelModel()
-
-// Input Handlers
+import { logger, queue } from 'io'
+import Channel from 'services/chat/channel'
 import textbox from './textbox'
 import onboarding from './onboarding'
+
 const inputHandlers = {
-  'Textbox': textbox,
+  Textbox: textbox,
   ...onboarding
 }
 
@@ -19,14 +12,15 @@ const inputHandlers = {
  * This worker processes the `chat.input` job.
  * @type {Object}
  */
-queue.process('chat.input', async function chatInputWorker({ id, data: input }, done) {
+queue.process('chat.input', async ({ id, data }, done) => {
+  const input = data
   try {
     logger.debug('Processing chat.input job.')
     logger.debug(input)
     // Query for the channel details. This is where cache comes in handy.
     const channel = await Channel.getById(input.channelId)
 
-    if(!channel) {
+    if (!channel) {
       done('Channel does not exist.')
     }
 
@@ -36,7 +30,7 @@ queue.process('chat.input', async function chatInputWorker({ id, data: input }, 
     // Route it to the proper handler if it was sent a component. If not, just
     // call done. It's a weird use case if we a component-less input gets
     // queued, so just throw a warning.
-    if(!input.component) {
+    if (!input.component) {
       logger.warn(`A chat input was queued for processing but didnt't have a
       component.`)
       return done()
@@ -49,9 +43,9 @@ queue.process('chat.input', async function chatInputWorker({ id, data: input }, 
     }
 
     await inputHandler(input)
-    done()
-  } catch (e) {
-    logger.error(e)
-    done(e)
+    return done()
+  } catch (err) {
+    logger.error(err)
+    return done(err)
   }
 })

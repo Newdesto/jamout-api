@@ -1,11 +1,9 @@
 import 'app-module-path/register'
-import { app, logger, ioReadyPromise } from './io'
-import { jwt, graphql, graphiql } from './middleware'
-import { SubscriptionServer } from 'subscriptions-transport-ws'
-import { onSubscribe, subscriptionManager } from 'io/subscription'
+import startSubscriptionServer from 'io/subscription'
 import http from 'http'
 import 'workers'
-import microtime from 'microtime'
+import { app, logger } from './io'
+import { jwt, graphql, graphiql } from './middleware'
 
 logger.info('Starting Jamout API, woohoo!')
 
@@ -27,7 +25,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // setup the ws subscription server
 logger.info('Binding web socket server to http server.')
-const subscriptionServer = new SubscriptionServer({ subscriptionManager, onSubscribe }, httpServer)
+startSubscriptionServer(httpServer)
 
 logger.info('Binding express app to http server.')
 httpServer.on('request', app)

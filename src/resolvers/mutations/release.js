@@ -11,8 +11,7 @@ const type = {
 
 export default {
   createRelease(root, { input }, { user, Release }) {
-    if(!user)
-      throw new Error('Authentication failed.')
+    if (!user) { throw new Error('Authentication failed.') }
     // @TODO requirement check: 5 songs or premium
     // Possibly remove payment check to payForRelease
     // so free users can "preview"
@@ -22,28 +21,28 @@ export default {
     return Release.create(Object.assign(input, { userId: user.id, type: type[input.type], status }))
   },
   updateRelease(root, { id, input }, { user, Release }) {
-    if(!user)
-      throw new Error('Authentication failed.')
+    if (!user) { throw new Error('Authentication failed.') }
 
     return Release.update(id, input, user.id)
   },
   deleteRelease(root, { id }, { user, Release }) {
-    if(!user)
-      throw new Error('Authentication failed.')
+    if (!user) { throw new Error('Authentication failed.') }
 
     return Release.delete(user.id, id)
   },
-  async payForRelease(root, { id, stripeToken, saveSource }, { user, Release, User }) {
-    if(!user)
+  async payForRelease(root, { id, stripeToken, saveSource }, { user: u, Release, User }) {
+    let user = u
+    if (!user) {
       throw new Error('Authentication failed.')
+    }
 
     // verify the user is a customer on stripe
     // @TODO move to utils
-    if(!user.stripe || !user.stripe.customerId) {
+    if (!user.stripe || !user.stripe.customerId) {
       // saveSource = save card to customer object
       const stripeCustomer = await createCustomer({
         description: user.id, // @TODO figure out if this is good lol
-        source: stripeToken,
+        source: stripeToken
       })
 
       // update the user, bro
@@ -53,8 +52,7 @@ export default {
       // @TODO force the JWT update
     } else {
       // this is should never be thrown, but better safe than sorry
-      if(!user.stripe.customerId)
-        throw new Error('Customer data malformed.')
+      if (!user.stripe.customerId) { throw new Error('Customer data malformed.') }
 
       // if they're an existing customer fetch from Stripe
       const stripeCustomer = await getCustomer(user.stripe.customerId)

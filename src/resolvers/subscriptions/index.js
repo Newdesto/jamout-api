@@ -1,4 +1,4 @@
-import { includes, merge } from 'lodash'
+import merge from 'lodash/merge'
 import * as messages from './messages'
 
 export const setupFunctions = merge(

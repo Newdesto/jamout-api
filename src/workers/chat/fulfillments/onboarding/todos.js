@@ -1,7 +1,6 @@
 import { publishMessages, publishInput } from 'utils/chat'
 import Profile, { ProfileLoader } from 'models/Profile'
 import { createJob } from 'io/queue'
-import User from 'models/User/model'
 import { logger } from 'io'
 
 const welcome = async function welcome({ userId, channelId }, result, messages) {
@@ -23,7 +22,7 @@ const welcome = async function welcome({ userId, channelId }, result, messages) 
         subtitle: 'Add your profile picture and tell other artists about yourself.',
         defaultAction: {
           type: 'routerRedirect',
-          url: '/' + profile.permalink
+          url: `/${profile.permalink}`
         },
         buttons: [{
           title: 'Go to your profile'
@@ -45,7 +44,8 @@ const welcome = async function welcome({ userId, channelId }, result, messages) 
   /**
    * {
      title: 'Your catalogue',
-     subtitle: 'Store all your work in the cloud. Upload everything from samples to finished tracks.',
+     subtitle: 'Store all your work in the cloud.
+     Upload everything from samples to finished tracks.',
      defaultAction: {
        type: 'routerRedirect',
        url: '/me/discography'

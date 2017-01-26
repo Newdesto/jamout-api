@@ -3,9 +3,6 @@ import { logger } from 'io'
 import { eventRequest } from 'io/apiai'
 import fulfill from 'workers/chat/fulfillments'
 
-
-
-
 /**
  * This worker processes the `chat.events` job which sends an event request to
  * API.ai and routes the response to workers/chat/fulfillments.

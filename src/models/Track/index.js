@@ -1,27 +1,87 @@
 import trackModel from './model'
 
 export default class track {
-
-  async fetchAll() {
+  /**
+   * Fetches all public tracks.
+   */
+  static async fetchAll() {
     const { Items } = await trackModel
       .scan()
       .loadAll()
+      .where('isPublic').equals(true)
       .execAsync()
 
     return Items.map(t => t.attrs)
   }
 
-  async fetchByUserId(userId) {
-    if (!userId) { throw new Error('User ID is undefined.') }
+  // fetching a user's public tracks i.e. if a partner needs to see
+  static async fetchByUserId(userId) {
+    if (!userId) {
+      throw new Error('User ID is undefined.')
+    }
 
     const { Items } = await trackModel
       .scan()
-      .where('userId').equals(userId)
-      .where('isPublic').equals(true)
+      .where('userId')
+      .equals(userId)
+      .where('isPublic')
+      .equals(true)
       .execAsync()
 
     const tracks = Items.map(t => t.attrs)
 
     return tracks
   }
+  // for fetching if user's own tacks
+  static async fetchMyTracks(userId) {
+    if (!userId) { throw new Error('User ID is undefined.') }
+
+    const { Items } = await trackModel
+      .scan()
+      .where('userId').equals(userId)
+      .execAsync()
+
+    const tracks = Items.map(t => t.attrs)
+
+    return tracks
+  }
+
+  // editing tracks
+  static async editTrack(user, trackId, payload) {
+    if (!user) { throw new Error('User ID is undefined.') }
+
+    const updatedResponse = await trackModel.updateAsync({ id: trackId, ...payload })
+
+    return updatedResponse.attrs
+  }
+
+  static async createTrack(user, title, isPublic) {
+    if (!user) { throw new Error('User ID is undefined.') }
+
+    const { attrs } = await trackModel.createAsync({
+      userId: user.id, // assumes JWT is up to date
+      user: {
+        id: user.id,
+        displayName: user.username
+      },
+      title: title || 'Untitled',
+      isPublic: isPublic || false,
+      status: 'processing', // processing, failed, finished
+      type: 'original',
+      playCount: 0
+    })
+
+    return attrs
+  }
+
+  static async deleteTrack(user, trackId) {
+    if (!user) { throw new Error('User ID is undefined.') }
+    try {
+      await trackModel.destroyAsync(trackId, { expected: { userId: user.id } })
+      return 'Deleted'
+    } catch (err) {
+      return 'Failed'
+    }
+  }
+
 }

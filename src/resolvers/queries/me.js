@@ -1,5 +1,5 @@
 const resolvers = {
-  me(root, args, { user, Profile, Channel }) {
+  me(root, args, { user, Profile }) {
     if (!user) {
       throw new Error('Unauthorized.')
     }

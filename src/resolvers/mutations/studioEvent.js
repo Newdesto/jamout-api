@@ -1,9 +1,7 @@
 export default {
   createStudioEvent(root, { type, nextEvent }, { user, StudioEvent }) {
-    if(!user)
-      throw new Error('Authentication failed.')
+    if (!user) { throw new Error('Authentication failed.') }
 
-      return StudioEvent.createStudioEvent(user, type, nextEvent)
-
+    return StudioEvent.createStudioEvent(user, type, nextEvent)
   }
 }

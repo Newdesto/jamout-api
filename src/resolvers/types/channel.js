@@ -14,7 +14,7 @@ const resolvers = {
     return lastMessage[0]
   },
   async messages(channel, args, { Chat }) {
-    const messages =  await Chat.getMessagesByChannelId({
+    const messages = await Chat.getMessagesByChannelId({
       channelId: channel.id,
       limit: args.messageLimit
     })

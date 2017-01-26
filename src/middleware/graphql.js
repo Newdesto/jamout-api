@@ -1,7 +1,5 @@
 import { graphqlExpress } from 'graphql-server-express'
 import schema from 'schema'
-import Channel from 'models/Channel'
-import Message from 'models/Message'
 import Release from 'models/Release'
 import Chat from 'services/chat'
 import User, { UserLoader } from 'models/User'
@@ -25,8 +23,6 @@ export const setupSubscriptionContext = () =>
     // Profile: new Profile({ loader: profileLoader }),
       logger,
       createJob,
-      Channel: new Channel(),
-      Message: new Message(),
       Release: new Release()
     })
 
@@ -44,8 +40,6 @@ export default graphqlExpress((req) => {
       jwt: user && req.headers.authorization.slice(7),
       User: new User({ loader: userLoader }),
       Profile: new Profile({ loader: profileLoader }),
-      Channel: new Channel(),
-      Message: new Message(),
       Release: new Release(),
       StudioEvent: new StudioEvent(),
       MusicEvent: new MusicEvent(),

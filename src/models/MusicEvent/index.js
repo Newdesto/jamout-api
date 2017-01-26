@@ -1,8 +1,7 @@
 import musicEventModel from './model'
 
 export default class MusicEvent {
-
-  async createMusicEvent(partner, payload) {
+  static async createMusicEvent(partner, payload) {
     const { attrs } = await musicEventModel.createAsync({
       partner: partner.username,
       partnerId: partner.id,
@@ -10,35 +9,33 @@ export default class MusicEvent {
     })
     return attrs
   }
-
-  async fetchAll() {
+  static async fetchAll() {
     const { Items } = await musicEventModel
       .scan()
       .loadAll()
       .execAsync()
 
-    return this.sortMusicEvents(Items)
+    return MusicEvent.sortMusicEvents(Items)
   }
-  async fetchByPartnerId(partnerId) {
+  static async fetchByPartnerId(partnerId) {
     if (!partnerId) { throw new Error('User ID is undefined.') }
     const { Items } = await musicEventModel
       .scan()
       .where('partnerId').equals(partnerId)
       .execAsync()
 
-    return this.sortMusicEvents(Items)
+    return MusicEvent.sortMusicEvents(Items)
   }
-
-  sortMusicEvents(items) {
+  static sortMusicEvents(items) {
     const events = []
 
-    for (let i = 0; i < items.length; i++) {
+    for (let i = 0; i < items.length; i += 1) {
       events.push(items[i].attrs)
     }
     const sortedEvents = events.sort((a, b) => {
       const date1 = new Date(a.createdAt)
       const date2 = new Date(b.createdAt)
-      return date1 - date2
+      return date2 - date1
     })
 
     return sortedEvents

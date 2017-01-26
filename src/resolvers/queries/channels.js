@@ -1,8 +1,9 @@
 export default {
   async channels(root, args, { user, Chat, logger }) {
     try {
-      if (!user)
+      if (!user) {
         throw new Error('Authentication failed.')
+      }
 
       const channels = await Chat.getChannels()
 
@@ -11,9 +12,9 @@ export default {
       }
 
       return channels
-    } catch (e) {
-      logger.error(e)
-      throw e
+    } catch (err) {
+      logger.error(err)
+      throw err
     }
   }
 }

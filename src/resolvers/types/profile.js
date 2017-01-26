@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk'
-const s3 = new AWS.S3()
 
+const s3 = new AWS.S3()
 const Profile = `
   type Profile {
     createdAt: String!,
@@ -40,7 +40,7 @@ export const resolver = {
     const channel = await Chat.getAssistantChannel()
     return channel
   },
-  avatarUrl(profile, args, context) {
+  avatarUrl(profile) {
     const params = { Bucket: 'jamout-profile', Key: `${profile.userId}/avatar.png` }
     const url = s3.getSignedUrl('getObject', params)
     return url

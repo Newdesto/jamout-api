@@ -1,10 +1,9 @@
 import test from 'ava'
 import sinon from 'sinon'
 import Chat from '../index'
-import Channel from '../Channel'
-import Subscription from '../Subscription'
+import Channel from '../channel'
 
-test.serial('Chat class should set the userId property', t => {
+test.serial('Chat class should set the userId property', (t) => {
   const userId = 'gabe'
   const chat = new Chat({
     userId
@@ -12,14 +11,11 @@ test.serial('Chat class should set the userId property', t => {
   t.is(chat.userId, userId)
 })
 
-test.serial('Chat.sortUsersAndHash should sort an array of users and generate a unique hash', t => {
+test.serial('Chat.sortUsersAndHash should sort an array of users and generate a unique hash', (t) => {
   const users = ['b', 'a', 'c', '12', '3']
   const sortedUsers = ['12', '3', 'a', 'b', 'c']
-  const chat = new Chat({
-    userId: 'gabe'
-  })
 
-  const sorted = chat.sortUsersAndHash({ users })
+  const sorted = Chat.sortUsersAndHash({ users })
   t.deepEqual(sorted.users, sortedUsers)
   t.truthy(sorted.usersHash)
 })
@@ -27,10 +23,7 @@ test.serial('Chat.sortUsersAndHash should sort an array of users and generate a 
 test.serial('Chat.channelExistsByHash should return false', async (t) => {
   // Create instance and sort users.
   const users = ['gabe', 'beyonce']
-  const chat = new Chat({
-    userId: 'gabe'
-  })
-  const { usersHash } = chat.sortUsersAndHash({ users })
+  const { usersHash } = Chat.sortUsersAndHash({ users })
 
   // Stub the query
   const mockQuery = {
@@ -39,7 +32,7 @@ test.serial('Chat.channelExistsByHash should return false', async (t) => {
     })
   }
   sinon.stub(Channel, 'query').returns(mockQuery)
-  const existingChannel = await chat.channelExistsByHash({ usersHash })
+  const existingChannel = await Chat.channelExistsByHash({ usersHash })
   t.false(existingChannel)
   Channel.query.restore()
 })
@@ -50,10 +43,7 @@ test.serial('Chat.channelExistsByHash should return a channel', async (t) => {
 
   // Create instance and sort users.
   const users = ['gabe', 'beyonce']
-  const chat = new Chat({
-    userId: 'gabe'
-  })
-  const { usersHash } = chat.sortUsersAndHash({ users })
+  const { usersHash } = Chat.sortUsersAndHash({ users })
 
   // Stub the query
   const mockQuery = {
@@ -62,7 +52,7 @@ test.serial('Chat.channelExistsByHash should return a channel', async (t) => {
     })
   }
   sinon.stub(Channel, 'query').returns(mockQuery)
-  const existingChannel = await chat.channelExistsByHash({ usersHash })
+  const existingChannel = await Chat.channelExistsByHash({ usersHash })
   t.truthy(existingChannel)
   t.deepEqual(existingChannel, channel.attrs)
   Channel.query.restore()

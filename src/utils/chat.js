@@ -1,6 +1,6 @@
 import { pubsub, logger } from 'io'
 import uuid from 'uuid'
-import Promise from 'bluebird'
+import BPromise from 'bluebird'
 import eachSeries from 'async/eachSeries'
 import microtime from 'microtime'
 
@@ -9,7 +9,7 @@ import microtime from 'microtime'
  * @return {[type]} [description]
  */
 export const publishMessages = function publishMessages(channelId, senderId, messages) {
-  if(!channelId || !senderId || !messages) {
+  if (!channelId || !senderId || !messages) {
     throw new Error('Missing one or more arguments.')
   }
 
@@ -17,15 +17,15 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
     eachSeries(messages, async (m, cb) => {
       logger.info(`Publishing message: ${JSON.stringify(m)}`)
       // If the message is not a text message publish it and callback.
-      if(!m.text) {
-        pubsub.publish(`messages`, {
+      if (!m.text) {
+        pubsub.publish('messages', {
           ...m,
           id: uuid(),
           createdAt: new Date().toISOString()
         })
         cb()
       } else {
-        pubsub.publish(`messages`, {
+        pubsub.publish('messages', {
           channelId,
           senderId,
           id: uuid(),
@@ -33,8 +33,8 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
           action: 'typing.start',
           timestamp: microtime.nowDouble().toString()
         })
-        await Promise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * .25 * 1000)
-        pubsub.publish(`messages`, {
+        await BPromise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * 0.25 * 1000)
+        pubsub.publish('messages', {
           channelId,
           senderId,
           id: uuid(),
@@ -42,14 +42,14 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
           action: 'typing.stop',
           timestamp: microtime.nowDouble().toString()
         })
-        pubsub.publish(`messages`, {
+        pubsub.publish('messages', {
           ...m,
           id: uuid(),
           createdAt: new Date().toISOString()
         })
         cb()
       }
-    }, err => {
+    }, (err) => {
       if (err) {
         reject(err)
       }
@@ -66,7 +66,7 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
  * @return {[type]} [description]
  */
 export const publishInput = function publishInput(channelId, component, metadata) {
-  if(!channelId || !component) {
+  if (!channelId || !component) {
     logger.error('Missing one or more arguments to publish input.')
     throw new Error('Missing one or more arguments.')
   }

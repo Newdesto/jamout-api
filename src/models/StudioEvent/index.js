@@ -1,6 +1,7 @@
-import studioEventModel from './model'
 import userModel from 'models/User/model'
-import Channel from '../Channel'
+// @TODO Strictly use the Chat class. Do NOT work with the model directly.
+import Channel from 'services/chat/channel'
+import studioEventModel from './model'
 
 export default class StudioEvent {
   async fetchAll() {
@@ -11,7 +12,6 @@ export default class StudioEvent {
 
     return this.sortStudioEvents(Items)
   }
-
   async fetchByUserId(userId) {
     if (!userId) { throw new Error('User ID is undefined.') }
     const { Items } = await studioEventModel
@@ -21,16 +21,14 @@ export default class StudioEvent {
 
     return this.sortStudioEvents(Items)
   }
-
-
-  sortStudioEvents(items) {
+  static sortStudioEvents(items) {
     let events = items.map(i => i.attrs)
     const sortedEvents = []
 
     while (events.length !== 0) {
       const sortedEvent = events.filter(e => e.sessionId === events[0].sessionId).sort((a, b) => {
         const date1 = new Date(a.createdAt)
-        const date2 = new Date(a.createdAt)
+        const date2 = new Date(b.createdAt)
         return date1 - date2
       })
 
@@ -61,7 +59,8 @@ export default class StudioEvent {
       await channel.createChannel('d', users)
     }
 
-  // session types: inquiry pending, inquiry denied, inquiry accepted, session planned, artist paid, session completed, review
+  // session types: inquiry pending, inquiry denied, inquiry accepted,
+  // session planned, artist paid, session completed, review
     switch (type) {
       case 'new-inquiry':
         attrs = await studioEventModel.createAsync({
@@ -96,32 +95,30 @@ export default class StudioEvent {
       case 'session planned':
         attrs = await studioEventModel.createAsync({
           userId: user.id, // id the user who made the request
-          studioId: currentEvent.studioId, // id of the studio?
-          studio: currentEvent.studio,
-          startDate: nextEvent.startDate,
-          endDate: nextEvent.endDate,
+          studioId: payload.studioId, // id of the studio?
+          studio: payload.studio,
+          startDate: payload.startDate,
+          endDate: payload.endDate,
           type: 'session planned',
-          sessionId: currentEvent.sessionId
+          sessionId: payload.sessionId
         })
         return attrs.attrs
       case 'artist paid':
         attrs = await studioEventModel.createAsync({
           userId: user.id, // id the user who made the request
-          studioId: currentEvent.studioId, // id of the studio?
-          studio: currentEvent.studio,
-          startDate: nextEvent.startDate,
-          endDate: nextEvent.endDate,
+          studioId: payload.studioId, // id of the studio?
+          studio: payload.studio,
+          startDate: payload.startDate,
+          endDate: payload.endDate,
           type: 'artist paid',
-          sessionId: currentEvent.sessionId
+          sessionId: payload.sessionId
         })
         return attrs.attrs
       default:
         return attrs
     }
-    return attrs
   }
-
-  idStudio(studio) {
+  static idStudio(studio) {
     return studio.toLowerCase().replace(' ', '-')
   }
 

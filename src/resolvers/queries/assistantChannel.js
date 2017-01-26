@@ -3,9 +3,9 @@ const resolvers = {
     try {
       const channel = await Chat.getAssistantChannel()
       return channel
-    } catch (e) {
-      logger.error(e)
-      throw e
+    } catch (err) {
+      logger.error(err)
+      throw err
     }
   }
 }

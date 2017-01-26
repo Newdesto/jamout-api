@@ -3,7 +3,8 @@
  */
 
 export default {
-  openChannel(root, args, { user, Chat, logger }) {
+  openChannel(root, a, { user, Chat, logger }) {
+    const args = a
     try {
       if (!user) {
         throw new Error('Authentication failed.')
@@ -28,9 +29,9 @@ export default {
         name: args.name,
         users: args.users
       })
-    } catch (e) {
-      logger.error(e)
-      throw e
+    } catch (err) {
+      logger.error(err)
+      throw err
     }
   },
   async sendInput(root, { input }, { user, Chat, logger }) {
@@ -48,22 +49,22 @@ export default {
         }
       })
       return message
-    } catch (e) {
-      logger.error(e)
-      throw e
+    } catch (err) {
+      logger.error(err)
+      throw err
     }
   },
-  async postback(root, { input }, { user, Chat }) {
+  async postback(root, { input }, { user, Chat, logger }) {
     try {
       if (!user) {
         throw new Error('Authentication failed.')
       }
 
-      const job = await Chat.postback({ postback: input })
+      await Chat.postback({ postback: input })
       return
-    } catch (e) {
-      logger.error(e)
-      throw e
+    } catch (err) {
+      logger.error(err)
+      throw err
     }
   }
 }
