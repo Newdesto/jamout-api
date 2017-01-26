@@ -31,12 +31,10 @@ export const createJob = function createJob(name, data, delay) {
   return new Promise((resolve, reject) => {
     const job = queue.create(name, data)
 
-    if (delay)
-      job.delay(delay)
+    if (delay) { job.delay(delay) }
 
-    return job.save(error => {
-      if (error)
-        reject(error)
+    return job.save((error) => {
+      if (error) { reject(error) }
       resolve(job)
     })
   })

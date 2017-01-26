@@ -1,14 +1,14 @@
-import channelModel from './model'
-import subscriptionModel from '../Subscription'
 import crypto from 'crypto'
 import { createError } from 'apollo-errors'
+import channelModel from './model'
+import subscriptionModel from '../subscription'
 
 const ChannelExistsError = createError('ChannelExistsError', {
   message: 'Channel already exists.'
 })
 
 export default class Channel {
-  async getChannelsByUserId(userId) {
+  static async getChannelsByUserId(userId) {
     const { Items } = await subscriptionModel
       .query(userId)
       .execAsync()
@@ -18,17 +18,17 @@ export default class Channel {
     const channels = await channelModel.getItemsAsync(channelIds)
     return channels.map(item => item.attrs)
   }
-  async getById(id) {
+  static async getById(id) {
     const channel = await channelModel.getAsync(id)
     // @TODO Check if the user has a subscription
 
-    if(channel && channel.attrs) {
+    if (channel && channel.attrs) {
       return channel.attrs
     }
 
     return null
   }
-  async createChannel(type, users) {
+  static async createChannel(type, users) {
     // Sort the user's who are in the channel and create a unique hash.
     const sortedUsers = users.sort()
     const usersHash = crypto.createHash('sha1').update(JSON.stringify(sortedUsers)).digest('hex')
@@ -43,8 +43,7 @@ export default class Channel {
       .select('COUNT')
       .execAsync()
 
-    if(exists)
-      throw new ChannelExistsError()
+    if (exists) { throw new ChannelExistsError() }
 
     // if none exists let's create it
     // @NOTE: Strictly DMs (name = null)
@@ -55,7 +54,7 @@ export default class Channel {
     })
 
     // let's create a subscription index for each user in the users array
-    const subscriptions = await subscriptionModel.createAsync(users.map(userId => ({ userId, channelId: channel.id })))
+    await subscriptionModel.createAsync(users.map(userId => ({ userId, channelId: channel.id })))
 
     return channel
   }

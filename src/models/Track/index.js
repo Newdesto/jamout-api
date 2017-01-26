@@ -1,9 +1,10 @@
 import trackModel from './model'
 
 export default class track {
-
-  // fetches all tracks
-  async fetchAll() {
+  /**
+   * Fetches all public tracks.
+   */
+  static async fetchAll() {
     const { Items } = await trackModel
       .scan()
       .loadAll()
@@ -14,13 +15,17 @@ export default class track {
   }
 
   // fetching a user's public tracks i.e. if a partner needs to see
-  async fetchByUserId(userId) {
-    if (!userId) { throw new Error('User ID is undefined.') }
+  static async fetchByUserId(userId) {
+    if (!userId) {
+      throw new Error('User ID is undefined.')
+    }
 
     const { Items } = await trackModel
       .scan()
-      .where('userId').equals(userId)
-      .where('isPublic').equals(true)
+      .where('userId')
+      .equals(userId)
+      .where('isPublic')
+      .equals(true)
       .execAsync()
 
     const tracks = Items.map(t => t.attrs)
@@ -28,7 +33,7 @@ export default class track {
     return tracks
   }
   // for fetching if user's own tacks
-  async fetchMyTracks(userId) {
+  static async fetchMyTracks(userId) {
     if (!userId) { throw new Error('User ID is undefined.') }
 
     const { Items } = await trackModel
@@ -42,7 +47,7 @@ export default class track {
   }
 
   // editing tracks
-  async editTrack(user, trackId, payload) {
+  static async editTrack(user, trackId, payload) {
     if (!user) { throw new Error('User ID is undefined.') }
 
     const updatedResponse = await trackModel.updateAsync({ id: trackId, ...payload })
@@ -50,7 +55,7 @@ export default class track {
     return updatedResponse.attrs
   }
 
-  async createTrack(user, title, isPublic) {
+  static async createTrack(user, title, isPublic) {
     if (!user) { throw new Error('User ID is undefined.') }
 
     const { attrs } = await trackModel.createAsync({
@@ -69,12 +74,12 @@ export default class track {
     return attrs
   }
 
-  async deleteTrack(user, trackId) {
+  static async deleteTrack(user, trackId) {
     if (!user) { throw new Error('User ID is undefined.') }
     try {
       await trackModel.destroyAsync(trackId, { expected: { userId: user.id } })
       return 'Deleted'
-    } catch (e) {
+    } catch (err) {
       return 'Failed'
     }
   }

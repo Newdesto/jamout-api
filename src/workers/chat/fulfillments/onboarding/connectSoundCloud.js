@@ -2,7 +2,8 @@ import { publishMessages, publishInput } from 'utils/chat'
 import { createJob } from 'io/queue'
 import { logger } from 'io'
 
-const connectSoundCloud = async function connectSoundCloud({ userId, channelId }, result, messages) {
+const connectSoundCloud =
+async function connectSoundCloud({ userId, channelId }, result, messages) {
   logger.debug('Processing onboarding.profileSetup.soundcloud.connect action.')
 
   // Schedule persistence

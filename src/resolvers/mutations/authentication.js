@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+
 const secret = process.env.JWT_SECRET
 
 const resolvers = {
@@ -16,12 +17,12 @@ const resolvers = {
 
     return User.create(args)
   },
-  async verifyToken(root, { token }, context) {
+  async verifyToken(root, { token }) {
     try {
       // Verify will handle both signature and expiration
-      const decoded = await jwt.verify(token, secret)
+      await jwt.verify(token, secret)
       return true
-    } catch (e) {
+    } catch (err) {
       return false
     }
   }

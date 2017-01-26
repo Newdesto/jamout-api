@@ -1,6 +1,6 @@
 import { pubsub, logger } from 'io'
 import uuid from 'uuid'
-import Promise from 'bluebird'
+import BPromise from 'bluebird'
 import eachSeries from 'async/eachSeries'
 
 /**
@@ -8,14 +8,14 @@ import eachSeries from 'async/eachSeries'
  * @return {[type]} [description]
  */
 export const publishMessages = function publishMessages(channelId, senderId, messages) {
-  if(!channelId || !senderId || !messages) {
+  if (!channelId || !senderId || !messages) {
     throw new Error('Missing one or more arguments.')
   }
 
   return new Promise((resolve, reject) => {
     eachSeries(messages, async (m, cb) => {
       // If the message is not a text message publish it and callback.
-      if(!m.text) {
+      if (!m.text) {
         pubsub.publish(`messages.${channelId}`, {
           ...m,
           id: uuid(),
@@ -30,7 +30,7 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
           createdAt: new Date().toISOString(),
           action: 'typing.start'
         })
-        await Promise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * .25 * 1000)
+        await BPromise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * 0.25 * 1000)
         pubsub.publish(`messages.${channelId}`, {
           channelId,
           senderId,
@@ -45,7 +45,7 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
         })
         cb()
       }
-    }, err => {
+    }, (err) => {
       if (err) {
         reject(err)
       }
@@ -62,7 +62,7 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
  * @return {[type]} [description]
  */
 export const publishInput = function publishInput(channelId, component, metadata) {
-  if(!channelId || !component) {
+  if (!channelId || !component) {
     logger.error('Missing one or more arguments to publish input.')
     throw new Error('Missing one or more arguments.')
   }

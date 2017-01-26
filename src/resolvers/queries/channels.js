@@ -1,7 +1,6 @@
 export default {
   async channels(root, args, { user, Channel }) {
-    if (!user)
-      throw new Error('Authentication failed.')
+    if (!user) { throw new Error('Authentication failed.') }
 
     const channels = await Channel.getChannelsByUserId(user.id)
 

@@ -1,1 +1,3 @@
-export chat from './chat'
+import chat from './chat'
+
+export default chat

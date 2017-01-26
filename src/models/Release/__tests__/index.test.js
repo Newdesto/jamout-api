@@ -22,10 +22,8 @@ test.serial('Release.fetchAll should return an array of releases with a status, 
     })
   }
 
-  const newRelease = new Release()
-
   sinon.stub(releaseModel, 'scan').returns(mockScan)
-  const existingRelease = await newRelease.fetchAll()
+  const existingRelease = await Release.fetchAll()
 
   t.truthy(existingRelease)
   t.deepEqual(existingRelease, [release.attrs])
@@ -44,10 +42,8 @@ test.serial('Release.fetchByUserId should return an array of all a user\'s relea
     })
   }
 
-  const newRelease = new Release()
-
   sinon.stub(releaseModel, 'scan').returns(mockScan)
-  const existingRelease = await newRelease.fetchByUserId('foo')
+  const existingRelease = await Release.fetchByUserId('foo')
 
   t.truthy(existingRelease)
   t.deepEqual(existingRelease, [release.attrs])
@@ -57,10 +53,8 @@ test.serial('Release.fetchByUserId should return an array of all a user\'s relea
 test.serial('Release.fetchById should return a single release', async (t) => {
   const release = { attrs: { id: 'asdf9a023f-34fasf234-adids98g' } }
 
-  const newRelease = new Release()
-
   sinon.stub(releaseModel, 'getAsync').returns(release)
-  const existingRelease = await newRelease.fetchById('foo')
+  const existingRelease = await Release.fetchById('foo')
 
   t.truthy(existingRelease)
   t.deepEqual(existingRelease, release.attrs)
@@ -70,10 +64,8 @@ test.serial('Release.fetchById should return a single release', async (t) => {
 test.serial('Release.create should return a single release', async (t) => {
   const release = { attrs: { id: 'asdf9a023f-34fasf234-adids98g' } }
 
-  const newRelease = new Release()
-
   sinon.stub(releaseModel, 'createAsync').returns(release)
-  const existingRelease = await newRelease.create()
+  const existingRelease = await Release.create()
 
   t.truthy(existingRelease)
   t.deepEqual(existingRelease, release.attrs)

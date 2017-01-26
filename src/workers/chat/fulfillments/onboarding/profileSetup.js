@@ -12,8 +12,8 @@ const profileSetup = async function profileSetup({ userId, channelId }, result, 
   try {
     logger.debug('Publishing onboarding/profileSetup responses.')
     await publishMessages(channelId, 'assistant', messages)
-  } catch (e) {
-    logger.error(e)
+  } catch (err) {
+    logger.error(err)
   }
 
   // Then update the input to onboarding.ReadyButton

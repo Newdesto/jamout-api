@@ -2,25 +2,21 @@
  * Combines all of the type resolvers
  */
 
-import Channel from './Channel'
-import { resolver as messageResolver } from './Message'
-import MessageAttachment from './MessageAttachment'
-import { resolver as profileResolver } from './Profile'
-import { resolver as releaseResolver } from './Release'
-import StudioEvent from './StudioEvent'
-import StudioEventInput from './StudioEventInput'
-import MusicEvent from './MusicEvent'
-import Connection from './Connection'
-import Track from './Track'
+import Channel from './channel'
+import Message from './message'
+import MessageAttachment from './messageAttachment'
+import { resolver as profileResolver } from './profile'
+import Release from './release'
+import MusicEvent from './musicEvent'
+import Connection from './connection'
+import Track from './track'
 
 export default {
   Channel,
-  Message: messageResolver,
+  Message,
   MessageAttachment,
   Profile: profileResolver,
-  Release: releaseResolver,
-  StudioEvent,
-  StudioEventInput,
+  Release,
   MusicEvent,
   Connection,
   Track

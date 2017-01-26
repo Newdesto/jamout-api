@@ -6,10 +6,8 @@ import musicEventModel from '../model'
 test.serial('MusicEvent.createEventArtist should return a new MusicEvent', async (t) => {
   const musicEvent = { attrs: { id: 'asdf9a023f-34fasf234-adids98g' } }
 
-  const newMusicEvent = new MusicEvent()
-
   sinon.stub(musicEventModel, 'createAsync').returns(musicEvent)
-  const existingMusicEvent = await newMusicEvent.createMusicEvent({ id: 'asdfas', username: 'adfas' }, {})
+  const existingMusicEvent = await MusicEvent.createMusicEvent({ id: 'asdfas', username: 'adfas' }, {})
 
   t.truthy(existingMusicEvent)
   t.deepEqual(existingMusicEvent, musicEvent.attrs)
@@ -24,10 +22,9 @@ test.serial('MusicEvent.fetchAll should return an array of music events', async 
       execAsync: () => ({ Items: [musicEvent], Count: 1 })
     })
   }
-  const newMusicEvent = new MusicEvent()
 
   sinon.stub(musicEventModel, 'scan').returns(mockScan)
-  const existingMusicEvent = await newMusicEvent.fetchAll()
+  const existingMusicEvent = await MusicEvent.fetchAll()
 
   t.truthy(existingMusicEvent)
   t.deepEqual(existingMusicEvent, [musicEvent.attrs])
@@ -44,10 +41,9 @@ test.serial('MusicEvent.fetchByPartnerId should return an array of music events'
       })
     })
   }
-  const newMusicEvent = new MusicEvent()
 
   sinon.stub(musicEventModel, 'scan').returns(mockScan)
-  const existingMusicEvent = await newMusicEvent.fetchByPartnerId('asdfasdf')
+  const existingMusicEvent = await MusicEvent.fetchByPartnerId('asdfasdf')
 
   t.truthy(existingMusicEvent)
   t.deepEqual(existingMusicEvent, [musicEvent.attrs])
@@ -57,8 +53,7 @@ test.serial('MusicEvent.fetchByPartnerId should return an array of music events'
 test.serial('Sort music Events sorts the events(newest to oldest)', (t) => {
   const items = [{ attrs: { createdAt: '2017-01-18T22:13:07.406Z' } }, { attrs: { createdAt: '2017-02-18T22:13:07.406Z' } }]
   const sortedItems = [{ createdAt: '2017-02-18T22:13:07.406Z' }, { createdAt: '2017-01-18T22:13:07.406Z' }]
-  const newMusicEvent = new MusicEvent()
-  const newSortedItems = newMusicEvent.sortMusicEvents(items)
+  const newSortedItems = MusicEvent.sortMusicEvents(items)
   t.truthy(sortedItems)
   t.deepEqual(newSortedItems, sortedItems)
 })

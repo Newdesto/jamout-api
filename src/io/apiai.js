@@ -5,6 +5,7 @@
  * See https://docs.api.ai/docs/reference for more information.
  */
 import request from 'request'
+import logger from 'io/logger'
 
 /**
  * See (https://docs.api.ai/docs/query)
@@ -28,18 +29,18 @@ export const textRequest = function textRequest(text, options) {
         ...options
       })
     }, (error, response, body) => {
-      body = JSON.parse(body)
+      const parsedBody = JSON.parse(body)
 
       // Do some error checking.
       if (error) {
         reject(error)
-      } else if (body.status.code !== 200) {
-        reject(new Error(body.status.errorDetails))
-      } else if (body.status.errorType === 'deprecated') {
+      } else if (parsedBody.status.code !== 200) {
+        reject(new Error(parsedBody.status.errorDetails))
+      } else if (parsedBody.status.errorType === 'deprecated') {
         logger.warn('API.ai returned a deprecated error type.')
       }
 
-      resolve(body)
+      resolve(parsedBody)
     })
   })
 }
@@ -66,18 +67,18 @@ export const eventRequest = function eventRequest(event, options) {
         ...options
       })
     }, (error, response, body) => {
-      body = JSON.parse(body)
+      const parsedBody = JSON.parse(body)
 
       // Do some error checking.
       if (error) {
         reject(error)
-      } else if (body.status.code !== 200) {
-        reject(new Error(body.status.errorDetails))
-      } else if (body.status.errorType === 'deprecated') {
+      } else if (parsedBody.status.code !== 200) {
+        reject(new Error(parsedBody.status.errorDetails))
+      } else if (parsedBody.status.errorType === 'deprecated') {
         logger.warn('API.ai returned a deprecated error type.')
       }
 
-      resolve(body)
+      resolve(parsedBody)
     })
   })
 }

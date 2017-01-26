@@ -1,8 +1,9 @@
 import AWS from 'aws-sdk'
+
 const s3 = new AWS.S3()
 
 const resolver = {
-  url(attachment, args, context) {
+  url(attachment) {
     if (!attachment.bucket || !attachment.key) {
       return null
     }
