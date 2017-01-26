@@ -12,16 +12,7 @@ machine:
     - redis
 
 dependencies:
-  pre:
-    - |
-      if [[ ! -e ~/.yarn/bin/yarn || $(yarn --version) != "${YARN_VERSION}" ]]; then
-        echo "Download and install Yarn."
-        curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
-      else
-        echo "The correct version of Yarn is already installed."
-      fi
   cache_directories:
-    - ~/.yarn
     - ~/.cache/yarn
   override:
     - yarn install
