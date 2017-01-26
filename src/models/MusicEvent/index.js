@@ -9,22 +9,22 @@ export default class MusicEvent {
     })
     return attrs
   }
-  async fetchAll() {
+  static async fetchAll() {
     const { Items } = await musicEventModel
       .scan()
       .loadAll()
       .execAsync()
 
-    return this.sortMusicEvents(Items)
+    return MusicEvent.sortMusicEvents(Items)
   }
-  async fetchByPartnerId(partnerId) {
+  static async fetchByPartnerId(partnerId) {
     if (!partnerId) { throw new Error('User ID is undefined.') }
     const { Items } = await musicEventModel
       .scan()
       .where('partnerId').equals(partnerId)
       .execAsync()
 
-    return this.sortMusicEvents(Items)
+    return MusicEvent.sortMusicEvents(Items)
   }
   static sortMusicEvents(items) {
     const events = []

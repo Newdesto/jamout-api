@@ -77,9 +77,9 @@ export default class Release {
       throw err
     }
   }
-  async pay({ id, email, customerId, source }) {
+  static async pay({ id, email, customerId, source }) {
     // get the order
-    const order = await this.fetchById(id)
+    const order = await Release.fetchById(id)
 
     // create the order
     const newOrder = await createOrder({

@@ -35,12 +35,12 @@ export const textRequest = function textRequest(text, options) {
       if (error) {
         reject(error)
       } else if (parsedBody.status.code !== 200) {
-        reject(new Error(body.status.errorDetails))
+        reject(new Error(parsedBody.status.errorDetails))
       } else if (parsedBody.status.errorType === 'deprecated') {
         logger.warn('API.ai returned a deprecated error type.')
       }
 
-      resolve(body)
+      resolve(parsedBody)
     })
   })
 }
@@ -73,12 +73,12 @@ export const eventRequest = function eventRequest(event, options) {
       if (error) {
         reject(error)
       } else if (parsedBody.status.code !== 200) {
-        reject(new Error(body.status.errorDetails))
+        reject(new Error(parsedBody.status.errorDetails))
       } else if (parsedBody.status.errorType === 'deprecated') {
         logger.warn('API.ai returned a deprecated error type.')
       }
 
-      resolve(body)
+      resolve(parsedBody)
     })
   })
 }

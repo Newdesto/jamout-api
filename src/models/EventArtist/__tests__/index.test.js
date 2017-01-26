@@ -6,10 +6,8 @@ import eventArtistModel from '../model'
 test.serial('EventArtist.createEventArtist should return a new EventArtist', async (t) => {
   const eventArtist = { attrs: { id: 'asdf9a023f-34fasf234-adids98g' } }
 
-  const newEventArtist = new EventArtist()
-
   sinon.stub(eventArtistModel, 'createAsync').returns(eventArtist)
-  const existingEventArtist = await newEventArtist.createEventArtist({ id: 'asdfas', username: 'adfas' }, {})
+  const existingEventArtist = await EventArtist.createEventArtist({ id: 'asdfas', username: 'adfas' }, {})
 
   t.truthy(existingEventArtist)
   t.deepEqual(existingEventArtist, eventArtist.attrs)
@@ -27,10 +25,8 @@ test.serial('EventArtist.fetchByEventId should return an array of EventArtists',
     })
   }
 
-  const newEventArtist = new EventArtist()
-
   sinon.stub(eventArtistModel, 'scan').returns(mockScan)
-  const existingEventArtist = await newEventArtist.fetchByEventId({ id: 'asdfas', username: 'adfas' }, { eventId: 'asfs' })
+  const existingEventArtist = await EventArtist.fetchByEventId({ id: 'asdfas', username: 'adfas' }, { eventId: 'asfs' })
 
   t.truthy(existingEventArtist)
   t.deepEqual(existingEventArtist, [eventArtist.attrs])
@@ -48,10 +44,8 @@ test.serial('EventArtist.fetchByPartnerId should return an array of EventArtists
     })
   }
 
-  const newEventArtist = new EventArtist()
-
   sinon.stub(eventArtistModel, 'scan').returns(mockScan)
-  const existingEventArtist = await newEventArtist.fetchByPartnerId({ id: 'asdfas' })
+  const existingEventArtist = await EventArtist.fetchByPartnerId({ id: 'asdfas' })
 
   t.truthy(existingEventArtist)
   t.deepEqual(existingEventArtist, [eventArtist.attrs])
@@ -70,10 +64,8 @@ test.serial('EventArtist.fetchByUserId should return an array of EventArtists', 
     })
   }
 
-  const newEventArtist = new EventArtist()
-
   sinon.stub(eventArtistModel, 'scan').returns(mockScan)
-  const existingEventArtist = await newEventArtist.fetchByUserId({ id: 'asdfas' })
+  const existingEventArtist = await EventArtist.fetchByUserId({ id: 'asdfas' })
 
   t.truthy(existingEventArtist)
   t.deepEqual(existingEventArtist, [eventArtist.attrs])
@@ -83,10 +75,8 @@ test.serial('EventArtist.fetchByUserId should return an array of EventArtists', 
 test.serial('EventArtist.updateEventArtistId should return an updated EventArtist', async (t) => {
   const eventArtist = { attrs: { id: 'asdf9a023f-34fasf234-adids98g' } }
 
-  const newEventArtist = new EventArtist()
-
   sinon.stub(eventArtistModel, 'updateAsync').returns(eventArtist)
-  const existingEventArtist = await newEventArtist.updateEventArtist({ id: 'asdfas' }, {}, {})
+  const existingEventArtist = await EventArtist.updateEventArtist({ id: 'asdfas' }, {}, {})
 
   t.truthy(existingEventArtist)
   t.deepEqual(existingEventArtist, eventArtist.attrs)

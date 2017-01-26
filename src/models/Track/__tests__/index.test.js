@@ -19,10 +19,9 @@ test.serial('Track.fetchAll should return an array of all public tracks', async 
       })
     })
   }
-  const newTrack = new Track()
 
   sinon.stub(trackModel, 'scan').returns(mockScan)
-  const existingTrack = await newTrack.fetchAll()
+  const existingTrack = await Track.fetchAll()
 
   t.truthy(existingTrack)
   t.deepEqual(existingTrack, [track.attrs])
@@ -49,11 +48,8 @@ test.serial('Track.fetchByUserId should return an array of user\'s public tracks
     })
   }
 
-
-  const newTrack = new Track()
-
   sinon.stub(trackModel, 'scan').returns(mockScan)
-  const existingTrack = await newTrack.fetchByUserId(userId)
+  const existingTrack = await Track.fetchByUserId(userId)
 
   t.truthy(existingTrack)
   t.deepEqual(existingTrack, [track.attrs])
@@ -76,11 +72,8 @@ test.serial('Track.fetchMyTracks should return an array of all the user\'s track
     })
   }
 
-
-  const newTrack = new Track()
-
   sinon.stub(trackModel, 'scan').returns(mockScan)
-  const existingTrack = await newTrack.fetchMyTracks(userId)
+  const existingTrack = await Track.fetchMyTracks(userId)
 
   t.truthy(existingTrack)
   t.deepEqual(existingTrack, [track.attrs])
@@ -93,10 +86,9 @@ test.serial('Track.editTrack returns a single editted track', async (t) => {
       id: 'adfasdf'
     }
   }
-  const newTrack = new Track()
 
   sinon.stub(trackModel, 'updateAsync').returns(track)
-  const existingTrack = await newTrack.editTrack({ userId: 'asdf' }, 'asfas', { artworkKey: 'asdfa' })
+  const existingTrack = await Track.editTrack({ userId: 'asdf' }, 'asfas', { artworkKey: 'asdfa' })
   t.truthy(existingTrack)
   t.deepEqual(existingTrack, track.attrs)
   trackModel.updateAsync.restore()
@@ -108,10 +100,9 @@ test.serial('Track.createTrack returns a single track', async (t) => {
       id: 'adfasdf'
     }
   }
-  const newTrack = new Track()
 
   sinon.stub(trackModel, 'createAsync').returns(track)
-  const existingTrack = await newTrack.createTrack({ userId: 'asdf' }, 'asfas', false)
+  const existingTrack = await Track.createTrack({ userId: 'asdf' }, 'asfas', false)
   t.truthy(existingTrack)
   t.deepEqual(existingTrack, track.attrs)
   trackModel.createAsync.restore()
@@ -119,10 +110,9 @@ test.serial('Track.createTrack returns a single track', async (t) => {
 
 test.serial('Track.deleteTrack returns a string for failure/success', async (t) => {
   const response = 'Deleted'
-  const newTrack = new Track()
 
   sinon.stub(trackModel, 'destroyAsync').returns(response)
-  const existingTrack = await newTrack.deleteTrack({ userId: 'asdf' }, 'asfas')
+  const existingTrack = await Track.deleteTrack({ userId: 'asdf' }, 'asfas')
   t.truthy(existingTrack)
   t.deepEqual(existingTrack, response)
   trackModel.destroyAsync.restore()
