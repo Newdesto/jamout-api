@@ -4,10 +4,10 @@ import shortid from 'shortid'
 import { pubsub } from 'io/subscription'
 import microtime from 'microtime'
 import { createJob } from 'io/queue'
+import { publishMessages } from 'utils/chat'
 import Channel from './channel'
 import Message from './message'
 import Subscription from './subscription'
-import { publishMessages } from 'utils/chat'
 
 /**
  * The chat service which is injected into the context of GQL queries. It's

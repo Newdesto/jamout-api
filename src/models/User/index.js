@@ -12,6 +12,9 @@ export default class User {
     this.loader = loader
     this.fetchByIds = ::this.fetchByIds
     this.fetchById = :: this.fetchById
+    // Binded for GQL context
+    this.login = User.login
+    this.create = User.create
   }
   static async usernameExists(username) {
     const existingUsernames = await userModel
@@ -31,7 +34,7 @@ export default class User {
     if (existingEmails.Count !== 0) { return existingEmails.Items[0].attrs }
     return false
   }
-  async login({ email, password }) {
+  static async login({ email, password }) {
     const user = await User.emailExists(email)
     if (!user) {
       throw new Error('Invalid email or password.')
@@ -44,7 +47,7 @@ export default class User {
     const accessToken = jwt.sign(user, secret)
     return accessToken
   }
-  async create({ email, username, password }) {
+  static async create({ email, username, password }) {
     if (await User.emailExists(email)) { throw new Error('Email already exists.') }
     if (await User.usernameExists(username)) { throw new Error('Username already exists.') }
 
