@@ -16,6 +16,8 @@ import Subscription from './subscription'
 export default class Chat {
   constructor({ userId }) {
     this.userId = userId
+    // Binding static methods to this instance.
+    this.getMessagesByChannelId = Chat.getMessagesByChannelId
   }
   /**
    * Sorts an array of user IDs and creates a unique SHA1 hash.

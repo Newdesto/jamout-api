@@ -8,7 +8,7 @@ import { setupSubscriptionContext } from 'middleware/graphql'
 // engine, the setupFunctions from our resolver/subscription
 // folder and our entire GQL schema.
 export const pubsub = new PubSub()
-export const subscriptionManager = new SubscriptionManager({
+const subscriptionManager = new SubscriptionManager({
   schema,
   pubsub,
   setupFunctions
@@ -18,12 +18,11 @@ export const subscriptionManager = new SubscriptionManager({
  * An onSubscribe listener that initializes the context and parameters for
  * the resolvers.
  */
-export const onSubscribe = (msg, params) => ({
+const onSubscribe = (msg, params) => ({
   ...params,
   context: setupSubscriptionContext()
 })
-const startSubscriptionServer = function startSubscriptionServer(httpServer) {
+
+export const startSubscriptionServer = function startSubscriptionServer(httpServer) {
   return new SubscriptionServer({ subscriptionManager, onSubscribe }, httpServer)
 }
-
-export default startSubscriptionServer

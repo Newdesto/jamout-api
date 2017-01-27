@@ -18,7 +18,7 @@ queue.process('chat.input', async ({ id, data }, done) => {
     logger.debug('Processing chat.input job.')
     logger.debug(input)
     // Query for the channel details. This is where cache comes in handy.
-    const channel = await Channel.getById(input.channelId)
+    const channel = await Channel.getAsync(input.channelId)
 
     if (!channel) {
       done('Channel does not exist.')

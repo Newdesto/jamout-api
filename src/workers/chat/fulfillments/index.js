@@ -1,6 +1,6 @@
 import { logger } from 'io'
 import { createJob } from 'io/queue'
-import { fulfillmentToMessages } from 'utils/apiai'
+import fulfillmentToMessages from 'utils/apiai'
 import Promise from 'bluebird'
 import { publishMessages } from 'utils/chat'
 import onboarding from './onboarding'

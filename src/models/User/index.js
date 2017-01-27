@@ -32,7 +32,7 @@ export default class User {
     return false
   }
   async login({ email, password }) {
-    const user = await this.emailExists(email)
+    const user = await User.emailExists(email)
     if (!user) {
       throw new Error('Invalid email or password.')
     }
@@ -45,8 +45,8 @@ export default class User {
     return accessToken
   }
   async create({ email, username, password }) {
-    if (await this.emailExists(email)) { throw new Error('Email already exists.') }
-    if (await this.usernameExists(username)) { throw new Error('Username already exists.') }
+    if (await User.emailExists(email)) { throw new Error('Email already exists.') }
+    if (await User.usernameExists(username)) { throw new Error('Username already exists.') }
 
     const hashedPassword = await hashPassword(password)
     const { attrs: user } = await userModel.createAsync({

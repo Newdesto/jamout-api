@@ -1,5 +1,5 @@
 import 'app-module-path/register'
-import startSubscriptionServer from 'io/subscription'
+import { startSubscriptionServer } from 'io/subscription'
 import http from 'http'
 import 'workers'
 import { app, logger } from './io'

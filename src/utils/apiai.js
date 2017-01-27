@@ -68,6 +68,4 @@ function fulfillmentToMessages(channelId, { speech, messages }) {
   return flatten(messages.map(m => convertMessage(channelId, m)))
 }
 
-export default {
-  fulfillmentToMessages
-}
+export default fulfillmentToMessages
