@@ -20,7 +20,7 @@ const subscriptionManager = new SubscriptionManager({
  */
 const onSubscribe = (msg, params) => ({
   ...params,
-  context: setupSubscriptionContext()
+  context: setupSubscriptionContext(msg.variables && msg.variables.jwt)
 })
 
 export const startSubscriptionServer = function startSubscriptionServer(httpServer) {

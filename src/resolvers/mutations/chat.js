@@ -66,5 +66,18 @@ export default {
       logger.error(err)
       throw err
     }
+  },
+  async updateMessage(root, args, { user, Chat, logger }) {
+    try {
+      if (!user) {
+        throw new Error('Authentication failed.')
+      }
+
+      const message = await Chat.updateMessage(args.input)
+      return message
+    } catch (err) {
+      logger.error(err)
+      throw err
+    }
   }
 }

@@ -5,7 +5,6 @@ import BPromise from 'bluebird'
 import eachSeries from 'async/eachSeries'
 import microtime from 'microtime'
 
-console.log(pubsub)
 /**
  * Publishes typing events and a content message in a channel.
  * @return {[type]} [description]

@@ -36,6 +36,17 @@ enum ChannelType {
   GROUP
 }
 
+input UpdateMessageInput {
+  # ID of the channel it was sent in.
+  channelId: ID!
+  timestamp: String!
+  # ID of the user who sent the message.
+  # 'assistant' if the bot is a sender.
+  senderId: ID
+  text: String
+  attachment: MessageAttachmentInput
+}
+
 # A chat message or action.
 type Message {
   createdAt: String!

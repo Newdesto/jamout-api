@@ -11,20 +11,25 @@ import EventArtist from 'models/EventArtist'
 import { formatError } from 'apollo-errors'
 import { logger, pubsub } from 'io'
 import { createJob } from 'io/queue'
+import JWT from 'jsonwebtoken'
 
-export const setupSubscriptionContext = () =>
+export const setupSubscriptionContext = (jwt) => {
+  const user = jwt && JWT.verify(jwt, process.env.JWT_SECRET)
+  const profileLoader = user && new ProfileLoader({ userId: user.id })
+  const userLoader = user && new UserLoader({ userId: user.id })
   // @NOTE since we're handling user context on a field level we'll
   // have to handle the User and Profile connectors on a field level
   // const profileLoader = new ProfileLoader({ userId: user && user.id })
   // const userLoader = new UserLoader({ userId: user && user.id })
 
-    ({
-    // User: new User({ loader: userLoader }),
-    // Profile: new Profile({ loader: profileLoader }),
-      logger,
-      createJob,
-      Release: new Release()
-    })
+  return {
+    User: user && new User({ loader: userLoader }),
+    Profile: user && new Profile({ loader: profileLoader }),
+    logger,
+    createJob,
+    Release: new Release()
+  }
+}
 
 export default graphqlExpress((req) => {
   const user = req.user

@@ -7,6 +7,7 @@ import { createJob } from 'io/queue'
 import Channel from './channel'
 import Message from './message'
 import Subscription from './subscription'
+import { publishMessages } from 'utils/chat'
 
 /**
  * The chat service which is injected into the context of GQL queries. It's
@@ -16,8 +17,10 @@ import Subscription from './subscription'
 export default class Chat {
   constructor({ userId }) {
     this.userId = userId
-    // Binding static methods to this instance.
+    // Binding static methods to this instance. The GQL context uses
+    // an instance so static methods are inaccessible.
     this.getMessagesByChannelId = Chat.getMessagesByChannelId
+    this.updateMessage = Chat.updateMessage
   }
   /**
    * Sorts an array of user IDs and creates a unique SHA1 hash.
@@ -154,6 +157,19 @@ export default class Chat {
     }
 
     return input.message
+  }
+  /**
+   * Updates a message given a channel and micro timestamp and publishes it
+   * to the the channel.
+   */
+  static async updateMessage({ channelId, timestamp, ...input }) {
+    if (!channelId || !timestamp) {
+      throw new Error('Missing arguments needed to update a message.')
+    }
+
+    const { attrs } = await Message.updateAsync({ channelId, timestamp, ...input })
+    await publishMessages(channelId, attrs.senderId, [attrs])
+    return attrs
   }
   /**
    * Processes a postback object. A postback object is sent from a message
