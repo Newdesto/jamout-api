@@ -1,6 +1,13 @@
 import trackModel from './model'
 
-export default class track {
+export default class Track {
+  constructor() {
+    this.fetchAll = Track.fetchAll
+    this.fetchByUserId = Track.fetchByUserId
+    this.fetchMyTracks = Track.fetchMyTracks
+    this.editTrack = Track.editTrack
+    this.deleteTrack = Track.deleteTrack
+  }
   /**
    * Fetches all public tracks.
    */
