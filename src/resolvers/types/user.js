@@ -31,6 +31,14 @@ const resolvers = {
     const url = s3.getSignedUrl('getObject', params)
     return url
   },
+  async connections(user, args, { user: currentUser, Connection }) {
+    if (!currentUser) {
+      throw new Error('Authentication failed.')
+    }
+
+    const connections = await Connection.getConnections(user.id)
+    return connections
+  },
   async connected(user, args, { user: currentUser, Connection }) {
     if (!currentUser) {
       throw new Error('Authentication failed.')
