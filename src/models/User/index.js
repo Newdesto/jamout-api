@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import AWS from 'aws-sdk'
+import shortid from 'shortid'
 import userModel from './model'
 import UserLoader from './loader'
 import { createCustomer } from '../../utils/stripe'
@@ -64,6 +65,10 @@ export default class User {
     const { attrs: user } = await userModel.createAsync({
       email,
       username,
+      displayName: username,
+      // Generate permalink so we can be sure that it's not taken. Conflicting
+      // permalinks are the devil.
+      permalink: shortid.generate(),
       password: hashedPassword
     })
 
