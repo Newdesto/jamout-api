@@ -33,7 +33,7 @@ export const setupSubscriptionContext = (jwt) => {
 export default graphqlExpress((req) => {
   const user = req.user
   const idLoader = new UserIdLoader({ userId: user && user.id })
-  console.log(idLoader)
+
   const usernameLoader = new UserUsernameLoader({ username: user && user.username })
   const permalinkLoader = new UserPermalinkLoader({ permalink: user && user.permalink })
   return {
