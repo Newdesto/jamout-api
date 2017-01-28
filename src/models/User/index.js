@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken'
+import AWS from 'aws-sdk'
 import userModel from './model'
 import UserLoader from './loader'
 import { createCustomer } from '../../utils/stripe'
 import { hashPassword, authenticate } from '../../utils/auth'
-import AWS from 'aws-sdk'
 
 const s3 = new AWS.S3()
 
@@ -50,9 +50,9 @@ export default class User {
     const params = { Bucket: 'jamout-profile', Key: `${user.id}/avatar.png` }
     const url = s3.getSignedUrl('getObject', params)
 
-    user.avatarUrl = url;
+    user.avatarUrl = url
     delete user.artworkKey
-    
+
     const accessToken = jwt.sign(user, secret)
     return accessToken
   }
