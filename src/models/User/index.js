@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
 import userModel from './model'
 import profileModel from '../Profile/model'
-import Channel from '../Channel'
 import UserLoader from './loader'
 import { createCustomer } from '../../utils/stripe'
 import { hashPassword, authenticate } from '../../utils/auth'
@@ -13,6 +12,9 @@ export default class User {
     this.loader = loader
     this.fetchByIds = ::this.fetchByIds
     this.fetchById = :: this.fetchById
+    // Binded for GQL context
+    this.login = User.login
+    this.create = User.create
   }
   static async usernameExists(username) {
     const existingUsernames = await userModel
@@ -32,8 +34,8 @@ export default class User {
     if (existingEmails.Count !== 0) { return existingEmails.Items[0].attrs }
     return false
   }
-  async login({ email, password }) {
-    let user = await this.emailExists(email)
+  static async login({ email, password }) {
+    const user = await User.emailExists(email)
     if (!user) {
       throw new Error('Invalid email or password.')
     }
@@ -41,25 +43,13 @@ export default class User {
     // Compare the passwords.
     await authenticate(password, user.password)
 
-    // Make sure they have an assistant channel.
-    // @TODO Remove when all early adopters have a channel.
-    if (!user.assistantChannelId) {
-      const channel = new Channel()
-      const assistantChannel = await channel.createChannel('a', ['assistant', user.id])
-      const { attrs: updatedUser } = await userModel.updateAsync({
-        id: user.id,
-        assistantChannelId: assistantChannel.id
-      })
-      user = updatedUser
-    }
-
     delete user.password
     const accessToken = jwt.sign(user, secret)
     return accessToken
   }
-  async create({ email, username, password }) {
-    if (await this.emailExists(email)) { throw new Error('Email already exists.') }
-    if (await this.usernameExists(username)) { throw new Error('Username already exists.') }
+  static async create({ email, username, password }) {
+    if (await User.emailExists(email)) { throw new Error('Email already exists.') }
+    if (await User.usernameExists(username)) { throw new Error('Username already exists.') }
 
     const hashedPassword = await hashPassword(password)
     const { attrs: user } = await userModel.createAsync({
@@ -74,16 +64,11 @@ export default class User {
       description: user.id // @TODO figure out if this is good lol
     })
 
-    // Create an assistant channel for the new user.
-    const channel = new Channel()
-    const assistantChannel = await channel.createChannel('a', ['assistant', user.id])
-
     const { attrs: userStripe } = await userModel.updateAsync({
       id: user.id,
       stripe: {
         customerId: stripeCustomer.id
-      },
-      assistantChannelId: assistantChannel.id
+      }
     })
 
     delete userStripe.password

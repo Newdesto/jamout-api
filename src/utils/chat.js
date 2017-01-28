@@ -1,7 +1,9 @@
-import { pubsub, logger } from 'io'
+import logger from 'io/logger'
+import { pubsub } from 'io/subscription'
 import uuid from 'uuid'
 import BPromise from 'bluebird'
 import eachSeries from 'async/eachSeries'
+import microtime from 'microtime'
 
 /**
  * Publishes typing events and a content message in a channel.
@@ -12,33 +14,38 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
     throw new Error('Missing one or more arguments.')
   }
 
+  logger.info(`Publishing message to the channel ${channelId}`)
+
   return new Promise((resolve, reject) => {
     eachSeries(messages, async (m, cb) => {
+      logger.info(`Publishing message: ${JSON.stringify(m)}`)
       // If the message is not a text message publish it and callback.
       if (!m.text) {
-        pubsub.publish(`messages.${channelId}`, {
+        pubsub.publish('messages', {
           ...m,
           id: uuid(),
           createdAt: new Date().toISOString()
         })
         cb()
       } else {
-        pubsub.publish(`messages.${channelId}`, {
+        pubsub.publish('messages', {
           channelId,
           senderId,
           id: uuid(),
           createdAt: new Date().toISOString(),
-          action: 'typing.start'
+          action: 'typing.start',
+          timestamp: microtime.nowDouble().toString()
         })
         await BPromise.delay(m.text.trim().replace(/\s+/gi, ' ').split(' ').length * 0.25 * 1000)
-        pubsub.publish(`messages.${channelId}`, {
+        pubsub.publish('messages', {
           channelId,
           senderId,
           id: uuid(),
           createdAt: new Date().toISOString(),
-          action: 'typing.stop'
+          action: 'typing.stop',
+          timestamp: microtime.nowDouble().toString()
         })
-        pubsub.publish(`messages.${channelId}`, {
+        pubsub.publish('messages', {
           ...m,
           id: uuid(),
           createdAt: new Date().toISOString()
@@ -67,15 +74,13 @@ export const publishInput = function publishInput(channelId, component, metadata
     throw new Error('Missing one or more arguments.')
   }
 
-  logger.debug('publishing input')
-  logger.debug(channelId)
-  logger.debug(component)
   pubsub.publish(`messages.${channelId}`, {
     id: uuid(),
     createdAt: new Date().toISOString(),
     channelId,
     metadata,
     senderId: 'assistant',
-    action: `input.${component}`
+    action: `input.${component}`,
+    timestamp: microtime.nowDouble().toString()
   })
 }

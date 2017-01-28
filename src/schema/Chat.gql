@@ -6,14 +6,20 @@ type Channel {
   updatedAt: String
   id: ID!
   type: ChannelType!
-  name: String # null if type === DM
+  # Name is null if channel type === DM
+  name: String
   lastMessage: Message
   messages: [Message!]!
   messageCount: Int
-  ownerUserId: String # null if type === DM
-  # @NOTE If channel is assistant type then assistant is first element in the
-  # array and the userId is second element.
+  # ownerId is null if the channel type === DM
+  ownerId: String
+  # If channel is assistant type then the only element is the user.
   users: [Profile!]!
+
+  ### SUBSCRIPTION FIELDS ###
+  lastRead: String
+  unreadCount: Int
+  mentionCount: Int
 }
 
 # A summary of a channel that can be embedded in the Message type or any other object.
@@ -30,69 +36,86 @@ enum ChannelType {
   GROUP
 }
 
+input UpdateMessageInput {
+  # ID of the channel it was sent in.
+  channelId: ID!
+  timestamp: String!
+  # ID of the user who sent the message.
+  # 'assistant' if the bot is a sender.
+  senderId: ID
+  text: String
+  attachment: MessageAttachmentInput
+}
+
 # A chat message or action.
 type Message {
   createdAt: String!
   updatedAt: String
   id: ID!
+  timestamp: String!
   # ID of the channel it was sent in.
   channelId: ID!
-  channel: Channel!
   # ID of the user who sent the message.
   # 'assistant' if the bot is a sender.
   senderId: ID!
   sender: Profile!
+  # Mainly for real time interactions like typing, read receipts, and
+  # disabling inputs.
   action: String
+  # Metadata should be moved to the element level.
   metadata: JSON
+  # Text and attachment fields are mutually exclusive. If a message needs
+  # an attachment and a text then the attachment should include a text element.
   text: String
   attachment: MessageAttachment
 }
 
+# An attachment that can give messages superpowers. It outlines a specific
+# component that can be displayed in place of a text message. It may be
+# a card, image, etc.
 type MessageAttachment {
+  # The component to be displayed. Could be generic or could be specific.
   type: String!
+  ### URL is unique to the image type.
   url: String
+  # Whether or not to disable the input that's displayed at the time the message
+  # is received. If we're in the flow of things and don't want the using
+  # messing it up we can disable the input. This happens often actually.
+  disabledInput: Boolean
+  # The elements that are specific to the attachment. Things like texts,
+  # buttons, and such.
   elements: [MessageAttachmentElement!]
 }
 
-type MessageAttachmentElement {
-  title: String
-  imageKey: String
-  subtitle: String
-  defaultAction: MessageAttachmentElementDefaultAction
-  buttons: [MessageAttachmentElementButton!]
-}
-
-type MessageAttachmentElementDefaultAction {
-  type: String
-  url: String
-  text: String
-}
-
-type MessageAttachmentElementButton {
-  type: String
-  url: String
-  text: String
-  title: String
-}
-
-input MessageInput {
-  # ID of the channel it was sent in.
-  channelId: ID!
-  # ID of the user who sent the message.
-  # 'assistant' if the bot is a sender.
-  senderId: ID!
-  action: String
-  text: String
-  attachment: MessageAttachmentInput
-}
-
-input MessageAttachmentInput {
+# This is the interface for any attachment elements. Elements are unique
+# to the attachment type, but share some important fields.
+interface MessageAttachmentElement {
+  # Again, unique to the attachment.
+  # E.g.; text, button, time, etc.
   type: String!
-  key: String
-  bucket: String
+  # Postback ID corresponds to some sort of unique action. The chat service
+  # is unaware of any logic behind postbacks - it's just the messenger.
+  # It's not a required field because an attachment might just be something
+  # uninteractive like text.
+  postbackId: String
+  # Values which are sent with the postback are unique to the element
+  # implementing this interface.
 }
 
-
+# Chat postbacks are sent from attachments. It's up to the attachment component
+# to sent a postback. Postbacks are then translated to service-specific functions.
+input ChatPostback {
+  # Knowing what channel this postback came from would be useful.
+  channelId: String!
+  # What logic needs to be executed.
+  postbackId: String!
+  # When was the postback initialized.
+  # @NOTE we have to use microtime in case a message is returned.
+  createdAt: String!
+  # Values are optional, but most postbacks should include values to feed
+  # to the logic functions.
+  values: JSON
+}
 
 # Messages are sent inside a wrapped Input GQL type. We use an Input wrapper
 # because the chat UI on the client side may be something other than a textbox,
@@ -108,8 +131,6 @@ input ChatInput {
   id: ID!
   # Channel ID
   channelId: ID!
-  # User who sent the input
-  userId: ID!
   # An open ended object of values that can be used
   # by the input handlers.
   values: JSON
@@ -130,4 +151,21 @@ input ChatInput {
   # @TODO verify the JSON structure before sending.
   # An event has a priority over a text query.
   # event: JSON
+}
+
+input MessageInput {
+  # ID of the channel it was sent in.
+  channelId: ID!
+  # ID of the user who sent the message.
+  # 'assistant' if the bot is a sender.
+  senderId: ID!
+  action: String
+  text: String
+  attachment: MessageAttachmentInput
+}
+
+input MessageAttachmentInput {
+  type: String!
+  key: String
+  bucket: String
 }

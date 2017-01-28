@@ -5,10 +5,9 @@ import queue from './queue'
 import vogels from './vogels'
 import app from './app'
 import logger from './logger'
-import pubsub from './pubsub'
 import redis from './redis'
 import apiai from './apiai'
-import subscription from './subscription'
+import { pubsub } from './subscription'
 
 export {
   queue,
@@ -17,6 +16,5 @@ export {
   logger,
   pubsub,
   redis,
-  apiai,
-  subscription
+  apiai
 }

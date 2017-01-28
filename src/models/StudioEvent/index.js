@@ -1,6 +1,7 @@
 import userModel from 'models/User/model'
+// @TODO Strictly use the Chat class. Do NOT work with the model directly.
+import Channel from 'services/chat/channel'
 import studioEventModel from './model'
-import Channel from '../Channel'
 
 export default class StudioEvent {
   async fetchAll() {

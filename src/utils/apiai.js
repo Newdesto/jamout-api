@@ -1,15 +1,31 @@
-import { logger } from 'io'
-import { textRequest, eventRequest } from 'io/apiai'
-import flatten from 'lodash/flatten'
+import shortid from 'shortid'
+import microtime from 'microtime'
+import { flatten } from 'lodash'
 
 const convertTextMessage = function convertTextMessage(channelId, speech) {
   const speeches = speech.split('\\n')
   return speeches.map(s => ({
     channelId, // sessionId = userId, both auth and anon
     // isAnon: data.isAnon, // @TODO work anon into context
+    text: s,
     senderId: 'assistant',
-    text: s
+    id: shortid.generate(),
+    timestamp: microtime.nowDouble().toString()
   }))
+}
+
+const convertImageMessage = function convertImageMessage(channelId, url) {
+  return {
+    channelId, // sessionId = userId, both auth and anon
+    // isAnon: data.isAnon, // @TODO work anon into context
+    senderId: 'assistant',
+    id: shortid.generate(),
+    timestamp: microtime.nowDouble().toString(),
+    attachment: {
+      url,
+      type: 'image'
+    }
+  }
 }
 
 const convertMessage = function convertMessage(channelId, message) {
@@ -17,6 +33,8 @@ const convertMessage = function convertMessage(channelId, message) {
     case 0:
       // Text Message
       return convertTextMessage(channelId, message.speech)
+    case 3:
+      return convertImageMessage(channelId, message.imageUrl)
     default:
       throw new Error('API.ai message type not recognized.')
   }
@@ -28,7 +46,7 @@ const convertMessage = function convertMessage(channelId, message) {
  * @param  {Array} fulfillments Array of API.ai message objects (https://docs.api.ai/docs/query#section-message-objects)
  * @return {Array}              Array of Jamout message objects.
  */
-export const fulfillmentToMessages =
+const fulfillmentToMessages =
 function fulfillmentToMessages(channelId, { speech, messages }) {
   if (!channelId) {
     throw new Error('No channel ID provided.')
@@ -50,43 +68,4 @@ function fulfillmentToMessages(channelId, { speech, messages }) {
   return flatten(messages.map(m => convertMessage(channelId, m)))
 }
 
-/**
- * Sends an event request to API.ai and processes the response, throwing an error
- * if one exists or converting the fulfillment to AssistantEvent objects.
- * @param  {Object} event   See https://docs.api.ai/docs/query#post-query
- * @param  {Object} options See https://docs.api.ai/docs/query#post-query
- * @return {Object}         Returns a object with the response, events, contexts, etc.
- */
-export async function eventRequestAndProcess(event, options) {
-  try {
-    const response = await eventRequest(event, options)
-    // const strippedResponse = stripEmptyParameters(response)
-    // const events = mapResponseToEvents(strippedResponse)
-    return {
-      response
-    }
-  } catch (err) {
-    logger.error(err)
-    throw err
-  }
-}
-
-/**
- * Sends a text request to API.ai and process the response, throwing an error
- * if one exists or converting the fulfillment to AssistantEvent objects.
- * @param  {String}  text    See https://docs.api.ai/docs/query#post-query
- * @param  {string}  options See https://docs.api.ai/docs/query#post-query
- * @return {Object}          Returns a object with the response, events, contexts, etc.
- */
-export async function textRequestAndProcess(text, options) {
-  try {
-    const response = await textRequest(text, options)
-    // const strippedResponse = stripEmptyParameters(response)
-    // const events = mapResponseToEvents(strippedResponse)
-
-    return response
-  } catch (err) {
-    logger.error(err)
-    throw err
-  }
-}
+export default fulfillmentToMessages

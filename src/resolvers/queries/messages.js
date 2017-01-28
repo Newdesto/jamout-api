@@ -1,7 +1,15 @@
 export default {
-  messages(root, { channelId, limit }, { user, Message }) {
-    if (!user) { throw new Error('Authentication failed.') }
-
-    return Message.getMessages(channelId, limit)
+  async messages(root, { channelId, limit }, { user, Chat, logger }) {
+    try {
+      if (!user) {
+        throw new Error('Authentication failed.')
+      }
+      const messages = await Chat.getMessagesByChannelId({ channelId, limit })
+      return messages
+    } catch (err) {
+      logger.info('Caught errror in messages resolver.')
+      logger.error(err)
+      throw err
+    }
   }
 }

@@ -1,5 +1,6 @@
+// @TODO Strictly use the Chat class. Do NOT work with the model directly.
+import Channel from 'services/chat/channel'
 import eventArtistModel from './model'
-import Channel from '../Channel'
 
 export default class EventArtist {
   static async createEventArtist(user, payload) {

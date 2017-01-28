@@ -6,7 +6,7 @@ export default class ProfileLoader {
     this.userId = userId
     this.load = ::this.load
     this.loadMany = ::this.loadMany
-    this.loader = new DataLoader(ids => this.list(userId, ids))
+    this.loader = new DataLoader(ids => ProfileLoader.list(userId, ids))
   }
   static async list(userId, ids) {
     // @NOTE: Here is where we would do policy checks...
