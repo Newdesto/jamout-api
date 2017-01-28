@@ -10,5 +10,7 @@ type User {
   avatarKey: String
   avatarUrl: String
   connections: [Connection!]
+  # Defines whether or not the current user is connected to this user.
+  connected: ConnectionStatus
   assistantChannel: Channel
 }

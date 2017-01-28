@@ -7,7 +7,7 @@ const Connection = vogels.define('Connection', {
   tableName: 'connection',
   timestamps: true,
   schema: {
-    id: vogels.types.uuid(),
+    id: Joi.string(),
     userId: Joi.string(),
     friendId: Joi.string(),
     status: Joi.string() // confirmed, pending, action

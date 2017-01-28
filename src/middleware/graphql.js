@@ -1,6 +1,7 @@
 import { graphqlExpress } from 'graphql-server-express'
 import schema from 'schema'
 import Release from 'models/Release'
+import Connection from 'models/Connection'
 import Chat from 'services/chat'
 import User, { UserIdLoader, UserUsernameLoader, UserPermalinkLoader } from 'models/User'
 import StudioEvent from 'models/StudioEvent'
@@ -43,6 +44,7 @@ export default graphqlExpress((req) => {
       createJob,
       logger,
       pubsub,
+      Connection,
       jwt: user && req.headers.authorization.slice(7),
       User: new User({ idLoader, usernameLoader, permalinkLoader }),
       Release: new Release(),
