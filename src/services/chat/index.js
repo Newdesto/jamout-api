@@ -23,6 +23,24 @@ export default class Chat {
     this.updateMessage = Chat.updateMessage
   }
   /**
+   * A wrapper for createJob for testability.
+   */
+  static createJob(name, data) {
+    return createJob(name, data)
+  }
+  /**
+   * A wrapper for pubsub.publish for testability.
+   */
+  static publish(channel, data) {
+    return pubsub.publish(channel, data)
+  }
+  /**
+   * A wrapper for the publishMessages util function for testability
+   */
+  static publishMessages(...args) {
+    return publishMessages(...args)
+  }
+  /**
    * Sorts an array of user IDs and creates a unique SHA1 hash.
    */
   static sortUsersAndHash({ users }) {
@@ -73,7 +91,8 @@ export default class Chat {
       }))
     )
 
-    return subscriptions
+    // Unneccessary flatten for tests.
+    return R.flatten(subscriptions).map(s => s.attrs)
   }
   /**
    * Creates a new channel using the channel type and an array of users. Checks
@@ -85,6 +104,7 @@ export default class Chat {
     const sorted = Chat.sortUsersAndHash({ users })
 
     // Check if a channel already exists for this user set.
+    // @TODO Merge the user's subscription if Chat.createChannel returns an existing channel.
     const existingChannel = await Chat.channelExistsByHash({
       usersHash: sorted.usersHash
     })
@@ -112,7 +132,7 @@ export default class Chat {
 
     // Return the channel and subscription for the user.
     return {
-      ...R.find(R.propEq('userId', this.userId))(subscriptions.map(s => s.attrs)),
+      ...R.find(R.propEq('userId', this.userId))(subscriptions),
       ...channel
     }
   }
@@ -149,11 +169,12 @@ export default class Chat {
     if (!input.bypassQueue) {
       // Create a job to process the text. This is generally used
       // in assistant channels.
-      await createJob('chat.input', input)
+      await Chat.createJob('chat.input', input)
     } else {
       // If we're skipping the job just publish the message in the pubsub.
       // This is generally used in DMs or Groups.
-      pubsub.publish('messages', input.message)
+      Chat.publish('messages', input.message)
+      // Set up success/failure flags.
     }
 
     return input.message
@@ -168,7 +189,7 @@ export default class Chat {
     }
 
     const { attrs } = await Message.updateAsync({ channelId, timestamp, ...input })
-    await publishMessages(channelId, attrs.senderId, [attrs])
+    await Chat.publishMessages(channelId, attrs.senderId, [attrs])
     return attrs
   }
   /**
@@ -179,7 +200,7 @@ export default class Chat {
    * execution, but that's lame.
    */
   static async postback({ postback }) {
-    await createJob('chat.postback', postback)
+    await Chat.createJob('chat.postback', postback)
   }
   /**
    * Get's a channel by its ID.
@@ -196,7 +217,10 @@ export default class Chat {
       throw new Error('Invalid channel.')
     }
 
-    return channel.attrs
+    return {
+      ...subscription.attrs,
+      ...channel.attrs
+    }
   }
   /**
    * Gets a user's channels.
@@ -215,6 +239,10 @@ export default class Chat {
    * Gets a channel's messages.
    */
   static async getMessagesByChannelId({ channelId, limit }) {
+    if (!channelId || !limit) {
+      throw new Error('Missing required arguments.')
+    }
+
     const { Items } = await Message
       .query(channelId)
       .limit(limit)
