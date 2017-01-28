@@ -1,5 +1,5 @@
 type Query {
-  me: Profile!
+  me: User!
   assistantChannel: Channel
   channels(excludeAssistant: Boolean, messageLimit: Int): [Channel!]!
   messages(channelId: ID!, limit: Int): [Message!]!
@@ -8,6 +8,5 @@ type Query {
   studioEvent: [[StudioEvent]]
   musicEvents: [MusicEvent]
   eventArtist(eventId: ID): [EventArtist]
-  profile(userId: ID): Profile!
   track(userId: ID): [Track]
 }
