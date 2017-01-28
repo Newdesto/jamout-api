@@ -1,7 +1,7 @@
 import shortid from 'shortid'
 
 const resolvers = {
-  async sender({ senderId }, arg, { Profile }) {
+  async sender({ senderId }, arg, { User }) {
     // We need to send a static profile if the sender was assistant.
     if (senderId === 'assistant') {
       return {
@@ -18,7 +18,7 @@ const resolvers = {
         connections: []
       }
     }
-    return Profile.fetchById(senderId)
+    return User.fetchById(senderId)
   }
 }
 

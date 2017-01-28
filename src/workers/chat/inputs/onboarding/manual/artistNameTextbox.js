@@ -12,7 +12,7 @@ const artistNameTextbox = async function artistNameTextbox({ userId, channelId, 
   }
 
   // Save the artist name to their profile.
-  await Profile.updateAsync({
+  await User.updateAsync({
     userId,
     displayName: values.text
   })

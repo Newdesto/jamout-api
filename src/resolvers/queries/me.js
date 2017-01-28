@@ -1,10 +1,10 @@
 const resolvers = {
-  me(root, args, { user, Profile }) {
+  me(root, args, { user, User }) {
     if (!user) {
       throw new Error('Unauthorized.')
     }
 
-    return Profile.fetchById(user.id)
+    return User.fetchById(user.id)
   }
 }
 
