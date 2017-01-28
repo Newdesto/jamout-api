@@ -2,7 +2,7 @@
 import { logger } from 'io'
 import { eventRequest } from 'io/apiai'
 import fulfill from 'workers/chat/fulfillments'
-import Profile from 'models/Profile/model'
+import User from 'models/User/model'
 
 const pictureUploader = async function pictureUploader({ userId, channelId, values }) {
   logger.debug('Processing onboarding.manual.PictureUploader input.')
@@ -21,7 +21,7 @@ const pictureUploader = async function pictureUploader({ userId, channelId, valu
 
   // Save the artist name to their profile if they uploaded a picture.
   if (!values.later) {
-    await Profile.updateAsync({
+    await User.updateAsync({
       userId,
       avatarKey: values.key // The bucket is only used for the message attachment
     })

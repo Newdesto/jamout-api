@@ -1,5 +1,5 @@
 import { publishMessages, publishInput } from 'utils/chat'
-import Profile, { ProfileLoader } from 'models/Profile'
+import User, { UserLoader } from 'models/User'
 import { createJob } from 'io/queue'
 import { logger } from 'io'
 
@@ -7,8 +7,8 @@ const welcome = async function welcome({ userId, channelId }, result, messages) 
   logger.debug('Processing onboarding.todos action.')
 
   // Get the user's profile so we can generate the profile url.
-  const loader = new ProfileLoader({ userId })
-  const connector = new Profile({ loader })
+  const loader = new UserLoader({ userId })
+  const connector = new User({ loader })
   const profile = await connector.fetchById(userId)
 
   // Todos message
