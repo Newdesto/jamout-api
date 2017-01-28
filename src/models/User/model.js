@@ -27,7 +27,8 @@ const User = vogels.define('User', {
   },
   indexes: [
     { hashKey: 'email', name: 'email-index', type: 'global' },
-    { hashKey: 'username', name: 'username-index', type: 'global' }
+    { hashKey: 'username', name: 'username-index', type: 'global' },
+    { hashKey: 'permalink', name: 'permalink-index', type: 'global' }
   ]
 })
 
