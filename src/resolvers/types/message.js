@@ -18,7 +18,8 @@ const resolvers = {
         connections: []
       }
     }
-    return User.fetchById(senderId)
+    const user = await User.fetchById(senderId)
+    return user
   }
 }
 
