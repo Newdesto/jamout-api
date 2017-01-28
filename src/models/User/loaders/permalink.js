@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader'
-import userModel from '../model'
 import R from 'ramda'
+import userModel from '../model'
 
 export default class UserPermalinkLoader {
   constructor({ permalink }) {
