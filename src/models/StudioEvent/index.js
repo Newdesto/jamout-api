@@ -9,7 +9,7 @@ export default class StudioEvent {
     this.fetchByUserId = StudioEvent.fetchByUserId
     this.createStudioEvent = StudioEvent.createStudioEvent
   }
-  async fetchAll() {
+  static async fetchAll() {
     const { Items } = await studioEventModel
       .scan()
       .loadAll()
@@ -17,7 +17,7 @@ export default class StudioEvent {
 
     return StudioEvent.sortStudioEvents(Items)
   }
-  async fetchByUserId(userId) {
+  static async fetchByUserId(userId) {
     if (!userId) { throw new Error('User ID is undefined.') }
     const { Items } = await studioEventModel
       .scan()
@@ -44,7 +44,7 @@ export default class StudioEvent {
   }
 
 
-  async createStudioEvent(user, type, payload) {
+  static async createStudioEvent(user, type, payload) {
   // probably better way to get this shit
     const { Items } = await userModel
     .scan()
