@@ -8,7 +8,7 @@ import studioEvent from './studioEvent'
 import musicEvent from './musicEvent'
 import eventArtist from './eventArtist'
 import me from './me'
-import profile from './profile'
+import user from './user'
 import track from './track'
 
 const resolvers = {
@@ -22,7 +22,7 @@ const resolvers = {
     studioEvent,
     musicEvent,
     eventArtist,
-    profile,
+    user,
     track
   )
 }

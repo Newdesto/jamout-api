@@ -5,7 +5,7 @@
 import Channel from './channel'
 import Message from './message'
 import MessageAttachment from './messageAttachment'
-import { resolver as profileResolver } from './profile'
+import User from './user'
 import Release from './release'
 import MusicEvent from './musicEvent'
 import Connection from './connection'
@@ -15,7 +15,7 @@ export default {
   Channel,
   Message,
   MessageAttachment,
-  Profile: profileResolver,
+  User,
   Release,
   MusicEvent,
   Connection,

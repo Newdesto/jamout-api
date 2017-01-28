@@ -1,22 +1,8 @@
 import AWS from 'aws-sdk'
 
 const s3 = new AWS.S3()
-const Profile = `
-  type Profile {
-    createdAt: String!,
-    updatedAt: String,
-    id: ID!,
-    userId: ID!,
-    username: String!,
-    permalink: String!,
-    displayName: String!,
-    location: String,
-    avatarKey: String,
-    avatarUrl: String
-  }
-`
 
-export const resolver = {
+const resolvers = {
   /**
    * Returns the JWT if the current user is querying their own profile. This
    * is used by subscription functions on the client side since authentication
@@ -47,6 +33,4 @@ export const resolver = {
   }
 }
 
-export default () => [
-  Profile
-]
+export default resolvers
