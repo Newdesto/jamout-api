@@ -13,7 +13,5 @@ export default {
 
     fetchedUser = User.fetchById(user.id)
     return fetchedUser
-    console.log(user)
-    console.log(fetchedUser)
   }
 }
