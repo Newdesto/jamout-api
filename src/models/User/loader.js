@@ -7,6 +7,7 @@ export default class UserLoader {
     this.load = ::this.load
     this.loadMany = ::this.loadMany
     this.loader = new DataLoader(ids => this.list(userId, ids))
+    this.list = UserLoader.list
   }
   static async list(userId, ids) {
     // @NOTE: Here is where we would do policy checks...
