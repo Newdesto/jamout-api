@@ -11,7 +11,7 @@ import Mutation from './Mutation.gql'
 import Query from './Query.gql'
 import Subscription from './Subscription.gql'
 import Chat from './Chat.gql'
-import Profile from './Profile.gql'
+import User from './User.gql'
 import Release from './Release.gql'
 import ReleaseInput from './ReleaseInput.gql'
 import ReleaseInputTrack from './ReleaseInputTrack.gql'
@@ -37,7 +37,7 @@ const typeDefs = [
   Query,
   Subscription,
   Chat,
-  Profile,
+  User,
   Release,
   ReleaseInput,
   ReleaseInputTrack,
