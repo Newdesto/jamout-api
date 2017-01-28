@@ -14,7 +14,7 @@ type Channel {
   # ownerId is null if the channel type === DM
   ownerId: String
   # If channel is assistant type then the only element is the user.
-  users: [Profile!]!
+  users: [User!]!
 
   ### SUBSCRIPTION FIELDS ###
   lastRead: String
@@ -58,7 +58,7 @@ type Message {
   # ID of the user who sent the message.
   # 'assistant' if the bot is a sender.
   senderId: ID!
-  sender: Profile!
+  sender: User!
   # Mainly for real time interactions like typing, read receipts, and
   # disabling inputs.
   action: String

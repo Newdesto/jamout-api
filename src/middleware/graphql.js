@@ -3,7 +3,6 @@ import schema from 'schema'
 import Release from 'models/Release'
 import Chat from 'services/chat'
 import User, { UserLoader } from 'models/User'
-import Profile, { ProfileLoader } from 'models/Profile'
 import StudioEvent from 'models/StudioEvent'
 import MusicEvent from 'models/MusicEvent'
 import Track from 'models/Track'
@@ -15,7 +14,6 @@ import JWT from 'jsonwebtoken'
 
 export const setupSubscriptionContext = (jwt) => {
   const user = jwt && JWT.verify(jwt, process.env.JWT_SECRET)
-  const profileLoader = user && new ProfileLoader({ userId: user.id })
   const userLoader = user && new UserLoader({ userId: user.id })
   // @NOTE since we're handling user context on a field level we'll
   // have to handle the User and Profile connectors on a field level
@@ -24,7 +22,6 @@ export const setupSubscriptionContext = (jwt) => {
 
   return {
     User: user && new User({ loader: userLoader }),
-    Profile: user && new Profile({ loader: profileLoader }),
     logger,
     createJob,
     Release: new Release()
@@ -33,7 +30,6 @@ export const setupSubscriptionContext = (jwt) => {
 
 export default graphqlExpress((req) => {
   const user = req.user
-  const profileLoader = new ProfileLoader({ userId: user && user.id })
   const userLoader = new UserLoader({ userId: user && user.id })
   return {
     schema,
@@ -44,7 +40,6 @@ export default graphqlExpress((req) => {
       pubsub,
       jwt: user && req.headers.authorization.slice(7),
       User: new User({ loader: userLoader }),
-      Profile: new Profile({ loader: profileLoader }),
       Release: new Release(),
       StudioEvent: new StudioEvent(),
       MusicEvent: new MusicEvent(),

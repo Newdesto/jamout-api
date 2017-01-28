@@ -1,13 +1,13 @@
 type Query {
-  me: Profile!
+  me: User!
   assistantChannel: Channel
   channels(excludeAssistant: Boolean, messageLimit: Int): [Channel!]!
   messages(channelId: ID!, limit: Int): [Message!]!
   release(id: ID!): Release
   releases: [Release!]!
+  user(id: ID!): User!
   studioEvent: [[StudioEvent]]
   musicEvents: [MusicEvent]
   eventArtist(eventId: ID): [EventArtist]
-  profile(userId: ID): Profile!
   track(userId: ID): [Track]
 }

@@ -21,8 +21,8 @@ const resolvers = {
 
     return messages
   },
-  users(channel, args, { Profile }) {
-    return Profile.fetchByIds(channel.users)
+  users(channel, args, { User }) {
+    return User.fetchByIds(channel.users)
   }
 }
 

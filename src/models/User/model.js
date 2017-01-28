@@ -19,7 +19,11 @@ const User = vogels.define('User', {
     assistantChannelId: Joi.string(),
     // Existing user vs new user onboarding handled by chat input resolvers and
     // workers.
-    didOnboard: Joi.boolean()
+    didOnboard: Joi.boolean(),
+    permalink: Joi.string(),
+    displayName: Joi.string(),
+    location: Joi.string(),
+    avatarKey: Joi.string()
   },
   indexes: [
     { hashKey: 'email', name: 'email-index', type: 'global' },

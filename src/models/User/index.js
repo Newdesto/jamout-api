@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken'
 import userModel from './model'
-import profileModel from '../Profile/model'
 import UserLoader from './loader'
 import { createCustomer } from '../../utils/stripe'
 import { hashPassword, authenticate } from '../../utils/auth'
@@ -73,14 +72,6 @@ export default class User {
 
     delete userStripe.password
     const accessToken = jwt.sign(userStripe, secret)
-
-    // @TODO move this to a background worker
-    await profileModel.createAsync({
-      userId: userStripe.id,
-      permalink: userStripe.username,
-      displayName: userStripe.username,
-      username: userStripe.username
-    })
 
     return accessToken
   }

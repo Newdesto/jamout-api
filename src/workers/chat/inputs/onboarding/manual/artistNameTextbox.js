@@ -1,7 +1,7 @@
 import { logger } from 'io'
 import { eventRequest } from 'io/apiai'
 import fulfill from 'workers/chat/fulfillments'
-import Profile from 'models/Profile/model'
+import User from 'models/User/model'
 
 const artistNameTextbox = async function artistNameTextbox({ userId, channelId, values }) {
   logger.debug('Processing onboarding.manual.ArtistNameTextbox input.')
@@ -12,7 +12,7 @@ const artistNameTextbox = async function artistNameTextbox({ userId, channelId, 
   }
 
   // Save the artist name to their profile.
-  await Profile.updateAsync({
+  await User.updateAsync({
     userId,
     displayName: values.text
   })
