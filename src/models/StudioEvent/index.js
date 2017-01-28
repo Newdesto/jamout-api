@@ -4,22 +4,27 @@ import Channel from 'services/chat/channel'
 import studioEventModel from './model'
 
 export default class StudioEvent {
-  async fetchAll() {
+  constructor() {
+    this.fetchAll = StudioEvent.fetchAll
+    this.fetchByUserId = StudioEvent.fetchByUserId
+    this.createStudioEvent = StudioEvent.createStudioEvent
+  }
+  static async fetchAll() {
     const { Items } = await studioEventModel
       .scan()
       .loadAll()
       .execAsync()
 
-    return this.sortStudioEvents(Items)
+    return StudioEvent.sortStudioEvents(Items)
   }
-  async fetchByUserId(userId) {
+  static async fetchByUserId(userId) {
     if (!userId) { throw new Error('User ID is undefined.') }
     const { Items } = await studioEventModel
       .scan()
       .where('userId').equals(userId)
       .execAsync()
 
-    return this.sortStudioEvents(Items)
+    return StudioEvent.sortStudioEvents(Items)
   }
   static sortStudioEvents(items) {
     let events = items.map(i => i.attrs)
@@ -39,7 +44,7 @@ export default class StudioEvent {
   }
 
 
-  async createStudioEvent(user, type, payload) {
+  static async createStudioEvent(user, type, payload) {
   // probably better way to get this shit
     const { Items } = await userModel
     .scan()
@@ -65,7 +70,7 @@ export default class StudioEvent {
       case 'new-inquiry':
         attrs = await studioEventModel.createAsync({
           userId: artist.id, // id the user who made the request
-          studioId: this.idStudio(payload.studio), // id of the studio?
+          studioId: StudioEvent.idStudio(payload.studio), // id of the studio?
           studio: payload.studio,
           type: 'inquiry pending',
           preferredDate,

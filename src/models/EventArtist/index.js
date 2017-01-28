@@ -3,6 +3,13 @@ import Channel from 'services/chat/channel'
 import eventArtistModel from './model'
 
 export default class EventArtist {
+  constructor() {
+    this.createEventArtist = EventArtist.createEventArtist
+    this.fetchByEventId = EventArtist.fetchByEventId
+    this.fetchByPartnerId = EventArtist.fetchByPartnerId
+    this.fetchByUserId = EventArtist.fetchByUserId
+    this.updateEventArtist = EventArtist.updateEventArtist
+  }
   static async createEventArtist(user, payload) {
     const { attrs } = await eventArtistModel.createAsync({
       userId: user.id,

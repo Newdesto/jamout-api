@@ -1,6 +1,11 @@
 import musicEventModel from './model'
 
 export default class MusicEvent {
+  constructor() {
+    this.createMusicEvent = MusicEvent.createMusicEvent
+    this.fetchAll = MusicEvent.fetchAll
+    this.fetchByPartnerId = MusicEvent.fetchByPartnerId
+  }
   static async createMusicEvent(partner, payload) {
     const { attrs } = await musicEventModel.createAsync({
       partner: partner.username,
