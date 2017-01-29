@@ -21,6 +21,7 @@ export default class User {
     this.permalinkLoader = permalinkLoader
     this.fetchByIds = ::this.fetchByIds
     this.fetchById = :: this.fetchById
+    this.fetchByPermalink = :: this.fetchByPermalink
     // Binded for GQL context
     this.login = User.login
     this.create = User.create
