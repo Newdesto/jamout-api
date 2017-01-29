@@ -1,6 +1,6 @@
 import logger from 'io/logger'
 import { pubsub } from 'io/subscription'
-import uuid from 'uuid'
+import shortid from 'shortid'
 import BPromise from 'bluebird'
 import eachSeries from 'async/eachSeries'
 import microtime from 'microtime'
@@ -23,7 +23,7 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
       if (!m.text) {
         pubsub.publish('messages', {
           ...m,
-          id: uuid(),
+          id: shortid.generate(),
           createdAt: new Date().toISOString()
         })
         cb()
@@ -31,7 +31,7 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
         pubsub.publish('messages', {
           channelId,
           senderId,
-          id: uuid(),
+          id: shortid.generate(),
           createdAt: new Date().toISOString(),
           action: 'typing.start',
           timestamp: microtime.nowDouble().toString()
@@ -40,14 +40,14 @@ export const publishMessages = function publishMessages(channelId, senderId, mes
         pubsub.publish('messages', {
           channelId,
           senderId,
-          id: uuid(),
+          id: shortid.generate(),
           createdAt: new Date().toISOString(),
           action: 'typing.stop',
           timestamp: microtime.nowDouble().toString()
         })
         pubsub.publish('messages', {
           ...m,
-          id: uuid(),
+          id: shortid.generate(),
           createdAt: new Date().toISOString()
         })
         cb()
@@ -74,13 +74,32 @@ export const publishInput = function publishInput(channelId, component, metadata
     throw new Error('Missing one or more arguments.')
   }
 
-  pubsub.publish(`messages.${channelId}`, {
-    id: uuid(),
+  pubsub.publish('messages', {
+    id: shortid.generate(),
     createdAt: new Date().toISOString(),
     channelId,
     metadata,
     senderId: 'assistant',
     action: `input.${component}`,
+    timestamp: microtime.nowDouble().toString()
+  })
+}
+
+/**
+ * Sends a message to disable or enable the input for a given channel.
+ */
+export const toggleInput = function disableInput({ channelId, enable }) {
+  if (!channelId || enable === (undefined || null)) {
+    logger.error('Missing one or more arguments to toggle input.')
+    throw new Error('Missing one or more arguments.')
+  }
+
+  pubsub.publish('messages', {
+    id: shortid.generate(),
+    createdAt: new Date().toISOString(),
+    channelId,
+    senderId: 'assistant',
+    action: enable ? 'enableInput' : 'disableInput',
     timestamp: microtime.nowDouble().toString()
   })
 }

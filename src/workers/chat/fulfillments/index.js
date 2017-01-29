@@ -4,9 +4,11 @@ import fulfillmentToMessages from 'utils/apiai'
 import Promise from 'bluebird'
 import { publishMessages } from 'utils/chat'
 import onboarding from './onboarding'
+import studioSessions from './studio-sessions'
 
 const actionFunctions = {
-  ...onboarding
+  ...onboarding,
+  ...studioSessions
 }
 
 /**
