@@ -1,13 +1,18 @@
 export default {
-  async track(root, { userId }, { user, Track }) {
+  async track(root, { userId, permalink }, { user, Track }) {
     if (!user) {
       throw new Error('Authentication failed.')
     }
+    let tracks
     if (userId) {
-      const tracks = await Track.fetchByUserId(userId)
-      return tracks
+      tracks = await Track.fetchByUserId(userId)
     }
-    const tracks = Track.fetchMyTracks(user.id)
+    if (user.id === userId || user.permalink === permalink) {
+      tracks = Track.fetchMyTracks(user.id)
+    }
+    if (!userId && !permalink) {
+      tracks = Track.fetchAll()
+    }
     return tracks
   }
 }

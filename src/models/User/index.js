@@ -24,6 +24,7 @@ export default class User {
     // Binded for GQL context
     this.login = User.login
     this.create = User.create
+    this.update = User.update
   }
   static async usernameExists(username) {
     const existingUsernames = await userModel
@@ -132,16 +133,14 @@ export default class User {
     users.map(u => this.usernameLoader.prime(u.username, u))
     return users
   }
-  async update(id, input) {
-    const { attrs } = await userModel
-      .updateAsync(Object.assign(input, { id }))
+  static async update(id, input) {
+    const { attrs } = await userModel.updateAsync({ id, ...input })
 
     // we should never return the password object
     delete attrs.password
 
     // invalidate the loader cache
     this.idLoader.clear(attrs.id)
-
     return attrs
   }
 }

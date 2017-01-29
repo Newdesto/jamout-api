@@ -45,7 +45,7 @@ const resolvers = {
     }
     // Can't be connected with yourself buddy.
     if (user.id === currentUser.id) {
-      return false
+      return null
     }
 
     // Does the connection exist?

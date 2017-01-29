@@ -8,7 +8,7 @@ type Mutation {
   openChannel(type: ChannelType!, users: [ID!]!): Channel
   postback(input: ChatPostback!): Message # Postback might return a message... might.
   sendInput(input: ChatInput!): Message # Most inputs should persist a message....
-  updateMessage(input: UpdateMessageInput!): Message! 
+  updateMessage(input: UpdateMessageInput!): Message!
   # Distribution
   createRelease(input: ReleaseInput!): Release
   createStudioEvent(type: String, nextEvent: StudioEventInput): StudioEvent
@@ -21,4 +21,5 @@ type Mutation {
   editTrack(trackId: ID!, updatedTrack: updatedTrack): Track!
   createTrack(title: String!, isPublic: Boolean!): Track!
   deleteTrack(trackId: ID!): String!
+  updateUser(updatedUser: UpdateUserInput!): User!
 }
