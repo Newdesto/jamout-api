@@ -22,8 +22,9 @@ const convertImageMessage = function convertImageMessage(channelId, url) {
     id: shortid.generate(),
     timestamp: microtime.nowDouble().toString(),
     attachment: {
-      url,
-      type: 'image'
+      disableInput: false,
+      src: url,
+      type: 'Image'
     }
   }
 }

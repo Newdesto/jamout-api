@@ -73,33 +73,79 @@ type Message {
 # An attachment that can give messages superpowers. It outlines a specific
 # component that can be displayed in place of a text message. It may be
 # a card, image, etc.
-type MessageAttachment {
+interface MessageAttachment {
   # The component to be displayed. Could be generic or could be specific.
   type: String!
-  ### URL is unique to the image type.
-  url: String
-  # Whether or not to disable the input that's displayed at the time the message
-  # is received. If we're in the flow of things and don't want the using
-  # messing it up we can disable the input. This happens often actually.
-  disabledInput: Boolean
-  # The elements that are specific to the attachment. Things like texts,
-  # buttons, and such.
-  elements: [MessageAttachmentElement!]
-}
-
-# This is the interface for any attachment elements. Elements are unique
-# to the attachment type, but share some important fields.
-interface MessageAttachmentElement {
-  # Again, unique to the attachment.
-  # E.g.; text, button, time, etc.
-  type: String!
+  # The action this component should trigger. Possible actions are: redirect,
+  # message, postback. A redirect action redirects the client to a specific
+  # route. A message postback sends a message for the user. Postback
+  # sends a postback mutation and let's a service handle it. If the action
+  # is a postback then the postbackId must be set.
+  # The action can be overridden by an element. Elements may have different
+  # actions - this is handled by the specific components though.
+  action: String
   # Postback ID corresponds to some sort of unique action. The chat service
   # is unaware of any logic behind postbacks - it's just the messenger.
   # It's not a required field because an attachment might just be something
   # uninteractive like text.
   postbackId: String
-  # Values which are sent with the postback are unique to the element
-  # implementing this interface.
+  # Whether or not to disable the input that's displayed at the time the message
+  # is received. If we're in the flow of things and don't want the using
+  # messing it up we can disable the input. This happens often actually.
+  disableInput: Boolean!
+  # Fields that are specific to the attachment are defined by types that
+  # implement the interface.
+}
+
+type StudioSessionInquiryAttachment implements MessageAttachment {
+  type: String! # Image
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  studio: String!,
+  date: String!
+  hideButtons: Boolean
+}
+
+type ImageAttachment implements MessageAttachment {
+  type: String! # Image
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  src: String!
+}
+
+# Shows a hint-like, centered text.
+type EventAttachment implements MessageAttachment {
+  type: String! # Image
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  text: String!
+}
+
+type CardGroupAttachment implements MessageAttachment {
+  type: String! # CardGroup
+  action: String # redirect, message, postback
+  postbackId: String # *
+  cards: [CardElement!]!
+  disableInput: Boolean!
+}
+
+type CardElement {
+  title: String!
+  subtitle: String
+  buttons: [CardElementButton!]
+}
+
+type CardElementButton {
+  title: String!
+  # The unique name for this button.
+  name: String!
+  # The unique value for this button. The action attachment determines
+  # what happens to this value.
+  value: String!
+  action: String!
 }
 
 # Chat postbacks are sent from attachments. It's up to the attachment component

@@ -1,12 +1,18 @@
-const resolver = {
-  url(attachment) {
-    if (attachment.url) {
-      return attachment.url
+const resolvers = {
+  __resolveType(attachment) {
+    switch (attachment.type) {
+      case 'Image':
+        return 'ImageAttachment'
+      case 'CardGroup':
+        return 'CardGroupAttachment'
+      case 'StudioSessionInquiry':
+        return 'StudioSessionInquiryAttachment'
+      case 'Event':
+        return 'EventAttachment'
+      default:
+        return null
     }
-
-    // @TODO Provision an s3 link for the key property.
-    return null
   }
 }
 
-export default resolver
+export default resolvers
