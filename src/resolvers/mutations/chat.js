@@ -1,6 +1,8 @@
 /**
  * The chat mutation resolvers.
  */
+import shortid from 'shortid'
+import microtime from 'microtime'
 
 export default {
   openChannel(root, a, { user, Chat, logger }) {
@@ -29,6 +31,26 @@ export default {
         name: args.name,
         users: args.users
       })
+    } catch (err) {
+      logger.error(err)
+      throw err
+    }
+  },
+  async sendMessage(root, { text, channelId }, { user: currentUser, Chat, logger }) {
+    try {
+      if (!currentUser) {
+        throw new Error('Authentication failed.')
+      }
+
+      const message = await Chat.sendMessage({ message: {
+        text,
+        channelId,
+        senderId: currentUser.id,
+        id: shortid.generate(),
+        timestamp: microtime.nowDouble().toString()
+      } })
+
+      return message
     } catch (err) {
       logger.error(err)
       throw err

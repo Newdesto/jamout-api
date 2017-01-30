@@ -137,6 +137,25 @@ export default class Chat {
     }
   }
   /**
+   * Sends a text message on behalf of the user.
+   */
+  async sendMessage({ message }) {
+    // Check if the user is subscribed to this channel.
+    const subscription =
+    await Subscription.getAsync({ channelId: message.channelId, userId: this.userId })
+
+    // If the sender was the assistnat don't throw an error.
+    // The 'assistant' user doesn't receive a subscription.
+    if (!subscription) {
+      throw new Error('Authorization failed.')
+    }
+
+    // Throws an error if something fails.
+    const { attrs } = await Message.createAsync(message)
+
+    return attrs
+  }
+  /**
    * Process an input object. Generally this will be a Textbox but in some cases
    * it could be some other component. See the Input type in the GQL schema.
    * Returns the persisted message.
