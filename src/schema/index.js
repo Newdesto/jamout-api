@@ -28,6 +28,7 @@ import UpdateEventArtistInput from './UpdateEventArtistInput.gql'
 import track from './track.gql'
 import updatedTrack from './updatedTrack.gql'
 import Connection from './Connection.gql'
+import UpdateUserInput from './UpdateUserInput.gql'
 
 // @TODO combine schemas by module (e.g.; combine all release defs)
 const typeDefs = [
@@ -53,7 +54,8 @@ const typeDefs = [
   UpdateEventArtistInput,
   track,
   updatedTrack,
-  Connection
+  Connection,
+  UpdateUserInput
 ]
 
 export default makeExecutableSchema({

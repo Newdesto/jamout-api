@@ -1,10 +1,12 @@
 import trackModel from './model'
+import userModel from '../User/model'
 
 export default class Track {
   constructor() {
     this.fetchAll = Track.fetchAll
     this.fetchByUserId = Track.fetchByUserId
     this.fetchMyTracks = Track.fetchMyTracks
+    this.fetchByPermalink = Track.fetchByPermalink
     this.editTrack = Track.editTrack
     this.deleteTrack = Track.deleteTrack
   }
@@ -31,6 +33,31 @@ export default class Track {
       .scan()
       .where('userId')
       .equals(userId)
+      .where('isPublic')
+      .equals(true)
+      .execAsync()
+
+    const tracks = Items.map(t => t.attrs)
+
+    return tracks
+  }
+  // fetching a user's public tracks i.e. if a partner needs to see
+  static async fetchByPermalink(userId, permalink) {
+    if (!userId) {
+      throw new Error('User ID is undefined.')
+    }
+    // couldn't get user.fetchByPermalink to work
+    const data = await userModel
+      .scan()
+      .where('permalink')
+      .equals(permalink)
+      .execAsync()
+    const user = data.Items[0].attrs
+
+    const { Items } = await trackModel
+      .scan()
+      .where('userId')
+      .equals(user.id)
       .where('isPublic')
       .equals(true)
       .execAsync()

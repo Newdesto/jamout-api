@@ -1,7 +1,9 @@
 type Connection {
   id: ID!
   userId: ID!
+  user: User!
   friendId: ID!
+  friend: User!
   status: ConnectionStatus!
 }
 

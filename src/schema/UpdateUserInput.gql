@@ -1,0 +1,6 @@
+input UpdateUserInput {
+  permalink: String
+  displayName: String
+  location: String
+  avatarKey: String
+}

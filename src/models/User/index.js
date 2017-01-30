@@ -1,7 +1,12 @@
 import jwt from 'jsonwebtoken'
 import AWS from 'aws-sdk'
+import shortid from 'shortid'
 import userModel from './model'
-import UserLoader from './loader'
+import {
+  UserIdLoader,
+  UserUsernameLoader,
+  UserPermalinkLoader
+} from './loaders'
 import { createCustomer } from '../../utils/stripe'
 import { hashPassword, authenticate } from '../../utils/auth'
 
@@ -10,13 +15,17 @@ const s3 = new AWS.S3()
 const secret = process.env.JWT_SECRET
 
 export default class User {
-  constructor({ loader }) {
-    this.loader = loader
+  constructor({ idLoader, usernameLoader, permalinkLoader }) {
+    this.idLoader = idLoader
+    this.usernameLoader = usernameLoader
+    this.permalinkLoader = permalinkLoader
     this.fetchByIds = ::this.fetchByIds
     this.fetchById = :: this.fetchById
+    this.fetchByPermalink = :: this.fetchByPermalink
     // Binded for GQL context
     this.login = User.login
     this.create = User.create
+    this.update = User.update
   }
   static async usernameExists(username) {
     const existingUsernames = await userModel
@@ -64,6 +73,10 @@ export default class User {
     const { attrs: user } = await userModel.createAsync({
       email,
       username,
+      displayName: username,
+      // Generate permalink so we can be sure that it's not taken. Conflicting
+      // permalinks are the devil.
+      permalink: shortid.generate(),
       password: hashedPassword
     })
 
@@ -85,25 +98,55 @@ export default class User {
 
     return accessToken
   }
-  fetchById(id) {
-    return this.loader.load(id)
+  async fetchById(id) {
+    const user = await this.idLoader.load(id)
+    this.usernameLoader.prime(user.username, user)
+    this.permalinkLoader.prime(user.permalink, user)
+    return user
   }
-  fetchByIds(ids) {
-    return this.loader.loadMany(ids)
+  async fetchByIds(ids) {
+    const users = await this.idLoader.loadMany(ids)
+    users.map(u => this.usernameLoader.prime(u.username, u))
+    users.map(u => this.permalinkLoader.prime(u.permalink, u))
+    return users
   }
-  async update(id, input) {
-    const { attrs } = await userModel
-      .updateAsync(Object.assign(input, { id }))
+  async fetchByUsername(username) {
+    const user = await this.usernameLoader.load(username)
+    this.idLoader.prime(user.id, user)
+    this.permalinkLoader.prime(user.permalink, user)
+    return user
+  }
+  async fetchByUsernames(usernames) {
+    const users = await this.usernameLoader.loadMany(usernames)
+    users.map(u => this.idLoader.prime(u.id, u))
+    users.map(u => this.permalinkLoader.prime(u.permalink, u))
+    return users
+  }
+  async fetchByPermalink(permalink) {
+    const user = await this.permalinkLoader.load(permalink)
+    this.idLoader.prime(user.id, user)
+    this.usernameLoader.prime(user.username, user)
+    return user
+  }
+  async fetchByPermalinks(permalinks) {
+    const users = await this.permalinkLoader.load(permalinks)
+    users.map(u => this.idLoader.prime(u.id, u))
+    users.map(u => this.usernameLoader.prime(u.username, u))
+    return users
+  }
+  static async update(id, input) {
+    const { attrs } = await userModel.updateAsync({ id, ...input })
 
     // we should never return the password object
     delete attrs.password
 
     // invalidate the loader cache
-    this.loader.clear(attrs.id)
-
+    this.idLoader.clear(attrs.id)
     return attrs
   }
 }
 export {
-  UserLoader
+  UserIdLoader,
+  UserUsernameLoader,
+  UserPermalinkLoader
 }
