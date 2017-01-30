@@ -2,10 +2,12 @@ import { logger, queue } from 'io'
 import Channel from 'services/chat/channel'
 import textbox from './textbox'
 import onboarding from './onboarding'
+import studioSessions from './studio-sessions'
 
 const inputHandlers = {
   Textbox: textbox,
-  ...onboarding
+  ...onboarding,
+  ...studioSessions
 }
 
 /**
@@ -20,12 +22,12 @@ queue.process('chat.input', async ({ id, data }, done) => {
     // Query for the channel details. This is where cache comes in handy.
     const channel = await Channel.getAsync(input.channelId)
 
-    if (!channel) {
+    if (!channel.attrs) {
       done('Channel does not exist.')
     }
 
     // Append the channel object to the input.
-    input.channel = channel
+    input.channel = channel.attrs
 
     // Route it to the proper handler if it was sent a component. If not, just
     // call done. It's a weird use case if we a component-less input gets

@@ -5,6 +5,10 @@ const resolvers = {
         return 'ImageAttachment'
       case 'CardGroup':
         return 'CardGroupAttachment'
+      case 'StudioSessionInquiry':
+        return 'StudioSessionInquiryAttachment'
+      case 'Event':
+        return 'EventAttachment'
       default:
         return null
     }

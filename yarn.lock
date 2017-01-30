@@ -1617,6 +1617,10 @@ dataloader@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-1.2.0.tgz#3f73ea657c492c860c1633348adc55ca9bf2107e"
 
+date-fns@^1.27.1:
+  version "1.27.1"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.27.1.tgz#194ba3c77b42d98e280ec1e5d6f094434b77cbca"
+
 date-time@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/date-time/-/date-time-0.1.1.tgz#ed2f6d93d9790ce2fd66d5b5ff3edd5bbcbf3b07"

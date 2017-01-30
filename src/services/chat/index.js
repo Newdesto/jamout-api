@@ -189,6 +189,7 @@ export default class Chat {
     }
 
     const { attrs } = await Message.updateAsync({ channelId, timestamp, ...input })
+    console.log(attrs)
     await Chat.publishMessages(channelId, attrs.senderId, [attrs])
     return attrs
   }
