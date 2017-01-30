@@ -1,4 +1,3 @@
-import logger from 'io/logger'
 import shortid from 'shortid'
 import microtime from 'microtime'
 import { publishMessages } from 'utils/chat'
