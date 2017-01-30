@@ -7,7 +7,7 @@ import studioEvent from './studioEvent'
 import createMusicEvent from './musicEvent'
 import eventArtist from './eventArtist'
 import track from './track'
-
+import user from './user'
 
 const resolvers = {
   Mutation: merge(
@@ -18,7 +18,8 @@ const resolvers = {
     eventArtist,
     chat,
     release,
-     track
+    track,
+    user
   )
 }
 
