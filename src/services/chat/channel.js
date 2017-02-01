@@ -14,7 +14,11 @@ const Channel = vogels.define('Channel', {
     ownerId: Joi.string(), // DM: null, Assistant: *, Group: *
     // @NOTE If channel is assistant type then the only element is the user.
     users: vogels.types.stringSet(), // array of userIds in channel
-    usersHash: Joi.string()
+    usersHash: Joi.string(),
+    // Superpowers are things that show up in the input menu.
+    // The array elements refer to specific componets that populate
+    // the menu. The component handle their own queries, mutation and modals.
+    superPowers: Joi.array()
   },
   indexes: [{
     hashKey: 'usersHash', name: 'usersHash-index', type: 'global'

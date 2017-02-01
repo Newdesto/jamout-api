@@ -36,6 +36,10 @@ export default {
       throw err
     }
   },
+  /**
+   * Any message sent using this method isn't published to the channel's channel.
+   * @type {[type]}
+   */
   async sendMessage(root, { text, channelId }, { user: currentUser, Chat, logger }) {
     try {
       if (!currentUser) {
