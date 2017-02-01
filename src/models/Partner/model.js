@@ -6,7 +6,7 @@ const Partner = vogels.define('Partner', {
   tableName: 'partner',
   timestamps: true,
   schema: {
-    id: vogels.types.uuid(),
+    id: Joi.string(),
     stripeAccountId: Joi.string(),
     // Company name, usually
     name: Joi.string(),

@@ -4,6 +4,7 @@ import Release from 'models/Release'
 import Connection from 'models/Connection'
 import Chat from 'services/chat'
 import User, { UserIdLoader, UserUsernameLoader, UserPermalinkLoader } from 'models/User'
+import Partner from 'models/Partner/model'
 import StudioEvent from 'models/StudioEvent'
 import MusicEvent from 'models/MusicEvent'
 import Track from 'models/Track'
@@ -45,6 +46,7 @@ export default graphqlExpress((req) => {
       logger,
       pubsub,
       Connection,
+      Partner,
       jwt: user && req.headers.authorization.slice(7),
       User: new User({ idLoader, usernameLoader, permalinkLoader }),
       Release: new Release(),

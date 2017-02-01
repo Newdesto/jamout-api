@@ -32,7 +32,7 @@ const User = vogels.define('User', {
         role: Joi.string().valid('partner', 'artist')
       })
     }),
-    // User roles. (e.g.; artist, partner.jd2Dw.owner)
+    // User roles. (e.g.; artist, partner:jd2Dw)
     roles: Joi.array().items(Joi.string())
     // @TODO Permissions?
   },
