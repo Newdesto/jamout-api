@@ -2,12 +2,12 @@ import crypto from 'crypto'
 import R from 'ramda'
 import shortid from 'shortid'
 import { pubsub } from 'io/subscription'
-import microtime from 'microtime'
 import { createJob } from 'io/queue'
 import { publishMessages } from 'utils/chat'
 import Channel from './channel'
 import Message from './message'
 import Subscription from './subscription'
+import handlePostback from './postback'
 
 /**
  * The chat service which is injected into the context of GQL queries. It's
@@ -21,6 +21,7 @@ export default class Chat {
     // an instance so static methods are inaccessible.
     this.getMessagesByChannelId = Chat.getMessagesByChannelId
     this.updateMessage = Chat.updateMessage
+    this.postback = Chat.postback
   }
   /**
    * A wrapper for createJob for testability.
@@ -137,47 +138,34 @@ export default class Chat {
     }
   }
   /**
-   * Process an input object. Generally this will be a Textbox but in some cases
-   * it could be some other component. See the Input type in the GQL schema.
-   * Returns the persisted message.
+   * Sends a text message on behalf of the user.
    */
-  async sendInput({ input: i }) {
-    const input = i
-    // Persist the message in DDB.
-    if (input.message) {
-      // Check if the user is subscribed to this channel.
-      const subscription =
-      await Subscription.getAsync({ userId: this.userId, channelId: input.channelId })
+  async sendMessage({ message }) {
+    // Check if the user is subscribed to this channel.
+    const subscription =
+    await Subscription.getAsync({ channelId: message.channelId, userId: this.userId })
 
-      // If the sender was the assistnat don't throw an error.
-      // The 'assistant' user doesn't receive a subscription.
-      if (!subscription && input.message.senderId !== 'assistant') {
-        throw new Error('Authorization failed.')
-      }
-
-      // Throws an error if something fails.
-      const { attrs } = await Message.createAsync({
-        ...input.message,
-        id: shortid.generate(),
-        timestamp: microtime.nowDouble().toString()
-      })
-
-      // Anti-immutability = bad but oh well
-      input.message = attrs
+    // If the sender was the assistnat don't throw an error.
+    // The 'assistant' user doesn't receive a subscription.
+    if (!subscription) {
+      throw new Error('Authorization failed.')
     }
 
-    if (!input.bypassQueue) {
-      // Create a job to process the text. This is generally used
-      // in assistant channels.
-      await Chat.createJob('chat.input', input)
-    } else {
-      // If we're skipping the job just publish the message in the pubsub.
-      // This is generally used in DMs or Groups.
-      Chat.publish('messages', input.message)
-      // Set up success/failure flags.
+    // Get the channel so we can check what type it is.
+    const channel = await Channel.getAsync(message.channelId)
+    if (!channel.attrs) {
+      throw new Error('Subscription exists but the channel does not.')
     }
 
-    return input.message
+    // If it's an assistant channel queue up a job to process this message.
+    if (channel.attrs.type === 'a') {
+      await createJob('chat.processMessage', { message })
+    }
+
+    // Throws an error if something fails.
+    const { attrs } = await Message.createAsync(message)
+
+    return attrs
   }
   /**
    * Updates a message given a channel and micro timestamp and publishes it
@@ -195,13 +183,12 @@ export default class Chat {
   }
   /**
    * Processes a postback object. A postback object is sent from a message
-   * attachment (this is different than an input). The postback object will
-   * look similar to an input. This method queues a job to process postbacks
-   * and nothing more. We could register function for a more immediate
-   * execution, but that's lame.
+   * attachment. Postbacks are handled immediately. We're trying our best to
+   * stay away from the overhead of users.
    */
   static async postback({ postback }) {
-    await Chat.createJob('chat.postback', postback)
+    const messages = await handlePostback(postback)
+    return messages
   }
   /**
    * Get's a channel by its ID.

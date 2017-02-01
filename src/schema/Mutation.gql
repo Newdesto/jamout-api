@@ -6,8 +6,10 @@ type Mutation {
   generateS3Signature(stringToSign: String!, datetime: String!): String!
   # Chat
   openChannel(type: ChannelType!, users: [ID!]!): Channel
-  postback(input: ChatPostback!): Message # Postback might return a message... might.
-  sendInput(input: ChatInput!): Message # Most inputs should persist a message....
+  # A postback can return several message. e.g.; one updated message and one
+  # new message.
+  postback(input: ChatPostbackInput!): [Message!]
+  sendMessage(message: MessageInput!): Message!
   updateMessage(input: UpdateMessageInput!): Message!
   # Distribution
   createRelease(input: ReleaseInput!): Release

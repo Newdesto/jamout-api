@@ -1,6 +1,8 @@
 /**
  * The chat mutation resolvers.
  */
+import shortid from 'shortid'
+import microtime from 'microtime'
 
 export default {
   openChannel(root, a, { user, Chat, logger }) {
@@ -34,21 +36,24 @@ export default {
       throw err
     }
   },
-  async sendInput(root, { input }, { user, Chat, logger }) {
-    // @TODO Create a base resolver to handle try/catch and error handling.
+  /**
+   * Any message sent using this method isn't published to the channel's channel.
+   * @type {[type]}
+   */
+  async sendMessage(root, { message }, { user: currentUser, Chat, logger }) {
     try {
-      if (!user) {
+      if (!currentUser) {
         throw new Error('Authentication failed.')
       }
 
+      const savedMessage = await Chat.sendMessage({ message: {
+        ...message,
+        senderId: currentUser.id,
+        id: shortid.generate(),
+        timestamp: microtime.nowDouble().toString()
+      } })
 
-      const message = await Chat.sendInput({
-        input: {
-          ...input,
-          userId: user.id
-        }
-      })
-      return message
+      return savedMessage
     } catch (err) {
       logger.error(err)
       throw err
@@ -60,7 +65,10 @@ export default {
         throw new Error('Authentication failed.')
       }
 
-      await Chat.postback({ postback: input })
+      await Chat.postback({ postback: {
+        user,
+        ...input
+      } })
       return
     } catch (err) {
       logger.error(err)

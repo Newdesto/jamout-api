@@ -21,7 +21,7 @@ const inquire = async function inquire({ userId, channelId }, result, messages) 
   const contexts = R.indexBy(R.prop('name'), result.contexts)
 
   // Process the contexts and send the relevant message attachment.
-  if (R.has('studio-sessions:inquire_dialog_params_studio')(contexts)) {
+  if (R.has('studio-sessions/inquire_dialog_params_studio')(contexts)) {
     const studiosCardGroup = {
       channelId,
       id: shortid.generate(),

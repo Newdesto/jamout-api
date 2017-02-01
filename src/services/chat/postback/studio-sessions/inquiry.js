@@ -9,40 +9,40 @@ import Chat from 'services/chat'
  * Publishes an event message and sends an inquiry message to the
  * studio's assistant channel.
  */
-const inquiryHandler = async function inquiryHandler(input) {
+const inquiryHandler = async function inquiryHandler({ user, channelId, values }) {
   // Persist and publish the event message.
   const eventMessage = {
-    channelId: input.channel.id,
+    channelId,
     id: shortid.generate(),
     timestamp: microtime.nowDouble().toString(),
     senderId: 'assistant', // I guess events will always be assistant sent?
     attachment: {
       type: 'Event',
       disableInput: false,
-      text: input.values.confirm ?
-      `You sent a studio session inquiry to ${input.values.studio}.` :
-      `You cancelled a studio session inquiry for ${input.values.studio}.`
+      text: values.confirm ?
+      `You sent a studio session inquiry to ${values.studio}.` :
+      `You cancelled a studio session inquiry for ${values.studio}.`
     }
   }
 
   await createJob('chat.persistMessage', { message: eventMessage })
-  await publishMessages(input.channelId, 'assistant', [eventMessage])
+  await publishMessages(channelId, 'assistant', [eventMessage])
 
   // Update the artist's message
   await Chat.updateMessage({
-    channelId: input.channelId,
-    timestamp: input.values.timestamp,
+    channelId,
+    timestamp: values.timestamp,
     attachment: {
       type: 'StudioSessionInquiry',
       disableInput: false,
-      studio: input.values.studio,
-      date: format(input.values.date),
+      studio: values.studio,
+      date: format(values.date),
       hideButtons: true
     }
   })
 
   // If they confirmed send a message to the studio.
-  if (input.values.confirm) {
+  if (values.confirm) {
     // We have to get the studio's assistant channel Id
     const chat = new Chat({ userId: 'studio-circle-recordings' })
     const studioChannel = await chat.getAssistantChannel()
@@ -54,13 +54,13 @@ const inquiryHandler = async function inquiryHandler(input) {
       attachment: {
         type: 'StudioSessionInquiry',
         disableInput: false,
-        userId: input.userId,
-        date: format(input.values.date)
+        userId: user.id,
+        date: format(values.date)
       }
     }
 
     await createJob('chat.persistMessage', { message: studioMessage })
-    await publishMessages(input.channelId, 'assistant', [studioMessage])
+    await publishMessages(channelId, 'assistant', [studioMessage])
   }
 }
 
