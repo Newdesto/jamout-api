@@ -152,53 +152,21 @@ export default class Chat {
       throw new Error('Authorization failed.')
     }
 
+    // Get the channel so we can check what type it is.
+    const channel = await Channel.getAsync(message.channelId)
+    if (!channel.attrs) {
+      throw new Error('Subscription exists but the channel does not.')
+    }
+
+    // If it's an assistant channel queue up a job to process this message.
+    if (channel.attrs.type === 'a') {
+      await createJob('chat.processMessage', { message })
+    }
+
     // Throws an error if something fails.
     const { attrs } = await Message.createAsync(message)
 
     return attrs
-  }
-  /**
-   * Process an input object. Generally this will be a Textbox but in some cases
-   * it could be some other component. See the Input type in the GQL schema.
-   * Returns the persisted message.
-   */
-  async sendInput({ input: i }) {
-    const input = i
-    // Persist the message in DDB.
-    if (input.message) {
-      // Check if the user is subscribed to this channel.
-      const subscription =
-      await Subscription.getAsync({ userId: this.userId, channelId: input.channelId })
-
-      // If the sender was the assistnat don't throw an error.
-      // The 'assistant' user doesn't receive a subscription.
-      if (!subscription && input.message.senderId !== 'assistant') {
-        throw new Error('Authorization failed.')
-      }
-
-      // Throws an error if something fails.
-      const { attrs } = await Message.createAsync({
-        ...input.message,
-        id: shortid.generate(),
-        timestamp: microtime.nowDouble().toString()
-      })
-
-      // Anti-immutability = bad but oh well
-      input.message = attrs
-    }
-
-    if (!input.bypassQueue) {
-      // Create a job to process the text. This is generally used
-      // in assistant channels.
-      await Chat.createJob('chat.input', input)
-    } else {
-      // If we're skipping the job just publish the message in the pubsub.
-      // This is generally used in DMs or Groups.
-      Chat.publish('messages', input.message)
-      // Set up success/failure flags.
-    }
-
-    return input.message
   }
   /**
    * Updates a message given a channel and micro timestamp and publishes it

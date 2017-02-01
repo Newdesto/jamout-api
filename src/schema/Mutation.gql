@@ -9,7 +9,7 @@ type Mutation {
   # A postback can return several message. e.g.; one updated message and one
   # new message.
   postback(input: ChatPostbackInput!): [Message!]
-  sendMessage(channelId: ID!, text: String!): Message!
+  sendMessage(message: MessageInput!): Message!
   updateMessage(input: UpdateMessageInput!): Message!
   # Distribution
   createRelease(input: ReleaseInput!): Release

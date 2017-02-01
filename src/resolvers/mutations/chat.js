@@ -40,21 +40,20 @@ export default {
    * Any message sent using this method isn't published to the channel's channel.
    * @type {[type]}
    */
-  async sendMessage(root, { text, channelId }, { user: currentUser, Chat, logger }) {
+  async sendMessage(root, { message }, { user: currentUser, Chat, logger }) {
     try {
       if (!currentUser) {
         throw new Error('Authentication failed.')
       }
 
-      const message = await Chat.sendMessage({ message: {
-        text,
-        channelId,
+      const savedMessage = await Chat.sendMessage({ message: {
+        ...message,
         senderId: currentUser.id,
         id: shortid.generate(),
         timestamp: microtime.nowDouble().toString()
       } })
 
-      return message
+      return savedMessage
     } catch (err) {
       logger.error(err)
       throw err

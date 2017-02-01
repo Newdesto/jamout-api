@@ -14,20 +14,20 @@ const actionHandlers = {
  * @param  {Object}  result API.ai result (https://docs.api.ai/docs/query#response)
  * @return {Promise}          [description]
  */
-const handleAction = async function fulfill(input, result) {
+const handleAction = async function handleAction(message, result) {
   // Convert the messages to Jamout's format.
-  const messages = fulfillmentToMessages(input.channelId, result.fulfillment)
+  const messages = fulfillmentToMessages(message.channelId, result.fulfillment)
 
   // If no action was returned that means there's no logic to carry out,
   // so just persist, publish and dip.
   if (!result.action) {
     // Persist the messages in DDB.
-    await Promise.all(messages.map(message => createJob('chat.persistMessage', {
-      message
+    await Promise.all(messages.map(m => createJob('chat.persistMessage', {
+      message: m
     })))
 
     // Publish the messages to the channel's pubsub channel
-    await publishMessages(input.channelId, 'assistant', messages)
+    await publishMessages(message.channelId, 'assistant', messages)
     return
   }
 
@@ -40,17 +40,17 @@ const handleAction = async function fulfill(input, result) {
     // Things like smalltalk and gretings don't have a fulfillment handler.
     logger.info(`No action handler set for the action ${result.action}.`)
     // Persist the messages in DDB.
-    await Promise.all(messages.map(message => createJob('chat.persistMessage', {
-      message
+    await Promise.all(messages.map(m => createJob('chat.persistMessage', {
+      message: m
     })))
 
     // Publish the messages to the channel's pubsub channel
-    await publishMessages(input.channelId, 'assistant', messages)
+    await publishMessages(message.channelId, 'assistant', messages)
     return
   }
 
   // Call the action function...
-  await actionHandler(input, result, messages)
+  await actionHandler(message, result, messages)
 }
 
 export default handleAction
