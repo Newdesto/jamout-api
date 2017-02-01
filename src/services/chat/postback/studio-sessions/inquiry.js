@@ -10,10 +10,6 @@ import Chat from 'services/chat'
  * studio's assistant channel.
  */
 const inquiryHandler = async function inquiryHandler({ user, channelId, values }) {
-  console.log(user)
-  console.log(channelId)
-  console.log(values)
-  return
   // Persist and publish the event message.
   const eventMessage = {
     channelId,

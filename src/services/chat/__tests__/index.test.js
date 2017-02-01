@@ -155,90 +155,6 @@ test.serial('Chat.createChannel should return an existing channel', async (t) =>
   Chat.channelExistsByHash.restore()
 })
 
-test.serial('Chat.sendInput should throw an authorization error', async (t) => {
-  const input = {
-    bypassQueue: false,
-    createdAt: new Date().toISOString(),
-    id: 'thisisafakeid',
-    channelId: 'abc123',
-    message: {
-      channelId: 'abc123',
-      senderId: 'gabe',
-      text: 'Hi.'
-    }
-  }
-
-  // Stub a dub dub
-  sinon.stub(Subscription, 'getAsync').returns(null)
-
-  // Assert and restore
-  const chat = new Chat({ userId: 'gabe' })
-  const error = await t.throws(chat.sendInput({ input }))
-  t.is(error.message, 'Authorization failed.')
-  Subscription.getAsync.restore()
-})
-
-test.serial("Chat.sendInput should not persist a message and should publish directly to the channel's channel",
-async (t) => {
-  const input = {
-    bypassQueue: true,
-    createdAt: new Date().toISOString(),
-    id: 'thisisafakeid',
-    channelId: 'abc123'
-  }
-
-  // Let's chat
-  const chat = new Chat({ userId: 'gabe' })
-
-  // i-Spy
-  const spy = sinon.spy(Chat, 'publish')
-  spy.returnValues = [
-    true
-  ]
-
-  // Assert falsy because message = null
-  const result = await chat.sendInput({ input })
-  t.falsy(result)
-  Chat.publish.restore()
-})
-
-test.serial('Chat.sendInput should persist the message and create a job to process it', async (t) => {
-  const subscription = {
-    channelId: 'abc123',
-    userId: 'gabe'
-  }
-  const input = {
-    bypassQueue: false,
-    createdAt: new Date().toISOString(),
-    id: 'thisisafakeid',
-    channelId: 'abc123',
-    message: {
-      channelId: 'abc123',
-      senderId: 'gabe',
-      text: 'Hi.'
-    }
-  }
-  const persistedMessage = {
-    ...input,
-    id: 'fakemessageid',
-    timestamp: '126234324.1243'
-  }
-
-  // Stubzzz
-  sinon.stub(Subscription, 'getAsync').returns(subscription)
-  sinon.stub(Message, 'createAsync').returns({ attrs: persistedMessage })
-  sinon.stub(Chat, 'createJob')
-
-  // Assert and restore, bro.
-  const chat = new Chat({ userId: 'gabe' })
-  const result = await chat.sendInput({ input })
-  t.deepEqual(result, persistedMessage)
-
-  Subscription.getAsync.restore()
-  Message.createAsync.restore()
-  Chat.createJob.restore()
-})
-
 test.serial('Chat.updateMessage should throw errors', async (t) => {
   const chat = new Chat({ userId: 'gabe' })
   t.throws(chat.updateMessage({ channelId: 'abc123' }))
@@ -266,23 +182,6 @@ test.serial('Chat.updateMessage should call updateAsync and publishMessage metho
 
   Message.updateAsync.restore()
   Chat.publishMessages.restore()
-})
-
-test.serial('Chat.postback should create a new chat.postback job', async (t) => {
-  const postback = {
-    id: 'thisisapostback'
-  }
-
-  // Spy
-  const spy = sinon.spy(Chat, 'createJob')
-  spy.returnValues = [
-    true
-  ]
-
-  // Assert and restore
-  await Chat.postback({ postback })
-  t.true(spy.calledWith('chat.postback', postback))
-  Chat.createJob.restore()
 })
 
 test.serial('Chat.getChannelById should return a channel', async (t) => {
