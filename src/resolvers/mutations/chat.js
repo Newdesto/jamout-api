@@ -60,26 +60,6 @@ export default {
       throw err
     }
   },
-  async sendInput(root, { input }, { user, Chat, logger }) {
-    // @TODO Create a base resolver to handle try/catch and error handling.
-    try {
-      if (!user) {
-        throw new Error('Authentication failed.')
-      }
-
-
-      const message = await Chat.sendInput({
-        input: {
-          ...input,
-          userId: user.id
-        }
-      })
-      return message
-    } catch (err) {
-      logger.error(err)
-      throw err
-    }
-  },
   async postback(root, { input }, { user, Chat, logger }) {
     try {
       if (!user) {

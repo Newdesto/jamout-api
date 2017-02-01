@@ -150,7 +150,7 @@ type CardElementButton {
 
 # Chat postbacks are sent from attachments. It's up to the attachment component
 # to sent a postback. Postbacks are then translated to service-specific functions.
-input ChatPostback {
+input ChatPostbackInput {
   # Knowing what channel this postback came from would be useful.
   channelId: String!
   # What logic needs to be executed.
