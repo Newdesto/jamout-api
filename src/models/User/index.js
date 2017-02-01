@@ -62,7 +62,14 @@ export default class User {
     user.avatarUrl = url
     delete user.artworkKey
 
-    const accessToken = jwt.sign(user, secret)
+    // Sign the JWT. aud/iss are either https://api.jamout.co for production
+    // or localhost for dev. We do this so JWTs don't get mixed up, and for
+    // better security.
+    const accessToken = jwt.sign(user, secret, {
+      subject: user.id,
+      audience: process.env.JWT_AUDIENCE,
+      issuer: process.env.JWT_ISSUER
+    })
     return accessToken
   }
   static async create({ email, username, password }) {
@@ -94,7 +101,11 @@ export default class User {
     })
 
     delete userStripe.password
-    const accessToken = jwt.sign(userStripe, secret)
+    const accessToken = jwt.sign(userStripe, secret, {
+      subject: user.id,
+      audience: process.env.JWT_AUDIENCE,
+      issuer: process.env.JWT_ISSUER
+    })
 
     return accessToken
   }
