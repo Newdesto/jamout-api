@@ -25,3 +25,21 @@ type MeContext {
 type MeWebContext {
   role: String
 }
+
+input MeInput {
+  id: ID!
+  username: String
+  permalink: String
+  displayName: String
+  location: String
+  avatarKey: String
+  context: MeContextInput
+}
+
+input MeContextInput {
+  web: MeWebContextInput
+}
+
+input MeWebContextInput {
+  role: String!
+}

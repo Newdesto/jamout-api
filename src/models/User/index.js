@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import AWS from 'aws-sdk'
 import shortid from 'shortid'
+import { fromJS } from 'immutable'
 import userModel from './model'
 import {
   UserIdLoader,
@@ -146,13 +147,24 @@ export default class User {
     return users
   }
   static async update(id, input) {
-    const { attrs } = await userModel.updateAsync({ id, ...input })
+    // This is an EXTREMELY bad performance issue - we query for the user
+    // object, convert the user object and the input to immutable objects,
+    // and deepMerge them.
+    const oldUserItem = await userModel.getAsync({ id })
+    const oldUser = fromJS(oldUserItem.attrs)
+
+    const newUser = fromJS(input)
+
+    const updatedUser = oldUser.mergeDeep(newUser)
+    const { attrs } = await userModel.updateAsync(updatedUser.toJS())
 
     // we should never return the password object
     delete attrs.password
 
     // invalidate the loader cache
     this.idLoader.clear(attrs.id)
+    this.usernameLoader.clear(attrs.username)
+    this.permalinkLoader.clear(attrs.permalink)
     return attrs
   }
 }
