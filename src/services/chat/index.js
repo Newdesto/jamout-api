@@ -8,6 +8,7 @@ import { publishMessages } from 'utils/chat'
 import Channel from './channel'
 import Message from './message'
 import Subscription from './subscription'
+import handlePostback from './postback'
 
 /**
  * The chat service which is injected into the context of GQL queries. It's
@@ -21,6 +22,7 @@ export default class Chat {
     // an instance so static methods are inaccessible.
     this.getMessagesByChannelId = Chat.getMessagesByChannelId
     this.updateMessage = Chat.updateMessage
+    this.postback = Chat.postback
   }
   /**
    * A wrapper for createJob for testability.
@@ -214,13 +216,12 @@ export default class Chat {
   }
   /**
    * Processes a postback object. A postback object is sent from a message
-   * attachment (this is different than an input). The postback object will
-   * look similar to an input. This method queues a job to process postbacks
-   * and nothing more. We could register function for a more immediate
-   * execution, but that's lame.
+   * attachment. Postbacks are handled immediately. We're trying our best to
+   * stay away from the overhead of users.
    */
   static async postback({ postback }) {
-    await Chat.createJob('chat.postback', postback)
+    const messages = await handlePostback(postback)
+    return messages
   }
   /**
    * Get's a channel by its ID.

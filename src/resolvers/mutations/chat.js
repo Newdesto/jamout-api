@@ -66,7 +66,10 @@ export default {
         throw new Error('Authentication failed.')
       }
 
-      await Chat.postback({ postback: input })
+      await Chat.postback({ postback: {
+        user,
+        ...input
+      } })
       return
     } catch (err) {
       logger.error(err)

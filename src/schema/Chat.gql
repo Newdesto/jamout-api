@@ -154,7 +154,7 @@ input ChatPostbackInput {
   # Knowing what channel this postback came from would be useful.
   channelId: String!
   # What logic needs to be executed.
-  postbackId: String!
+  id: String!
   # When was the postback initialized.
   # @NOTE we have to use microtime in case a message is returned.
   createdAt: String!

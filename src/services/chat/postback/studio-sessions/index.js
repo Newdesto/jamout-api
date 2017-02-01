@@ -1,7 +1,7 @@
 import inquiry from './inquiry'
 
 const postbackHandlers = {
-  StudioSessionInquiry: inquiry
+  'studio-sessions.inquiry': inquiry
 }
 
 export default postbackHandlers
