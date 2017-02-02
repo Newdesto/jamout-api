@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import AWS from 'aws-sdk'
 import shortid from 'shortid'
+import { createError } from 'apollo-errors'
 import { fromJS } from 'immutable'
 import userModel from './model'
 import {
@@ -12,8 +13,16 @@ import { createCustomer } from '../../utils/stripe'
 import { hashPassword, authenticate } from '../../utils/auth'
 
 const s3 = new AWS.S3()
-
 const secret = process.env.JWT_SECRET
+const InvalidLoginError = createError('InvalidLoginError', {
+  message: 'Invalid email or password.'
+})
+const EmailExistsError = createError('EmailExistsError', {
+  message: 'Email already exists.'
+})
+const UsernameExistsError = createError('UsernameExistsError', {
+  message: 'Username already exists.'
+})
 
 export default class User {
   constructor({ idLoader, usernameLoader, permalinkLoader }) {
@@ -49,7 +58,7 @@ export default class User {
   static async login({ email, password }) {
     const user = await User.emailExists(email)
     if (!user) {
-      throw new Error('Invalid email or password.')
+      throw new InvalidLoginError()
     }
 
     // Compare the passwords.
@@ -74,8 +83,12 @@ export default class User {
     return accessToken
   }
   static async create({ email, username, password }) {
-    if (await User.emailExists(email)) { throw new Error('Email already exists.') }
-    if (await User.usernameExists(username)) { throw new Error('Username already exists.') }
+    if (await User.emailExists(email)) {
+      throw new EmailExistsError()
+    }
+    if (await User.usernameExists(username)) {
+      throw new UsernameExistsError()
+    }
 
     const hashedPassword = await hashPassword(password)
     const { attrs: user } = await userModel.createAsync({
