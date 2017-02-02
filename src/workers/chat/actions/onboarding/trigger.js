@@ -2,7 +2,7 @@ import { logger } from 'io'
 import { eventRequest } from 'io/apiai'
 import { handleAPIAIAction } from 'workers/chat/actions'
 
-export const trigger = async function trigger(message) {
+const trigger = async function trigger(message) {
   logger.debug('Processing onboarding.trigger user action.')
 
   // Query API.ai without any additional contexts.
