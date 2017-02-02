@@ -13,6 +13,7 @@ import { formatError } from 'apollo-errors'
 import { logger, pubsub } from 'io'
 import { createJob } from 'io/queue'
 import JWT from 'jsonwebtoken'
+import BPromise from 'bluebird'
 
 export const setupSubscriptionContext = (jwt) => {
   const user = jwt && JWT.verify(jwt, process.env.JWT_SECRET)
@@ -32,12 +33,33 @@ export const setupSubscriptionContext = (jwt) => {
   }
 }
 
-export default graphqlExpress((req) => {
-  const user = req.user
+export default graphqlExpress(async (req) => {
+  let user // Who am I?
   const idLoader = new UserIdLoader({ userId: user && user.id })
-
   const usernameLoader = new UserUsernameLoader({ username: user && user.username })
   const permalinkLoader = new UserPermalinkLoader({ permalink: user && user.permalink })
+
+  const userConnector = new User({ idLoader, usernameLoader, permalinkLoader })
+
+  // Fetch the user if the JWT is verified.
+  if (req.user) {
+    user = await userConnector.fetchById(req.user.id)
+  }
+
+  // If the web context is partner then we append it so Chat can query the
+  // using the correct IDs.
+  let chatConnector
+  if (user && user.context && user.context.web && user.context.web.role === 'partner') {
+    chatConnector = new Chat({
+      userId: `${user.id}:partner`
+    })
+  } else {
+    // Default the to implicit artist context.
+    chatConnector = new Chat({
+      userId: user.id
+    })
+  }
+
   return {
     schema,
     context: {
@@ -47,14 +69,15 @@ export default graphqlExpress((req) => {
       pubsub,
       Connection,
       Partner,
+      currentUser: user,
       jwt: user && req.headers.authorization.slice(7),
-      User: new User({ idLoader, usernameLoader, permalinkLoader }),
+      User: userConnector,
       Release: new Release(),
       StudioEvent: new StudioEvent(),
       MusicEvent: new MusicEvent(),
       EventArtist: new EventArtist(),
       Track: new Track(),
-      Chat: new Chat({ userId: user && user.id })
+      Chat: chatConnector
     },
     formatError,
     logger
