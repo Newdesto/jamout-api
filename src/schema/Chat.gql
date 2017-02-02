@@ -66,6 +66,8 @@ type Message {
   # an attachment and a text then the attachment should include a text element.
   text: String
   attachment: MessageAttachment
+  # Who this message is visible to
+  visibleTo: [ID]
 }
 
 # An attachment that can give messages superpowers. It outlines a specific

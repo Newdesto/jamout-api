@@ -218,10 +218,10 @@ export default class Chat {
     const { Items } = await Subscription
       .query(this.userId)
       .execAsync()
-
     // Then get the related channels
     const channelIds = Items.map(i => i.attrs.channelId)
     const channels = await Channel.getItemsAsync(channelIds)
+    console.log(channels.map(item => item.attrs))
     return channels.map(item => item.attrs)
   }
   /**
