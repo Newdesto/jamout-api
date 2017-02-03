@@ -41,7 +41,7 @@ export default graphqlExpress(async (req) => {
 
   // Fetch the user object from DB if the JWT is verified.
   if (user) {
-    user = await userConnector.fetchById(req.user.id)
+    user = await userConnector.fetchById(user.id)
   }
 
   // If the web context is partner then we append it so Chat can query the
@@ -51,11 +51,13 @@ export default graphqlExpress(async (req) => {
     chatConnector = new Chat({
       userId: `${user.id}:partner`
     })
-  } else {
+  } else if (user) {
     // Default the to implicit artist context.
     chatConnector = new Chat({
       userId: user.id
     })
+  } else {
+    chatConnector = new Chat({})
   }
 
   return {
