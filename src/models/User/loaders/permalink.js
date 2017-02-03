@@ -7,19 +7,27 @@ export default class UserPermalinkLoader {
     this.permalink = permalink
     this.load = ::this.load
     this.loadMany = ::this.loadMany
-    this.loader = new DataLoader(permalinks => this.list(permalink, permalinks))
+    this.loader = new DataLoader(permalinks => this.list(permalinks))
     this.list = UserPermalinkLoader.list
   }
-  static async list(permalink, permalinks) {
+  static async list(permalinks) {
     // @NOTE: Here is where we would do policy checks...
-    const users = await Promise.all(permalinks.map(p => userModel
+    const userItems = await Promise.all(permalinks.map(p => userModel
         .query(p)
         .usingIndex('permalink-index')
         .execAsync()))
 
     // Flattens and maps x2 because of our Promise.all above.
-    return R.flatten(users.map(u => u.Items))
-      .map(u => u.attrs)
+    const users = R.flatten(userItems.map(u => u.Items))
+
+    // If some permalinks didn't exist then push a null
+    if (users.length !== permalinks.length) {
+      return users
+        .map(u => u.attrs)
+        .concat(R.times(R.identity, (permalinks.length - users.length)).map(() => null))
+    }
+
+    return users.map(u => u.attrs)
   }
   prime(key, value) {
     return this.loader.prime(key, value)

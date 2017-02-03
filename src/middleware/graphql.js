@@ -13,7 +13,6 @@ import { formatError } from 'apollo-errors'
 import { logger, pubsub } from 'io'
 import { createJob } from 'io/queue'
 import JWT from 'jsonwebtoken'
-import BPromise from 'bluebird'
 
 export const setupSubscriptionContext = (jwt) => {
   const user = jwt && JWT.verify(jwt, process.env.JWT_SECRET)
@@ -34,15 +33,14 @@ export const setupSubscriptionContext = (jwt) => {
 }
 
 export default graphqlExpress(async (req) => {
-  let user // Who am I?
+  let user = req.user // Who am I?
   const idLoader = new UserIdLoader({ userId: user && user.id })
   const usernameLoader = new UserUsernameLoader({ username: user && user.username })
   const permalinkLoader = new UserPermalinkLoader({ permalink: user && user.permalink })
-
   const userConnector = new User({ idLoader, usernameLoader, permalinkLoader })
 
-  // Fetch the user if the JWT is verified.
-  if (req.user) {
+  // Fetch the user object from DB if the JWT is verified.
+  if (user) {
     user = await userConnector.fetchById(req.user.id)
   }
 
