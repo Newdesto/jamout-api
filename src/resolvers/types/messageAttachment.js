@@ -9,6 +9,8 @@ const resolvers = {
         return 'StudioSessionInquiryAttachment'
       case 'Event':
         return 'EventAttachment'
+      case 'StudioSessionNewDate':
+        return 'StudioSessionNewDateAttatchment'
       default:
         return null
     }

@@ -97,6 +97,14 @@ interface MessageAttachment {
   # implement the interface.
 }
 
+type StudioSessionNewDateAttatchment implements MessageAttachment {
+  type: String! # Image
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  hideButtons: Boolean
+}
+
 type StudioSessionInquiryAttachment implements MessageAttachment {
   type: String! # Image
   action: String # redirect, message, postback
