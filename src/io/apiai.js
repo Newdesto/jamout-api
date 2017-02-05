@@ -82,3 +82,39 @@ export const eventRequest = function eventRequest(event, options) {
     })
   })
 }
+
+export const addContexts = function addContexts(contexts, sessionId) {
+  return new Promise((resolve, reject) => {
+    request.post({
+      url: `https://api.api.ai/v1/contexts?v=20150910&sessionId=${sessionId}`,
+      headers: {
+        Authorization: 'Bearer 44b5077dd1fb4b9e9672965a99cbc353',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(contexts)
+    }, (error, response, body) => {
+      const parsedBody = JSON.parse(body)
+
+      // Do some error checking.
+      if (error) {
+        reject(error)
+      } else if (parsedBody.status.code !== 200) {
+        reject(new Error(parsedBody.status.errorDetails))
+      } else if (parsedBody.status.errorType === 'deprecated') {
+        logger.warn('API.ai returned a deprecated error type.')
+      }
+
+      resolve(parsedBody)
+    })
+  })
+}
+
+// We use addContexts to suck the life out of a context because the delete
+// context endpoint doesn't support our context names.
+// (https://docs.api.ai/docs/contexts#delete-contexts)
+export const deleteContextByName = function deleteContextByName(contextName, sessionId) {
+  return addContexts([{
+    name: contextName,
+    lifespan: 0
+  }], sessionId)
+}

@@ -4,9 +4,11 @@ import fulfillmentToMessages from 'utils/apiai'
 import Promise from 'bluebird'
 import { publishMessages } from 'utils/chat'
 import studioSessions from './studio-sessions'
+import distribution from './distribution'
 
 const actionHandlers = {
-  ...studioSessions
+  ...studioSessions,
+  ...distribution
 }
 
 /**
@@ -15,6 +17,8 @@ const actionHandlers = {
  * @return {Promise}          [description]
  */
 const handleAction = async function handleAction(message, result) {
+  console.log(JSON.stringify(result))
+
   // Convert the messages to Jamout's format.
   const messages = fulfillmentToMessages(message.channelId, result.fulfillment)
 
