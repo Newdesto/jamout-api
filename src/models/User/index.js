@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken'
 import AWS from 'aws-sdk'
 import shortid from 'shortid'
+import { createError } from 'apollo-errors'
+import { fromJS } from 'immutable'
 import userModel from './model'
 import {
   UserIdLoader,
@@ -11,8 +13,16 @@ import { createCustomer } from '../../utils/stripe'
 import { hashPassword, authenticate } from '../../utils/auth'
 
 const s3 = new AWS.S3()
-
 const secret = process.env.JWT_SECRET
+const InvalidLoginError = createError('InvalidLoginError', {
+  message: 'Invalid email or password.'
+})
+const EmailExistsError = createError('EmailExistsError', {
+  message: 'Email already exists.'
+})
+const UsernameExistsError = createError('UsernameExistsError', {
+  message: 'Username already exists.'
+})
 
 export default class User {
   constructor({ idLoader, usernameLoader, permalinkLoader }) {
@@ -48,7 +58,7 @@ export default class User {
   static async login({ email, password }) {
     const user = await User.emailExists(email)
     if (!user) {
-      throw new Error('Invalid email or password.')
+      throw new InvalidLoginError()
     }
 
     // Compare the passwords.
@@ -62,12 +72,23 @@ export default class User {
     user.avatarUrl = url
     delete user.artworkKey
 
-    const accessToken = jwt.sign(user, secret)
+    // Sign the JWT. aud/iss are either https://api.jamout.co for production
+    // or localhost for dev. We do this so JWTs don't get mixed up, and for
+    // better security.
+    const accessToken = jwt.sign(user, secret, {
+      subject: user.id,
+      audience: process.env.JWT_AUDIENCE,
+      issuer: process.env.JWT_ISSUER
+    })
     return accessToken
   }
   static async create({ email, username, password }) {
-    if (await User.emailExists(email)) { throw new Error('Email already exists.') }
-    if (await User.usernameExists(username)) { throw new Error('Username already exists.') }
+    if (await User.emailExists(email)) {
+      throw new EmailExistsError()
+    }
+    if (await User.usernameExists(username)) {
+      throw new UsernameExistsError()
+    }
 
     const hashedPassword = await hashPassword(password)
     const { attrs: user } = await userModel.createAsync({
@@ -94,7 +115,11 @@ export default class User {
     })
 
     delete userStripe.password
-    const accessToken = jwt.sign(userStripe, secret)
+    const accessToken = jwt.sign(userStripe, secret, {
+      subject: user.id,
+      audience: process.env.JWT_AUDIENCE,
+      issuer: process.env.JWT_ISSUER
+    })
 
     return accessToken
   }
@@ -135,13 +160,24 @@ export default class User {
     return users
   }
   static async update(id, input) {
-    const { attrs } = await userModel.updateAsync({ id, ...input })
+    // This is an EXTREMELY bad performance issue - we query for the user
+    // object, convert the user object and the input to immutable objects,
+    // and deepMerge them.
+    const oldUserItem = await userModel.getAsync({ id })
+    const oldUser = fromJS(oldUserItem.attrs)
+
+    const newUser = fromJS(input)
+
+    const updatedUser = oldUser.mergeDeep(newUser)
+    const { attrs } = await userModel.updateAsync(updatedUser.toJS())
 
     // we should never return the password object
     delete attrs.password
 
     // invalidate the loader cache
     this.idLoader.clear(attrs.id)
+    this.usernameLoader.clear(attrs.username)
+    this.permalinkLoader.clear(attrs.permalink)
     return attrs
   }
 }

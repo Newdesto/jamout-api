@@ -1,7 +1,7 @@
 import { logger, queue } from 'io'
 import Channel from 'services/chat/channel'
 import { textRequest } from 'io/apiai'
-import handleAction from './actions'
+import { handleAPIAIAction, handleUserAction } from './actions'
 
 // Processes a message sent into an assistant channel. Sends a query to
 // API.ai and executes the action handler.
@@ -28,22 +28,26 @@ queue.process('chat.processMessage', async ({ data }, done) => {
     message.channel = channel.attrs
 
     // If there's no text it's something we can't process.
-    if (!message.text) {
-      logger.warning('No text value to process.')
-      return done('No text value to process.')
+    if (!message.text && !message.action) {
+      logger.warning('No text or action value to process.')
+      return done('No text or action value to process.')
     }
 
+    if (message.text) {
+      // Query API.ai without any additional contexts.
+      const apiaiResponse = await textRequest(message.text, {
+        contexts: [
+          { name: 'authenticated' }
+        ],
+        sessionId: message.senderId
+      })
 
-    // Query API.ai without any additional contexts.
-    const apiaiResponse = await textRequest(message.text, {
-      contexts: [
-        { name: 'authenticated' }
-      ],
-      sessionId: message.senderId
-    })
+      // Take the result and fulfill the action
+      await handleAPIAIAction(message, apiaiResponse.result)
+    } else {
+      await handleUserAction(message)
+    }
 
-    // Take the result and fulfill the action
-    await handleAction(message, apiaiResponse.result)
 
     return done()
   } catch (err) {
