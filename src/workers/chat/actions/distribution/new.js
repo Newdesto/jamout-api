@@ -1,40 +1,57 @@
 import { publishMessages } from 'utils/chat'
 import { createJob } from 'io/queue'
-import { deleteContextByName, addContexts } from 'io/apiai'
+import Release from 'models/Release'
 import { logger } from 'io'
 import R from 'ramda'
+import shortid from 'shortid'
+import microtime from 'microtime'
 
 const newDistro = async function newDistro({ senderId, channelId }, result, messages) {
   logger.debug('Processing distribution/new action.')
-
+  console.log(JSON.stringify(result))
   // Schedule persistence of the API.ai response messages.
   await Promise.all(messages.map(message => createJob('chat.persistMessage', {
     message
   })))
 
-  if (!R.isEmpty(result.parameters['release-type']) && R.isEmpty(result.parameters.title)) {
-    // The type slot was filled, but the title slot wasn't.
-    // Delete the type context and add the title context.
-    await deleteContextByName('distribution/new:type', senderId)
-    await addContexts([
-      {
-        name: 'distribution/new:title',
-        lifespan: 1
-      }
-    ], senderId)
-  } else if (R.isEmpty(result.parameters['release-type']) && !R.isEmpty(result.parameters.title)) {
-    // The title slot was filled, but the type slot wasn't.
-    // Leave the default context slot.
-  } else if (!R.isEmpty(result.parameters['release-type']) && !R.isEmpty(result.parameters.title)) {
-    // Both slots were filled, set the artist context and remove the type context.
-    await deleteContextByName('distribution/new:type', senderId)
-    await addContexts([
-      {
-        name: 'distribution/new:artist',
-        lifespan: 1
-      }
-    ], senderId)
+  const hasType = !R.isEmpty(result.parameters['release-type'])
+  const hasTitle = !R.isEmpty(result.parameters.title)
+  const hasBoth = (hasType && hasTitle) || false
+
+  // Create the release if we have params
+  let release
+  if (hasType || hasTitle) {
+    release = await Release.create({
+      userId: senderId,
+      type: !R.isEmpty(result.parameters['release-type']) && result.parameters['release-type'],
+      title: (!R.isEmpty(result.parameters.title) && result.parameters.title) || undefined
+    })
   }
+
+  // Figure out the attachment subtype
+  let subtype
+  if (hasBoth || (hasType && !hasTitle)) {
+    subtype = 'Meta'
+  } else {
+    subtype = 'Type'
+  }
+
+  const message = {
+    channelId,
+    id: shortid.generate(),
+    timestamp: microtime.nowDouble().toString(),
+    senderId: 'assistant',
+    attachment: {
+      subtype,
+      type: 'EditRelease',
+      disableInput: true,
+      postbackId: `EditRelease.${subtype}`,
+      releaseId: (release && release.id) || null
+    }
+  }
+
+  await createJob('chat.persistMessage', { message })
+  messages.push(message)
 
   // Publish the messages to the channel's pubsub channel
   await publishMessages(channelId, 'assistant', messages)

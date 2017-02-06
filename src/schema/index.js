@@ -29,6 +29,7 @@ import track from './track.gql'
 import updatedTrack from './updatedTrack.gql'
 import Connection from './Connection.gql'
 import UpdateUserInput from './UpdateUserInput.gql'
+import Me from './Me.gql'
 
 // @TODO combine schemas by module (e.g.; combine all release defs)
 const typeDefs = [
@@ -38,6 +39,7 @@ const typeDefs = [
   Query,
   Subscription,
   Chat,
+  Me,
   User,
   Release,
   ReleaseInput,

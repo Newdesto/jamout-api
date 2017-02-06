@@ -5,6 +5,8 @@ const resolvers = {
         return 'ImageAttachment'
       case 'CardGroup':
         return 'CardGroupAttachment'
+      case 'EditRelease':
+        return 'EditReleaseAttachment'
       case 'StudioSessionInquiry':
         return 'StudioSessionInquiryAttachment'
       case 'Event':

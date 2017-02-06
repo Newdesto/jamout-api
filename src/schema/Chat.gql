@@ -95,6 +95,15 @@ interface MessageAttachment {
   # implement the interface.
 }
 
+type EditReleaseAttachment implements MessageAttachment {
+  type: String! # EditRelease
+  subtype: String! # Type, Meta
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  releaseId: ID
+}
+
 type StudioSessionInquiryAttachment implements MessageAttachment {
   type: String! # Image
   action: String # redirect, message, postback
