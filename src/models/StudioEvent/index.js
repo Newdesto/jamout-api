@@ -67,7 +67,7 @@ export default class StudioEvent {
         type: 'd',
         users,
         name: 'Studio Session',
-        superPowers: ['studio-sessions.inquiry']
+        superPowers: [`studio-sessions:${payload.sessionId}`]
       })
 
       const introMessage = {

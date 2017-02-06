@@ -15,6 +15,7 @@ type Channel {
   ownerId: String
   # If channel is assistant type then the only element is the user.
   users: [User!]!
+  superPowers: [String]
 
   ### SUBSCRIPTION FIELDS ###
   lastRead: String
@@ -96,13 +97,23 @@ interface MessageAttachment {
   # Fields that are specific to the attachment are defined by types that
   # implement the interface.
 }
+
+type StudioSessionSessionPaidAttatchment implements MessageAttachment {
+  type: String! # Image
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  hideButtons: Boolean
+  sessionId: ID
+}
+
 type StudioSessionNewSessionAttatchment implements MessageAttachment {
   type: String! # Image
   action: String # redirect, message, postback
   postbackId: String # *
   disableInput: Boolean!
   hideButtons: Boolean
-  sessionId: String!
+  sessionId: ID
 }
 
 type StudioSessionSetDateAttatchment implements MessageAttachment {
@@ -112,6 +123,7 @@ type StudioSessionSetDateAttatchment implements MessageAttachment {
   startDate: String
   endDate: String
   price: Float
+  sessionId: ID
   disableInput: Boolean!
   hideButtons: Boolean
 }
@@ -120,6 +132,7 @@ type StudioSessionNewDateAttatchment implements MessageAttachment {
   type: String! # Image
   action: String # redirect, message, postback
   postbackId: String # *
+  sessionId: ID
   disableInput: Boolean!
   hideButtons: Boolean
 }

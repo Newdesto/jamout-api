@@ -16,7 +16,8 @@ const newDateHandler = async function newDateHandler({ user, channelId, values }
     attachment: {
       type: 'StudioSessionNewDate',
       disableInput: false,
-      hideButtons: false
+      hideButtons: false,
+      sessionId: values.sessionId
     },
     visibleTo: values.visibleTo
   }

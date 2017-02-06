@@ -15,6 +15,8 @@ const resolvers = {
         return 'StudioSessionSetDateAttatchment'
       case 'StudioSessionNewSession':
         return 'StudioSessionNewSessionAttatchment'
+      case 'StudioSessionPaid':
+        return 'StudioSessionSessionPaidAttatchment'
       default:
         return null
     }

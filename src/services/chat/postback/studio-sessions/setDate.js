@@ -3,12 +3,11 @@ import microtime from 'microtime'
 import { publishMessages } from 'utils/chat'
 import { createJob } from 'io/queue'
 // import format from 'date-fns/format'
- import Chat from 'services/chat'
-// import StudioEvent from 'models/StudioEvent'
+import Chat from 'services/chat'
 
 const setDateHandler = async function newDateHandler({ user, channelId, values }) {
 
-  const dateMessage = {
+  const payMessage = {
     channelId,
     id: shortid.generate(),
     timestamp: microtime.nowDouble().toString(),
@@ -19,13 +18,14 @@ const setDateHandler = async function newDateHandler({ user, channelId, values }
       endDate: values.endDate,
       price: values.price,
       disableInput: true,
-      hideButtons: true
+      hideButtons: true,
+      sessionId: values.sessionId
     },
     visibleTo: values.visibleTo
   }
 
-  await createJob('chat.persistMessage', { message: dateMessage })
-  await publishMessages(channelId, user.id, [dateMessage])
+  await createJob('chat.persistMessage', { message: payMessage })
+  await publishMessages(channelId, user.id, [payMessage])
 
   await Chat.updateMessage({
     channelId,
@@ -36,7 +36,6 @@ const setDateHandler = async function newDateHandler({ user, channelId, values }
       hideButtons: true
     }
   })
-
 
 }
 
