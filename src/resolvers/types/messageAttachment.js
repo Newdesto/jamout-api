@@ -11,6 +11,10 @@ const resolvers = {
         return 'EventAttachment'
       case 'StudioSessionNewDate':
         return 'StudioSessionNewDateAttatchment'
+      case 'StudioSessionSetDate':
+        return 'StudioSessionSetDateAttatchment'
+      case 'StudioSessionNewSession':
+        return 'StudioSessionNewSessionAttatchment'
       default:
         return null
     }

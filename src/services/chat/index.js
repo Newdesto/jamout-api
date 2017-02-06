@@ -22,6 +22,7 @@ export default class Chat {
     this.getMessagesByChannelId = Chat.getMessagesByChannelId
     this.updateMessage = Chat.updateMessage
     this.postback = Chat.postback
+    this.getChannelById = Chat.getChannelById
   }
   /**
    * A wrapper for createJob for testability.
@@ -194,7 +195,7 @@ export default class Chat {
   /**
    * Get's a channel by its ID.
    */
-  async getChannelById({ channelId }) {
+  static async getChannelById({ channelId }) {
     // Check if the user is subscribed to this channel.
     const subscription = await Subscription.getAsync({ userId: this.userId, channelId })
     if (!subscription) {
@@ -206,10 +207,10 @@ export default class Chat {
       throw new Error('Invalid channel.')
     }
 
-    return {
+    return [{
       ...subscription.attrs,
       ...channel.attrs
-    }
+    }]
   }
   /**
    * Gets a user's channels.

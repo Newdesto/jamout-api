@@ -96,6 +96,25 @@ interface MessageAttachment {
   # Fields that are specific to the attachment are defined by types that
   # implement the interface.
 }
+type StudioSessionNewSessionAttatchment implements MessageAttachment {
+  type: String! # Image
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  hideButtons: Boolean
+  sessionId: String!
+}
+
+type StudioSessionSetDateAttatchment implements MessageAttachment {
+  type: String! # Image
+  action: String # redirect, message, postback
+  postbackId: String # *
+  startDate: String
+  endDate: String
+  price: Float
+  disableInput: Boolean!
+  hideButtons: Boolean
+}
 
 type StudioSessionNewDateAttatchment implements MessageAttachment {
   type: String! # Image
