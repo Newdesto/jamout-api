@@ -1,11 +1,8 @@
 import newDistro from './new'
-import type from './type'
-import releaseDate from './releaseDate'
+import metadata from './metadata'
 
 const actionHandlers = {
-  'distribution/new': newDistro,
-  'distribution/new:type': type,
-  'distribution/new:release-date': releaseDate
+  'distribution/new': newDistro
 }
 
 

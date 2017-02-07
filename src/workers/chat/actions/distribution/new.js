@@ -28,12 +28,12 @@ const newDistro = async function newDistro({ senderId, channelId }, result, mess
     })
   }
 
-  // Figure out the attachment subtype
-  let subtype
+  // Figure out the attachment tye
+  let attachmentType
   if (hasBoth || (hasType && !hasTitle)) {
-    subtype = 'Meta'
+    attachmentType = 'ReleaseMetadata'
   } else {
-    subtype = 'Type'
+    attachmentType = 'ReleaseType'
   }
 
   const message = {
@@ -42,10 +42,9 @@ const newDistro = async function newDistro({ senderId, channelId }, result, mess
     timestamp: microtime.nowDouble().toString(),
     senderId: 'assistant',
     attachment: {
-      subtype,
-      type: 'EditRelease',
+      type: attachmentType,
+      postbackId: attachmentType,
       disableInput: true,
-      postbackId: `EditRelease.${subtype}`,
       releaseId: (release && release.id) || null
     }
   }

@@ -1,7 +1,7 @@
 import type from './type'
 
 const postbackHandlers = {
-  'EditRelease.Type': type
+  ReleaseType: type
 }
 
 export default postbackHandlers

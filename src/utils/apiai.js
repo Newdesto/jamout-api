@@ -29,13 +29,32 @@ const convertImageMessage = function convertImageMessage(channelId, url) {
   }
 }
 
+const convertCustomPayloadMessage = function convertCustomPayloadMessage(channelId, payload) {
+  if (payload.jamout) {
+    // payload.jamout is an array of messages.
+    return payload.jamout.map(message => ({
+      ...message,
+      channelId,
+      senderId: 'assistant',
+      id: shortid.generate(),
+      timestamp: microtime.nowDouble().toString()
+    }))
+  }
+
+  return []
+}
+
 const convertMessage = function convertMessage(channelId, message) {
   switch (message.type) {
     case 0:
       // Text Message
       return convertTextMessage(channelId, message.speech)
     case 3:
+      // Image message
       return convertImageMessage(channelId, message.imageUrl)
+    case 4:
+      // Custom payload message
+      return convertCustomPayloadMessage(channelId, message.payload)
     default:
       throw new Error('API.ai message type not recognized.')
   }

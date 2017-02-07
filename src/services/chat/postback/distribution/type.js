@@ -1,10 +1,7 @@
-import shortid from 'shortid'
-import microtime from 'microtime'
-import { publishMessages } from 'utils/chat'
-import { createJob } from 'io/queue'
-import format from 'date-fns/format'
+import { handleAPIAIAction } from 'workers/chat/actions'
 import Chat from 'services/chat'
 import Release from 'models/Release'
+import { eventRequest } from 'io/apiai'
 
 const readableReleaseEnum = {
   SINGLE: 'single',
@@ -19,7 +16,19 @@ const dbReleaseEnum = {
 }
 
 const typeHandler = async function typeHandler({ user, channelId, values }) {
-  // Create or update a release.
+  // Let's up date the ReleaseTYpe message to show the selected type.
+  // Since updateMessage deep merges we can just add a success: true property.
+  await Chat.updateMessage({
+    channelId,
+    timestamp: values.timestamp,
+    attachment: {
+      done: true,
+      selectedType: readableReleaseEnum[values.type]
+    }
+  })
+
+  // Create or update a release. We're depending on the component to pass us
+  // the releaseId.
   let releaseId = values.releaseId
   if (releaseId) {
     // Update the release.
@@ -35,20 +44,19 @@ const typeHandler = async function typeHandler({ user, channelId, values }) {
     releaseId = release.id
   }
 
-  // By now we should for sure have a release. Update the Type message so
-  // it's a Meta message.
-  // Update the EditRelease.Type message to an Event message.
-  await Chat.updateMessage({
-    channelId,
-    timestamp: values.timestamp,
-    attachment: {
+  // By now we should for sure have a release and can move onto the metadata.
+  // Trigger an event on API.ai to post the distribution/metadata intent.
+  const metadataResult = await eventRequest({
+    name: 'distribution-metadata',
+    data: {
       releaseId,
-      subtype: 'Meta',
-      type: 'EditRelease',
-      disableInput: true,
-      postbackId: 'EditRelease.Meta'
+      type: readableReleaseEnum[values.type]
     }
+  }, {
+    sessionId: user.id
   })
+
+  await handleAPIAIAction({ channelId, senderId: user.id }, metadataResult.result)
 }
 
 export default typeHandler

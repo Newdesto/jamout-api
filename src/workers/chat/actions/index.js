@@ -17,6 +17,7 @@ const actionHandlers = {
  * @return {Promise}          [description]
  */
 export const handleAPIAIAction = async function handleAPIAIAction(message, result) {
+  console.log(JSON.stringify(result))
   // Convert the messages to Jamout's format.
   const messages = fulfillmentToMessages(message.channelId, result.fulfillment)
 

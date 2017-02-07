@@ -4,6 +4,7 @@ import shortid from 'shortid'
 import { pubsub } from 'io/subscription'
 import { createJob } from 'io/queue'
 import { publishMessages } from 'utils/chat'
+import { fromJS } from 'immutable'
 import Channel from './channel'
 import Message from './message'
 import Subscription from './subscription'
@@ -178,8 +179,17 @@ export default class Chat {
       throw new Error('Missing arguments needed to update a message.')
     }
 
-    const { attrs } = await Message.updateAsync({ channelId, timestamp, ...input })
-    console.log(attrs)
+    const oldMessageItem = await Message.getAsync({ channelId, timestamp })
+    if (!oldMessageItem.attrs) {
+      throw new Error('Message does not exist.')
+    }
+
+    const oldMessage = fromJS(oldMessageItem.attrs)
+    const newMessage = fromJS(input)
+
+    const updatedMessage = oldMessage.mergeDeep(newMessage)
+    const { attrs } = await Message.updateAsync(updatedMessage.toJS())
+
     await Chat.publishMessages(channelId, attrs.senderId, [attrs])
     return attrs
   }

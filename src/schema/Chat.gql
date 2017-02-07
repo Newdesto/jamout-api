@@ -91,17 +91,57 @@ interface MessageAttachment {
   # is received. If we're in the flow of things and don't want the using
   # messing it up we can disable the input. This happens often actually.
   disableInput: Boolean!
+  # Was this attachment used? This will tell components to render the success
+  # message.
+  done: Boolean
   # Fields that are specific to the attachment are defined by types that
   # implement the interface.
 }
 
-type EditReleaseAttachment implements MessageAttachment {
+type ReleaseTypeAttachment implements MessageAttachment {
   type: String! # EditRelease
-  subtype: String! # Type, Meta
   action: String # redirect, message, postback
   postbackId: String # *
   disableInput: Boolean!
   releaseId: ID
+  selectedType: String
+  done: Boolean # Was the type selected already.
+}
+
+type ReleaseMetadataAttachment implements MessageAttachment {
+  type: String! # EditRelease
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  releaseId: ID!
+  done: Boolean
+}
+
+type ReleaseArtwork implements MessageAttachment {
+  type: String! # EditRelease
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  releaseId: ID!
+  done: Boolean
+}
+
+type ReleaseTracklist implements MessageAttachment {
+  type: String! # EditRelease
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  releaseId: ID!
+  done: Boolean
+}
+
+type ReleaseConfirmAndPay implements MessageAttachment {
+  type: String! # EditRelease
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  releaseId: ID!
+  done: Boolean
 }
 
 type StudioSessionInquiryAttachment implements MessageAttachment {
@@ -112,6 +152,7 @@ type StudioSessionInquiryAttachment implements MessageAttachment {
   studio: String!,
   date: String!
   hideButtons: Boolean
+  done: Boolean
 }
 
 type ImageAttachment implements MessageAttachment {
@@ -120,6 +161,7 @@ type ImageAttachment implements MessageAttachment {
   postbackId: String # *
   disableInput: Boolean!
   src: String!
+  done: Boolean
 }
 
 # Shows a hint-like, centered text.
@@ -129,6 +171,7 @@ type EventAttachment implements MessageAttachment {
   postbackId: String # *
   disableInput: Boolean!
   text: String!
+  done: Boolean
 }
 
 type CardGroupAttachment implements MessageAttachment {
@@ -137,6 +180,7 @@ type CardGroupAttachment implements MessageAttachment {
   postbackId: String # *
   cards: [CardElement!]!
   disableInput: Boolean!
+  done: Boolean
 }
 
 type CardElement {
