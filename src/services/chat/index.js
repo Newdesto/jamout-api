@@ -16,7 +16,9 @@ import handlePostback from './postback'
  */
 export default class Chat {
   constructor({ userId }) {
-    this.userId = userId
+    if (userId) {
+      this.userId = userId
+    }
     // Binding static methods to this instance. The GQL context uses
     // an instance so static methods are inaccessible.
     this.getMessagesByChannelId = Chat.getMessagesByChannelId

@@ -7,6 +7,7 @@ import Message from './message'
 import MessageAttachment from './messageAttachment'
 import ImageAttachment from './imageAttachment'
 import CardGroupAttachment from './cardGroupAttachment'
+import Me from './me'
 import User from './user'
 import Release from './release'
 import MusicEvent from './musicEvent'
@@ -19,6 +20,7 @@ export default {
   MessageAttachment,
   ImageAttachment,
   CardGroupAttachment,
+  Me,
   User,
   Release,
   MusicEvent,

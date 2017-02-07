@@ -121,9 +121,9 @@ apiai@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/apiai/-/apiai-3.0.3.tgz#a2a019b538a776b65c35609e8f4290fa5e4d2832"
 
-apollo-errors@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/apollo-errors/-/apollo-errors-1.2.1.tgz#08b6de091444fd73d73bb5674a3137c312b25ffb"
+apollo-errors@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/apollo-errors/-/apollo-errors-1.3.0.tgz#1e571c34ebd4bc34817f2d5c2b230e8e27164269"
   dependencies:
     es6-error "^4.0.0"
 
@@ -372,9 +372,9 @@ aws-sdk@2.2.x:
     xml2js "0.4.15"
     xmlbuilder "2.6.2"
 
-aws-sdk@^2.6.9:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.8.0.tgz#602caf7aaa66f508328ccad2f6d3651f7b874436"
+aws-sdk@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.9.0.tgz#f258dcc295b1e7eca49d3624abfbf5f7d644172c"
   dependencies:
     buffer "4.9.1"
     crypto-browserify "1.0.9"
@@ -1505,6 +1505,10 @@ content-disposition@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/content-disposition/-/content-disposition-0.5.1.tgz#87476c6a67c8daa87e32e87616df883ba7fb071b"
 
+content-disposition@0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/content-disposition/-/content-disposition-0.5.2.tgz#0cf68bb9ddf5f2be7961c3a85178cb85dba78cb4"
+
 content-security-policy-builder@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/content-security-policy-builder/-/content-security-policy-builder-1.1.0.tgz#d91f1b076236c119850c7dee9924bf55e05772b3"
@@ -1617,9 +1621,9 @@ dataloader@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/dataloader/-/dataloader-1.2.0.tgz#3f73ea657c492c860c1633348adc55ca9bf2107e"
 
-date-fns@^1.27.1:
-  version "1.27.1"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.27.1.tgz#194ba3c77b42d98e280ec1e5d6f094434b77cbca"
+date-fns@^1.27.2:
+  version "1.27.2"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.27.2.tgz#ce82f420bc028356cc661fc55c0494a56a990c9c"
 
 date-time@^0.1.1:
   version "0.1.1"
@@ -1888,10 +1892,6 @@ es6-set@~0.1.3:
     es6-iterator "2"
     es6-symbol "3"
     event-emitter "~0.3.4"
-
-es6-shim@^0.35.3:
-  version "0.35.3"
-  resolved "https://registry.yarnpkg.com/es6-shim/-/es6-shim-0.35.3.tgz#9bfb7363feffff87a6cdb6cd93e405ec3c4b6f26"
 
 es6-symbol@3, es6-symbol@~3.1, es6-symbol@~3.1.0:
   version "3.1.0"
@@ -2180,7 +2180,7 @@ express-unless@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/express-unless/-/express-unless-0.3.0.tgz#5c795e7392571512dd28f520b3857a52b21261a2"
 
-express@^4.12.2, express@^4.14.0:
+express@^4.12.2:
   version "4.14.0"
   resolved "https://registry.yarnpkg.com/express/-/express-4.14.0.tgz#c1ee3f42cdc891fb3dc650a8922d51ec847d0d66"
   dependencies:
@@ -2208,6 +2208,37 @@ express@^4.12.2, express@^4.14.0:
     send "0.14.1"
     serve-static "~1.11.1"
     type-is "~1.6.13"
+    utils-merge "1.0.0"
+    vary "~1.1.0"
+
+express@^4.14.1:
+  version "4.14.1"
+  resolved "https://registry.yarnpkg.com/express/-/express-4.14.1.tgz#646c237f766f148c2120aff073817b9e4d7e0d33"
+  dependencies:
+    accepts "~1.3.3"
+    array-flatten "1.1.1"
+    content-disposition "0.5.2"
+    content-type "~1.0.2"
+    cookie "0.3.1"
+    cookie-signature "1.0.6"
+    debug "~2.2.0"
+    depd "~1.1.0"
+    encodeurl "~1.0.1"
+    escape-html "~1.0.3"
+    etag "~1.7.0"
+    finalhandler "0.5.1"
+    fresh "0.3.0"
+    merge-descriptors "1.0.1"
+    methods "~1.1.2"
+    on-finished "~2.3.0"
+    parseurl "~1.3.1"
+    path-to-regexp "0.1.7"
+    proxy-addr "~1.1.3"
+    qs "6.2.0"
+    range-parser "~1.2.0"
+    send "0.14.2"
+    serve-static "~1.11.2"
+    type-is "~1.6.14"
     utils-merge "1.0.0"
     vary "~1.1.0"
 
@@ -2277,6 +2308,16 @@ finalhandler@0.5.0:
     escape-html "~1.0.3"
     on-finished "~2.3.0"
     statuses "~1.3.0"
+    unpipe "~1.0.0"
+
+finalhandler@0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/finalhandler/-/finalhandler-0.5.1.tgz#2c400d8d4530935bc232549c5fa385ec07de6fcd"
+  dependencies:
+    debug "~2.2.0"
+    escape-html "~1.0.3"
+    on-finished "~2.3.0"
+    statuses "~1.3.1"
     unpipe "~1.0.0"
 
 find-cache-dir@^0.1.1:
@@ -2584,27 +2625,25 @@ graphql-redis-subscriptions@^1.1.5:
     graphql-subscriptions "^0.2.0"
     redis "^2.6.3"
 
-graphql-server-core@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/graphql-server-core/-/graphql-server-core-0.5.2.tgz#7e23fc516cb754e42c16f92928b595c354d6c8a7"
-  dependencies:
-    es6-shim "^0.35.3"
+graphql-server-core@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/graphql-server-core/-/graphql-server-core-0.6.0.tgz#468625cba4a00f80275c065432faa481985f5a65"
   optionalDependencies:
     "@types/graphql" "^0.8.5"
 
-graphql-server-express@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/graphql-server-express/-/graphql-server-express-0.5.2.tgz#c358110ddb2f82939b4d4c9d97ffb5afded7944a"
+graphql-server-express@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/graphql-server-express/-/graphql-server-express-0.6.0.tgz#516090b4add82e6ed2c4a70dd2d925031fdcc289"
   dependencies:
-    graphql-server-core "^0.5.2"
-    graphql-server-module-graphiql "^0.5.2"
+    graphql-server-core "^0.6.0"
+    graphql-server-module-graphiql "^0.6.0"
   optionalDependencies:
     "@types/express" "^4.0.35"
     "@types/graphql" "^0.8.6"
 
-graphql-server-module-graphiql@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/graphql-server-module-graphiql/-/graphql-server-module-graphiql-0.5.2.tgz#7e2a0c78b0267e784f8483ce5633810baf558dee"
+graphql-server-module-graphiql@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/graphql-server-module-graphiql/-/graphql-server-module-graphiql-0.6.0.tgz#e37634b05f000731981e8ed13103f9a5861e5da0"
 
 graphql-subscriptions@^0.2.0, graphql-subscriptions@^0.2.2:
   version "0.2.3"
@@ -2626,9 +2665,9 @@ graphql-type-json@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/graphql-type-json/-/graphql-type-json-0.1.4.tgz#89f13f5d32ce08c9a76c79fdf9c1968384d81a4e"
 
-graphql@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.9.0.tgz#ff9748a86ae81d4ecd2f2ba27fe5ac7a77734b1d"
+graphql@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.9.1.tgz#f4d154cbec054d4a5d3b1be95f23435c09aa86c8"
   dependencies:
     iterall "1.0.3"
 
@@ -2783,6 +2822,10 @@ ignore-by-default@^1.0.0, ignore-by-default@^1.0.1:
 ignore@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.2.0.tgz#8d88f03c3002a0ac52114db25d2c673b0bf1e435"
+
+immutable@^3.8.1:
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
 
 imurmurhash@^0.1.4:
   version "0.1.4"
@@ -4310,7 +4353,7 @@ proto-props@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/proto-props/-/proto-props-0.2.1.tgz#5e01dc2675a0de9abfa76e799dfa334d6f483f4b"
 
-proxy-addr@~1.1.2:
+proxy-addr@~1.1.2, proxy-addr@~1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/proxy-addr/-/proxy-addr-1.1.3.tgz#dc97502f5722e888467b3fa2297a7b1ff47df074"
   dependencies:
@@ -4848,7 +4891,7 @@ send@0.14.2:
     range-parser "~1.2.0"
     statuses "~1.3.1"
 
-serve-static@~1.11.1:
+serve-static@~1.11.1, serve-static@~1.11.2:
   version "1.11.2"
   resolved "https://registry.yarnpkg.com/serve-static/-/serve-static-1.11.2.tgz#2cf9889bd4435a320cc36895c9aa57bd662e6ac7"
   dependencies:
