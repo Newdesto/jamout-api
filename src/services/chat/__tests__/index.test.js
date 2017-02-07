@@ -184,7 +184,7 @@ test.serial('Chat.updateMessage should call updateAsync and publishMessage metho
   Chat.publishMessages.restore()
 })
 
-test.serial('Chat.getChannelById should return a channel', async (t) => {
+test.serial('Chat.getChannelById should return a channel in an array', async (t) => {
   const userId = 'gabe'
   const channelId = 'channelId'
   const createdAt = new Date().toISOString()
@@ -207,10 +207,10 @@ test.serial('Chat.getChannelById should return a channel', async (t) => {
   // Assert and restore.
   const chat = new Chat({ userId })
   const result = await chat.getChannelById({ channelId })
-  t.deepEqual(result, {
+  t.deepEqual(result, [{
     ...subscription,
     ...channel
-  })
+  }])
   Subscription.getAsync.restore()
   Channel.getAsync.restore()
 })

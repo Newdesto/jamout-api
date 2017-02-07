@@ -4,6 +4,7 @@ import { publishMessages } from 'utils/chat'
 import { createJob } from 'io/queue'
 import format from 'date-fns/format'
 import Chat from 'services/chat'
+import StudioEvent from 'models/StudioEvent'
 
 /**
  * Publishes an event message and sends an inquiry message to the
@@ -43,7 +44,7 @@ const inquiryHandler = async function inquiryHandler({ user, channelId, values }
 
   // If they confirmed send a message to the studio.
   if (values.confirm) {
-    // We have to get the studio's assistant channel Id
+    // @TODO We have to get the studio's assistant channel Id
     const chat = new Chat({ userId: 'studio-circle-recordings' })
     const studioChannel = await chat.getAssistantChannel()
     const studioMessage = {
@@ -58,6 +59,18 @@ const inquiryHandler = async function inquiryHandler({ user, channelId, values }
         date: format(values.date)
       }
     }
+
+    // This is where we create an new studio event
+    // Do this before the message is sent in case of errors....@TODO add error messages/handling
+    StudioEvent.createStudioEvent(
+      user,
+      'new-inquiry',
+      {
+        userId: user.id,
+        preferredDate: values.date,
+        studioId: 'studio-circle-recordings',
+        studio: 'Studio Circle'
+      })
 
     await createJob('chat.persistMessage', { message: studioMessage })
     await publishMessages(channelId, 'assistant', [studioMessage])
