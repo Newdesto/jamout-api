@@ -6,6 +6,7 @@ import Stripe from 'stripe'
 // import format from 'date-fns/format'
 // import Chat from 'services/chat'
 import StudioEvent from 'models/StudioEvent'
+import Chat from 'services/chat'
 
 const stripe = Stripe(process.env.STRIPE_SECRET)
 
@@ -13,13 +14,13 @@ const paymentHandler = async function paymentHandler({ user, channelId, values }
   // Charge the user's card:
   const charge = await stripe.charges.create({
     amount: Number(values.price * 100),
-    currency: "usd",
-    description: "Studio Session",
-    source: values.stripeToken,
+    currency: 'usd',
+    description: 'Studio Session',
+    source: values.stripeToken
   })
 
   if (!charge || charge.status !== 'succeeded') {
-    console.log('error')
+    console.error('error')
   }
 
   const nextEvent = await StudioEvent.createStudioEvent(user, 'session planned', {
@@ -33,7 +34,7 @@ const paymentHandler = async function paymentHandler({ user, channelId, values }
     price: values.price
   })
   if (!nextEvent) {
-    console.log('shit gg')
+    console.error('shit gg')
   }
 
   const paidMessage = {
@@ -53,6 +54,25 @@ const paymentHandler = async function paymentHandler({ user, channelId, values }
   }
   await createJob('chat.persistMessage', { message: paidMessage })
   await publishMessages(channelId, user.id, [paidMessage])
+
+  await Chat.updateMessage({
+    channelId,
+    timestamp: values.thisMessageStamp,
+    attachment: {
+      type: 'StudioSessionNewDate',
+      disableInput: true,
+      hideButtons: true
+    }
+  })
+  await Chat.updateMessage({
+    channelId,
+    timestamp: values.dateMessageStamp,
+    attachment: {
+      type: 'StudioSessionNewDate',
+      disableInput: true,
+      hideButtons: true
+    }
+  })
 }
 
 export default paymentHandler

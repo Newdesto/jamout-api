@@ -6,7 +6,6 @@ import { createJob } from 'io/queue'
 import Chat from 'services/chat'
 
 const setDateHandler = async function newDateHandler({ user, channelId, values }) {
-
   const payMessage = {
     channelId,
     id: shortid.generate(),
@@ -17,9 +16,10 @@ const setDateHandler = async function newDateHandler({ user, channelId, values }
       startDate: values.startDate,
       endDate: values.endDate,
       price: values.price,
-      disableInput: true,
-      hideButtons: true,
-      sessionId: values.sessionId
+      disableInput: false,
+      hideButtons: false,
+      sessionId: values.sessionId,
+      dateMessageStamp: values.timestamp
     },
     visibleTo: values.visibleTo
   }
@@ -33,10 +33,9 @@ const setDateHandler = async function newDateHandler({ user, channelId, values }
     attachment: {
       type: 'StudioSessionNewDate',
       disableInput: true,
-      hideButtons: true
+      hideButtons: false
     }
   })
-
 }
 
 export default setDateHandler

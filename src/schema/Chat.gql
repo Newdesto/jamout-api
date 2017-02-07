@@ -129,6 +129,7 @@ type StudioSessionSetDateAttatchment implements MessageAttachment {
   sessionId: ID
   disableInput: Boolean!
   hideButtons: Boolean
+  dateMessageStamp: String
 }
 
 type StudioSessionNewDateAttatchment implements MessageAttachment {

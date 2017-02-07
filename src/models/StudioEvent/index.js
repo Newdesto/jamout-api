@@ -80,7 +80,7 @@ export default class StudioEvent {
           disableInput: false,
           hideButtons: false,
           sessionId: payload.sessionId
-        },
+        }
       }
       await createJob('chat.persistMessage', { message: introMessage })
       await publishMessages(newChannel.id, payload.studioId, [introMessage])

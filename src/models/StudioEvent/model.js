@@ -18,7 +18,7 @@ const StudioEvent = vogels.define('StudioEvent', {
     startDate: Joi.string(),
     endDate: Joi.string(),
     preferredDate: Joi.string(),
-    price: Joi.string(),
+    price: Joi.string()
   }
 })
 
