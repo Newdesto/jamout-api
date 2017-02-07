@@ -105,6 +105,9 @@ type StudioSessionSessionPaidAttatchment implements MessageAttachment {
   disableInput: Boolean!
   hideButtons: Boolean
   sessionId: ID
+  startDate: String
+  endDate: String
+  price: Float
 }
 
 type StudioSessionNewSessionAttatchment implements MessageAttachment {

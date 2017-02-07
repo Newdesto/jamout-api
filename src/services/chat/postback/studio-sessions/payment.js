@@ -45,6 +45,10 @@ const paymentHandler = async function paymentHandler({ user, channelId, values }
       type: 'StudioSessionPaid',
       disableInput: false,
       hideButtons: false,
+      startDate: values.startDate,
+      endDate: values.endDate,
+      sessionId: values.sessionId,
+      price: values.price
     }
   }
   await createJob('chat.persistMessage', { message: paidMessage })
