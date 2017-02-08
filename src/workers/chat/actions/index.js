@@ -4,8 +4,10 @@ import fulfillmentToMessages from 'utils/apiai'
 import Promise from 'bluebird'
 import { publishMessages } from 'utils/chat'
 import studioSessions from './studio-sessions'
+import onboarding from './onboarding'
 
 const actionHandlers = {
+  ...onboarding,
   ...studioSessions
 }
 
@@ -14,7 +16,7 @@ const actionHandlers = {
  * @param  {Object}  result API.ai result (https://docs.api.ai/docs/query#response)
  * @return {Promise}          [description]
  */
-const handleAction = async function handleAction(message, result) {
+export const handleAPIAIAction = async function handleAPIAIAction(message, result) {
   // Convert the messages to Jamout's format.
   const messages = fulfillmentToMessages(message.channelId, result.fulfillment)
 
@@ -53,4 +55,19 @@ const handleAction = async function handleAction(message, result) {
   await actionHandler(message, result, messages)
 }
 
-export default handleAction
+export const handleUserAction = async function handleUserAction(message) {
+  if (!message.action) {
+    logger.warn('Message is being routed to handleUserAction but has no action value.')
+    return
+  }
+
+  // Get the action function
+  const actionHandler = actionHandlers[message.action]
+  if (!actionHandler) {
+    logger.warn(`No action handler set for the action ${message.action}.`)
+    return
+  }
+
+  // Call the action function...
+  await actionHandler(message)
+}

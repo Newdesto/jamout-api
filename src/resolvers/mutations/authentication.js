@@ -25,6 +25,18 @@ const resolvers = {
     } catch (err) {
       return false
     }
+  },
+  async updateMe(root, { input }, { user: currentUser, User, logger }) {
+    try {
+      if (!currentUser) {
+        throw new Error('Authentication failed.')
+      }
+      const user = await User.update(currentUser.id, input)
+      return user
+    } catch (err) {
+      logger.error(err)
+      throw err
+    }
   }
 }
 

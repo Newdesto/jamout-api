@@ -11,7 +11,8 @@ const User = vogels.define('User', {
     email: Joi.string().email(),
     username: Joi.string(),
     password: Joi.string(),
-    roles: Joi.array().items(Joi.string().valid('partner', 'manager')).meta({ dynamoType: 'SS' }),
+    // roles: Joi.array()
+    // .items(Joi.string().valid('partner', 'manager')).meta({ dynamoType: 'SS' }),
     stripe: {
       customerId: Joi.string(),
       accountId: Joi.string()
@@ -23,7 +24,17 @@ const User = vogels.define('User', {
     permalink: Joi.string(),
     displayName: Joi.string(),
     location: Joi.string(),
-    avatarKey: Joi.string()
+    avatarKey: Joi.string(),
+    // Context is context for the website UI, assistant, etc.
+    context: Joi.object().keys({
+      assistant: Joi.array(), // Literally a copy of API.ai's context.
+      web: Joi.object().keys({
+        role: Joi.string().valid('partner', 'artist')
+      })
+    }),
+    // User roles. (e.g.; artist, partner:jd2Dw)
+    roles: Joi.array().items(Joi.string())
+    // @TODO Permissions?
   },
   indexes: [
     { hashKey: 'email', name: 'email-index', type: 'global' },
