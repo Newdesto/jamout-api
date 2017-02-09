@@ -17,7 +17,7 @@ const dbReleaseEnum = {
 
 const typeHandler = async function typeHandler({ user, channelId, values }) {
   // Let's up date the ReleaseTYpe message to show the selected type.
-  // Since updateMessage deep merges we can just add a success: true property.
+  // Since updateMessage deep merges we can just add a done: true property.
   await Chat.updateMessage({
     channelId,
     timestamp: values.timestamp,
@@ -39,6 +39,7 @@ const typeHandler = async function typeHandler({ user, channelId, values }) {
     // Create a new release.
     const release = await Release.create({
       userId: user.id,
+      status: 'd',
       type: dbReleaseEnum[values.type]
     })
     releaseId = release.id

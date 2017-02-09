@@ -117,7 +117,7 @@ type ReleaseMetadataAttachment implements MessageAttachment {
   done: Boolean
 }
 
-type ReleaseArtwork implements MessageAttachment {
+type ReleaseArtworkAttachment implements MessageAttachment {
   type: String! # EditRelease
   action: String # redirect, message, postback
   postbackId: String # *

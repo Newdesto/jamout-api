@@ -4,6 +4,7 @@ type Release {
   userId: ID!,
   stripeOrderId: String,
   type: ReleaseType!,
+  readableType: String!,
   artworkS3Key: String,
   artworkUrl: String,
   title: String,
@@ -12,8 +13,7 @@ type Release {
   language: String,
   primaryGenre: String,
   secondaryGenre: String,
-  releaseDate: Int,
-  albumPrice: Int,
-  trackPrice: Int,
+  releaseDate: String,
+  price: Int,
   tracklist: [ReleaseTrack!]
 }

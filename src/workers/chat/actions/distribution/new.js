@@ -23,6 +23,7 @@ const newDistro = async function newDistro({ senderId, channelId }, result, mess
   if (hasType || hasTitle) {
     release = await Release.create({
       userId: senderId,
+      status: 'd',
       type: !R.isEmpty(result.parameters['release-type']) && result.parameters['release-type'],
       title: (!R.isEmpty(result.parameters.title) && result.parameters.title) || undefined
     })

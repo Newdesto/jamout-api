@@ -29,6 +29,13 @@ const resolvers = {
       e: 'EP',
       a: 'ALBUM'
     }[release.type]
+  },
+  readableType(release) {
+    return {
+      s: 'single',
+      e: 'EP',
+      a: 'album'
+    }[release.type]
   }
 }
 
