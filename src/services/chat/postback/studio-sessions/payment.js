@@ -19,7 +19,7 @@ const paymentHandler = async function paymentHandler({ user, channelId, values }
       description: 'Studio Session',
       source: values.stripeToken,
       metadata: {
-        sessionId : values.sessionId,
+        sessionId: values.sessionId
       }
     })
 
@@ -27,7 +27,7 @@ const paymentHandler = async function paymentHandler({ user, channelId, values }
       throw new Error(charge.error.code)
     }
 
-    const nextEvent = await StudioEvent.createStudioEvent(user, 'session planned', {
+    await StudioEvent.createStudioEvent(user, 'session planned', {
       userId: user.id,
       studioId: 'studio-circle-recordings',
       studio: 'studio circle',
@@ -75,8 +75,8 @@ const paymentHandler = async function paymentHandler({ user, channelId, values }
         hideButtons: true
       }
     })
-  } catch(e) {
-    console.error(e)
+  } catch (err) {
+    console.error(err)
   }
 }
 
