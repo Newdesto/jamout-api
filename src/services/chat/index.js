@@ -103,7 +103,7 @@ export default class Chat {
    * to see if a channel already exists for the set of users. If so, it returns
    * it.
    */
-  async createChannel({ type, users, name, superPowers = [] }) {
+  async createChannel({ type, users, name, superPowers }) {
     // Sort the users array and hash that shit.
     const sorted = Chat.sortUsersAndHash({ users })
 
@@ -126,7 +126,7 @@ export default class Chat {
       ownerId: this.userId,
       id: shortid.generate(),
       usersHash: sorted.usersHash,
-      superPowers
+      superPowers: superPowers || undefined
     })
 
     // Let's create a subscription for each user in the set.
