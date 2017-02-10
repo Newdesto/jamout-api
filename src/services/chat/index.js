@@ -24,6 +24,7 @@ export default class Chat {
     this.getMessagesByChannelId = Chat.getMessagesByChannelId
     this.updateMessage = Chat.updateMessage
     this.postback = Chat.postback
+    this.getChannelById = Chat.getChannelById
   }
   /**
    * A wrapper for createJob for testability.
@@ -102,7 +103,7 @@ export default class Chat {
    * to see if a channel already exists for the set of users. If so, it returns
    * it.
    */
-  async createChannel({ type, users, name }) {
+  async createChannel({ type, users, name, superPowers }) {
     // Sort the users array and hash that shit.
     const sorted = Chat.sortUsersAndHash({ users })
 
@@ -124,7 +125,8 @@ export default class Chat {
       users: sorted.users,
       ownerId: this.userId,
       id: shortid.generate(),
-      usersHash: sorted.usersHash
+      usersHash: sorted.usersHash,
+      superPowers: superPowers || undefined
     })
 
     // Let's create a subscription for each user in the set.
@@ -195,7 +197,7 @@ export default class Chat {
   /**
    * Get's a channel by its ID.
    */
-  async getChannelById({ channelId }) {
+  static async getChannelById({ channelId }) {
     // Check if the user is subscribed to this channel.
     const subscription = await Subscription.getAsync({ userId: this.userId, channelId })
     if (!subscription) {
@@ -207,10 +209,10 @@ export default class Chat {
       throw new Error('Invalid channel.')
     }
 
-    return {
+    return [{
       ...subscription.attrs,
       ...channel.attrs
-    }
+    }]
   }
   /**
    * Gets a user's channels.
@@ -219,10 +221,10 @@ export default class Chat {
     const { Items } = await Subscription
       .query(this.userId)
       .execAsync()
-
     // Then get the related channels
     const channelIds = Items.map(i => i.attrs.channelId)
     const channels = await Channel.getItemsAsync(channelIds)
+    console.log(channels.map(item => item.attrs))
     return channels.map(item => item.attrs)
   }
   /**

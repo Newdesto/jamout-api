@@ -10,7 +10,9 @@ export default {
       if (args.excludeAssistant) {
         return channels.filter(c => c.type !== 'a')
       }
-
+      if (args.channelId) {
+        return Chat.getChannelById({ channelId: args.channelId })
+      }
       return channels
     } catch (err) {
       logger.error(err)

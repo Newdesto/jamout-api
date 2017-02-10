@@ -10,7 +10,7 @@ export default {
     if (user.id === userId || user.permalink === permalink) {
       tracks = Track.fetchMyTracks(user.id)
     }
-    if (user.permalink !== permalink) {
+    if (user.permalink !== permalink && !userId) {
       tracks = Track.fetchByPermalink(user.id, permalink)
     }
     if (!userId && !permalink) {

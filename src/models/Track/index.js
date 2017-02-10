@@ -7,6 +7,7 @@ export default class Track {
     this.fetchByUserId = Track.fetchByUserId
     this.fetchMyTracks = Track.fetchMyTracks
     this.fetchByPermalink = Track.fetchByPermalink
+    this.createTrack = Track.createTrack
     this.editTrack = Track.editTrack
     this.deleteTrack = Track.deleteTrack
   }
