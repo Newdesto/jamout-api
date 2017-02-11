@@ -69,7 +69,6 @@ export default class StudioEvent {
         name: 'Studio Session',
         superPowers: [`studio-sessions:${payload.sessionId}`]
       })
-      
       const introMessage = {
         channelId: newChannel.id,
         id: shortid.generate(),
@@ -84,7 +83,6 @@ export default class StudioEvent {
       }
       await createJob('chat.persistMessage', { message: introMessage })
       await publishMessages(newChannel.id, payload.studioId, [introMessage])
-
     }
 
   // session types: inquiry pending, inquiry denied, inquiry accepted,
