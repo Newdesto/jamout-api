@@ -2,12 +2,25 @@ import 'app-module-path/register'
 import { startSubscriptionServer } from 'io/subscription'
 import http from 'http'
 import 'workers'
+import request from 'request'
 import { app, logger } from './io'
 import { jwt, graphql, graphiql } from './middleware'
 
 logger.info('Starting Jamout API, woohoo!')
 
 const httpServer = http.createServer()
+
+// Temporary platform watch webhook.
+app.post('/platform-watch', (req, res) => {
+  request.post({
+    url: 'https://hooks.slack.com/services/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',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(req.body)
+  })
+  res.sendStatus(200)
+})
 
 // jwt authentication
 logger.info('Mounting JWT authentication.')
