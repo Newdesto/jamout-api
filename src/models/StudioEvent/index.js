@@ -1,6 +1,10 @@
+import shortid from 'shortid'
+import microtime from 'microtime'
+import { publishMessages } from 'utils/chat'
+import { createJob } from 'io/queue'
 import userModel from 'models/User/model'
 // @TODO Strictly use the Chat class. Do NOT work with the model directly.
-import Channel from 'services/chat/channel'
+import Channel from 'services/chat'
 import studioEventModel from './model'
 
 export default class StudioEvent {
@@ -45,7 +49,9 @@ export default class StudioEvent {
 
 
   static async createStudioEvent(user, type, payload) {
-  // probably better way to get this shit
+    let session = null
+
+    // querry for artist becuase user param could be studio
     const { Items } = await userModel
     .scan()
     .where('id').equals(payload.userId)
@@ -53,32 +59,48 @@ export default class StudioEvent {
 
     const artist = Items[0].attrs
 
-    let attrs = null
-
-    const preferredDate = new Date(`${payload.date} ${payload.time}`)
-
-    const users = [artist.id, payload.studioId]
     if (type === 'inquiry accepted') {
       // create channel
-      const channel = new Channel()
-      await channel.createChannel('d', users)
+      const users = [artist.id, payload.studioId]
+      const channel = new Channel({ userId: artist.id })
+      const newChannel = await channel.createChannel({
+        type: 'd',
+        users,
+        name: 'Studio Session',
+        superPowers: [`studio-sessions:${payload.sessionId}`]
+      })
+
+      const introMessage = {
+        channelId: newChannel.id,
+        id: shortid.generate(),
+        timestamp: microtime.nowDouble().toString(),
+        senderId: payload.studioId,
+        attachment: {
+          type: 'StudioSessionNewSession',
+          disableInput: false,
+          hideButtons: false,
+          sessionId: payload.sessionId
+        }
+      }
+      await createJob('chat.persistMessage', { message: introMessage })
+      await publishMessages(newChannel.id, payload.studioId, [introMessage])
     }
 
   // session types: inquiry pending, inquiry denied, inquiry accepted,
   // session planned, artist paid, session completed, review
     switch (type) {
       case 'new-inquiry':
-        attrs = await studioEventModel.createAsync({
+        session = await studioEventModel.createAsync({
           userId: artist.id, // id the user who made the request
-          studioId: StudioEvent.idStudio(payload.studio), // id of the studio?
+          studioId: payload.studioId, // id of the studio?
           studio: payload.studio,
           type: 'inquiry pending',
-          preferredDate,
+          preferredDate: payload.preferredDate,
           username: artist.username
         })
-        return attrs.attrs
+        return session.attrs
       case 'inquiry accepted':
-        attrs = await studioEventModel.createAsync({
+        session = await studioEventModel.createAsync({
           userId: artist.id, // id the user who made the request
           username: artist.username,
           studioId: payload.studioId, // id of the studio?
@@ -86,9 +108,9 @@ export default class StudioEvent {
           type: 'inquiry accepted',
           sessionId: payload.sessionId
         })
-        return attrs.attrs
+        return session.attrs
       case 'inquiry denied':
-        attrs = await studioEventModel.createAsync({
+        session = await studioEventModel.createAsync({
           userId: artist.id, // id the user who made the request
           username: artist.username,
           studioId: payload.studioId, // id of the studio?
@@ -96,9 +118,9 @@ export default class StudioEvent {
           type: 'inquiry denied',
           sessionId: payload.sessionId
         })
-        return attrs.attrs
+        return session.attrs
       case 'session planned':
-        attrs = await studioEventModel.createAsync({
+        session = await studioEventModel.createAsync({
           userId: user.id, // id the user who made the request
           studioId: payload.studioId, // id of the studio?
           studio: payload.studio,
@@ -107,9 +129,9 @@ export default class StudioEvent {
           type: 'session planned',
           sessionId: payload.sessionId
         })
-        return attrs.attrs
+        return session.attrs
       case 'artist paid':
-        attrs = await studioEventModel.createAsync({
+        session = await studioEventModel.createAsync({
           userId: user.id, // id the user who made the request
           studioId: payload.studioId, // id of the studio?
           studio: payload.studio,
@@ -118,9 +140,9 @@ export default class StudioEvent {
           type: 'artist paid',
           sessionId: payload.sessionId
         })
-        return attrs.attrs
+        return session.attrs
       default:
-        return attrs
+        return session
     }
   }
   static idStudio(studio) {

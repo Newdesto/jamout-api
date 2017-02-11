@@ -1,9 +1,11 @@
 import type from './type'
 import metadata from './metadata'
+import artwork from './artwork'
 
 const postbackHandlers = {
   ReleaseType: type,
-  ReleaseMetadata: metadata
+  ReleaseMetadata: metadata,
+  ReleaseArtwork: artwork
 }
 
 export default postbackHandlers

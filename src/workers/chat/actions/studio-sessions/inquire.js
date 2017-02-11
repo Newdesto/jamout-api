@@ -70,11 +70,11 @@ const inquire = async function inquire({ channelId }, result, messages) {
         date: format(date)
       }
     }
-
     // Persist and publish the studio attachment messages.
     await createJob('chat.persistMessage', { message: studioInquiry })
     await publishMessages(channelId, 'assistant', [studioInquiry])
   }
+
   return messages
 }
 

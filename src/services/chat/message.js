@@ -32,7 +32,9 @@ const Message = vogels.define('Message', {
     action: Joi.string(), // typing.start, typing.stop, mark.read
     // The content of the message if it's a plain ole text message.
     text: Joi.string(),
-    attachment: Joi.object()
+    attachment: Joi.object(),
+    // who can see the messages bro
+    visibleTo: Joi.array()
   },
   indexes: [{
     hashKey: 'channelId', rangeKey: 'createdAt', name: 'channelId-createdAt-index', type: 'global'

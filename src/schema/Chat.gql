@@ -15,6 +15,7 @@ type Channel {
   ownerId: String
   # If channel is assistant type then the only element is the user.
   users: [User!]!
+  superPowers: [String]
 
   ### SUBSCRIPTION FIELDS ###
   lastRead: String
@@ -66,6 +67,8 @@ type Message {
   # an attachment and a text then the attachment should include a text element.
   text: String
   attachment: MessageAttachment
+  # Who this message is visible to
+  visibleTo: [ID]
 }
 
 # An attachment that can give messages superpowers. It outlines a specific
@@ -141,6 +144,53 @@ type ReleaseConfirmAndPay implements MessageAttachment {
   postbackId: String # *
   disableInput: Boolean!
   releaseId: ID!
+  done: Boolean
+}
+
+type StudioSessionSessionPaidAttatchment implements MessageAttachment {
+  type: String! # Image
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  hideButtons: Boolean
+  sessionId: ID
+  startDate: String
+  endDate: String
+  price: Float
+  done: Boolean
+}
+
+type StudioSessionNewSessionAttatchment implements MessageAttachment {
+  type: String! # Image
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  hideButtons: Boolean
+  sessionId: ID
+  done: Boolean
+}
+
+type StudioSessionSetDateAttatchment implements MessageAttachment {
+  type: String! # Image
+  action: String # redirect, message, postback
+  postbackId: String # *
+  startDate: String
+  endDate: String
+  price: Float
+  sessionId: ID
+  disableInput: Boolean!
+  hideButtons: Boolean
+  dateMessageStamp: String
+  done: Boolean
+}
+
+type StudioSessionNewDateAttatchment implements MessageAttachment {
+  type: String! # Image
+  action: String # redirect, message, postback
+  postbackId: String # *
+  sessionId: ID
+  disableInput: Boolean!
+  hideButtons: Boolean
   done: Boolean
 }
 
