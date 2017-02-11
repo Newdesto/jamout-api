@@ -37,7 +37,7 @@ test:
 # in the future we can tag hashes and clean up old images...
 deployment:
   production:
-    tag: /release-.*/
+    tag: /v[0-9]+(\.[0-9]+)*/
     commands:
       - chmod +x ./ecr-push
       - chmod +x ./ecs-deploy
