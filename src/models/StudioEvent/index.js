@@ -4,7 +4,7 @@ import { publishMessages } from 'utils/chat'
 import { createJob } from 'io/queue'
 import userModel from 'models/User/model'
 // @TODO Strictly use the Chat class. Do NOT work with the model directly.
-import Channel from 'services/chat'
+import Chat from 'services/chat'
 import studioEventModel from './model'
 
 export default class StudioEvent {
@@ -62,14 +62,14 @@ export default class StudioEvent {
     if (type === 'inquiry accepted') {
       // create channel
       const users = [artist.id, payload.studioId]
-      const channel = new Channel({ userId: artist.id })
-      const newChannel = await channel.createChannel({
+      const chat = new Chat({ userId: artist.id })
+      const newChannel = await chat.createChannel({
         type: 'd',
         users,
         name: 'Studio Session',
         superPowers: [`studio-sessions:${payload.sessionId}`]
       })
-
+      
       const introMessage = {
         channelId: newChannel.id,
         id: shortid.generate(),
@@ -84,6 +84,7 @@ export default class StudioEvent {
       }
       await createJob('chat.persistMessage', { message: introMessage })
       await publishMessages(newChannel.id, payload.studioId, [introMessage])
+
     }
 
   // session types: inquiry pending, inquiry denied, inquiry accepted,

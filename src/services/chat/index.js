@@ -89,10 +89,10 @@ export default class Chat {
     }
 
     const subscriptions = await Promise.all(
-      users.map(() => Subscription.createAsync({
-        channelId,
-        userId: this.userId
-      }))
+      users.map((s) => Subscription.createAsync({
+          channelId,
+          userId: s
+        }))
     )
 
     // Unneccessary flatten for tests.
@@ -106,7 +106,6 @@ export default class Chat {
   async createChannel({ type, users, name, superPowers }) {
     // Sort the users array and hash that shit.
     const sorted = Chat.sortUsersAndHash({ users })
-
     // Check if a channel already exists for this user set.
     // @TODO Merge the user's subscription if Chat.createChannel returns an existing channel.
     const existingChannel = await Chat.channelExistsByHash({
