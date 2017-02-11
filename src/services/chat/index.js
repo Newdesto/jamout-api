@@ -25,6 +25,7 @@ export default class Chat {
     this.updateMessage = Chat.updateMessage
     this.postback = Chat.postback
     this.getChannelById = Chat.getChannelById
+    this.createSubscriptions = Chat.createSubscriptions
   }
   /**
    * A wrapper for createJob for testability.
@@ -83,15 +84,15 @@ export default class Chat {
   /**
    * Creates subscriptions to a single channel for a set of users.
    */
-  async createSubscriptions({ users, channelId }) {
+  static async createSubscriptions({ users, channelId }) {
     if (!Array.isArray(users) || !channelId) {
       throw new Error('Invalid arguments to create channel subscriptions.')
     }
 
     const subscriptions = await Promise.all(
-      users.map(() => Subscription.createAsync({
+      users.map(s => Subscription.createAsync({
         channelId,
-        userId: this.userId
+        userId: s
       }))
     )
 
@@ -106,7 +107,6 @@ export default class Chat {
   async createChannel({ type, users, name, superPowers }) {
     // Sort the users array and hash that shit.
     const sorted = Chat.sortUsersAndHash({ users })
-
     // Check if a channel already exists for this user set.
     // @TODO Merge the user's subscription if Chat.createChannel returns an existing channel.
     const existingChannel = await Chat.channelExistsByHash({
