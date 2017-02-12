@@ -11,6 +11,7 @@ const Release = vogels.define('Release', {
     userId: Joi.string(),
     stripeOrderId: Joi.string(),
     type: Joi.string(), // 's', 'e', 'a'
+    artworkOriginalS3Key: Joi.string(),
     artworkS3Key: Joi.string(),
     title: Joi.string(),
     artist: Joi.string(),

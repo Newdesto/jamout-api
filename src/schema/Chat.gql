@@ -127,6 +127,7 @@ type ReleaseArtworkAttachment implements MessageAttachment {
   disableInput: Boolean!
   releaseId: ID!
   done: Boolean
+  artworkOriginal: String
 }
 
 type ReleaseTracklist implements MessageAttachment {
