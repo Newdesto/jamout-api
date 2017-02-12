@@ -4,9 +4,7 @@ const secret = process.env.JWT_SECRET
 
 const resolvers = {
   login(root, args, { user: authedUser, User }) {
-    console.log(authedUser)
-    console.log(args)
-    if (!authedUser) {
+    if (authedUser) {
       throw new Error('Unauthorized.')
     }
 
