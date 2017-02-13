@@ -6,6 +6,7 @@ type Channel {
   updatedAt: String
   id: ID!
   type: ChannelType!
+  avatar: String!
   # Name is null if channel type === DM
   name: String
   lastMessage: Message
