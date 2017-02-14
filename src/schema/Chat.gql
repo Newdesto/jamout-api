@@ -106,6 +106,7 @@ type StudioSessionSessionPaidAttatchment implements MessageAttachment {
   disableInput: Boolean!
   hideButtons: Boolean
   sessionId: ID
+  messageId: ID
   startDate: String
   endDate: String
   price: Float
@@ -116,6 +117,7 @@ type StudioSessionNewSessionAttatchment implements MessageAttachment {
   action: String # redirect, message, postback
   postbackId: String # *
   disableInput: Boolean!
+  messageId: ID
   hideButtons: Boolean
   sessionId: ID
 }
@@ -127,6 +129,7 @@ type StudioSessionSetDateAttatchment implements MessageAttachment {
   startDate: String
   endDate: String
   price: Float
+  messageId: ID
   sessionId: ID
   disableInput: Boolean!
   hideButtons: Boolean
@@ -138,6 +141,7 @@ type StudioSessionNewDateAttatchment implements MessageAttachment {
   action: String # redirect, message, postback
   postbackId: String # *
   sessionId: ID
+  messageId: ID
   disableInput: Boolean!
   hideButtons: Boolean
 }
