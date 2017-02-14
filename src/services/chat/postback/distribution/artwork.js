@@ -2,6 +2,8 @@ import Chat from 'services/chat'
 import Release from 'models/Release'
 import Jimp from 'jimp'
 import S3 from 'aws-sdk/clients/s3'
+import { handleAPIAIAction } from 'workers/chat/actions'
+import { eventRequest } from 'io/apiai'
 
 const s3 = new S3()
 const artworkHandler = async function artworkHandler({ user, channelId, values }) {
@@ -32,7 +34,7 @@ const artworkHandler = async function artworkHandler({ user, channelId, values }
         Metadata: {
           userId: user.id
         }
-      }, (err, data) => {
+      }, (err) => {
         if (err) {
           reject(err)
         }
@@ -58,6 +60,18 @@ const artworkHandler = async function artworkHandler({ user, channelId, values }
         artworkOriginalS3Key: values.artworkOriginalS3Key
       }
     })
+
+    // Trigger the event request on API.ai.
+    const metadataResult = await eventRequest({
+      name: 'distribution-tracks',
+      data: {
+        releaseId: values.releaseId
+      }
+    }, {
+      sessionId: user.id
+    })
+
+    await handleAPIAIAction({ channelId, senderId: user.id }, metadataResult.result)
   } catch (err) {
     console.error(err)
     throw err
