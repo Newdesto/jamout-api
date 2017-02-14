@@ -162,13 +162,18 @@ export default class Chat {
       throw new Error('Subscription exists but the channel does not.')
     }
 
-    // If it's an assistant channel queue up a job to process this message.
-    if (channel.attrs.type === 'a') {
-      await createJob('chat.processMessage', { message })
-    }
-
-    // Throws an error if something fails.
+    // Persist the message before we queue it up or publish it. We don't want
+    // to process or publish a message that failed to save.
     const { attrs } = await Message.createAsync(message)
+
+    // Check out the channel type.
+    if (channel.attrs.type === 'a') {
+      // It's an assistant channel, queue up a job to process this message.
+      await createJob('chat.processMessage', { message })
+    } else {
+      // It's a DM or Group channel publish the message for any listeners.
+      await Chat.publishMessages(attrs.channelId, attrs.senderId, [attrs])
+    }
 
     return attrs
   }
