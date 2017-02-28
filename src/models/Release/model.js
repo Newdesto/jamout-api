@@ -7,7 +7,8 @@ const Release = vogels.define('Release', {
   timestamps: true,
   schema: {
     id: vogels.types.uuid(), // index
-    status: Joi.string(), // seee enum
+
+    status: Joi.string(),
     userId: Joi.string(),
     stripeOrderId: Joi.string(),
     type: Joi.string(), // 's', 'e', 'a'
@@ -19,15 +20,8 @@ const Release = vogels.define('Release', {
     language: Joi.string(),
     primaryGenre: Joi.string(),
     secondaryGenre: Joi.string(),
-    releaseDate: Joi.number(),
-    albumPrice: Joi.number(),
-    trackPrice: Joi.number(),
-    tracklist: Joi.array().items({
-      position: Joi.number(),
-      title: Joi.string(),
-      isExplicit: Joi.boolean(),
-      s3Key: Joi.string()
-    })
+    releaseDate: Joi.date().iso(), // ISO date string
+    price: Joi.number()
   }
 })
 

@@ -63,7 +63,7 @@ const artworkHandler = async function artworkHandler({ user, channelId, values }
 
     // Trigger the event request on API.ai.
     const metadataResult = await eventRequest({
-      name: 'distribution-tracks',
+      name: 'distribution-tracklist',
       data: {
         releaseId: values.releaseId
       }

@@ -131,7 +131,7 @@ type ReleaseArtworkAttachment implements MessageAttachment {
   artworkOriginal: String
 }
 
-type ReleaseTracklist implements MessageAttachment {
+type ReleaseTracklistAttachment implements MessageAttachment {
   type: String! # EditRelease
   action: String # redirect, message, postback
   postbackId: String # *

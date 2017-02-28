@@ -1,11 +1,14 @@
+import { fromJS } from 'immutable'
 import releaseModel from './model'
+import trackModel from './trackModel'
 import { createOrder, payOrder, distroSkus } from '../../utils/stripe'
 
 // @TODO try/catch statement
 // @TODO caching as update + pay can be batched
 export default class Release {
   // @TODO add a limit + pagination
-  static async fetchAll() {
+  // @TODO remove not nulls
+  static async getAll() {
     const { Items } = await releaseModel
       .scan()
       .where('status')
@@ -53,8 +56,16 @@ export default class Release {
   static async update(id, input) {
     // @TODO expression statement for userId
     try {
-      const { attrs } = await releaseModel
-        .updateAsync(Object.assign(input, { id }))
+      // This is an EXTREMELY bad performance issue - we query for the release
+      // object, convert the release object and the input to immutable objects,
+      // and deepMerge them.
+      const oldReleaseItem = await releaseModel.getAsync({ id })
+      const oldRelease = fromJS(oldReleaseItem.attrs)
+
+      const newRelease = fromJS(input)
+
+      const updatedRelease = oldRelease.mergeDeep(newRelease)
+      const { attrs } = await releaseModel.updateAsync(updatedRelease.toJS())
       return attrs
     } catch (err) {
       console.error(err)
@@ -68,6 +79,45 @@ export default class Release {
       params.ExpressionAttributeNames = { '#userId': 'userId' }
       params.ExpressionAttributeValues = { ':userId': userId }
       await releaseModel.destroyAsync(id, params)
+      return id
+    } catch (err) {
+      if (err.code === 'ConditionalCheckFailedException') {
+        throw new Error('Authorization failed.')
+      }
+      console.error(err)
+      throw err
+    }
+  }
+  /**
+   * Creates a new distribution.track item.
+   */
+  static async addTrack(track) {
+    try {
+      const { attrs } = await trackModel
+        .createAsync(track)
+
+      return attrs
+    } catch (err) {
+      console.error(err)
+      throw err
+    }
+  }
+  static async updateTrack(input) {
+    try {
+      const { attrs } = await trackModel.updateAsync(input)
+      return attrs
+    } catch (err) {
+      console.error(err)
+      throw err
+    }
+  }
+  static async deleteTrack(userId, id) {
+    try {
+      const params = {}
+      params.ConditionExpression = '#userId = :userId'
+      params.ExpressionAttributeNames = { '#userId': 'userId' }
+      params.ExpressionAttributeValues = { ':userId': userId }
+      await trackModel.destroyAsync(id, params)
       return id
     } catch (err) {
       if (err.code === 'ConditionalCheckFailedException') {
