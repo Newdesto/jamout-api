@@ -36,6 +36,11 @@ const resolvers = {
       e: 'EP',
       a: 'album'
     }[release.type]
+  },
+  async tracklist(release, args, { Release }) {
+    // Get the tracks using the release.id
+    const tracks = await Release.getTracks(release.id)
+    return tracks
   }
 }
 

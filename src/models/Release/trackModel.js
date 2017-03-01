@@ -2,8 +2,9 @@ import vogels from 'io/vogels'
 import Joi from 'joi'
 
 const Release = vogels.define('Release', {
-  hashKey: 'id',
-  tableName: 'distribution',
+  hashKey: 'releaseId',
+  rangeKey: 'id',
+  tableName: 'distribution.track',
   timestamps: true,
   schema: {
     id: vogels.types.uuid(),

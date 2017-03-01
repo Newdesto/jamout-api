@@ -127,6 +127,17 @@ export default class Release {
       throw err
     }
   }
+  static async getTracks(releaseid) {
+    try {
+      const { Items } = await trackModel
+        .query(releaseid)
+        .execAsync()
+      return Items.map(t => t.attrs)
+    } catch (err) {
+      console.error(err)
+      throw err
+    }
+  }
   static async pay({ id, email, customerId, source }) {
     // get the order
     const order = await Release.fetchById(id)
