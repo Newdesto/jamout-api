@@ -3,7 +3,8 @@
 # while an artist is still editing metadata. So, an s3Key might be set before
 # a title is.
 type ReleaseTrack {
-  id: String!
+  id: ID!
+  releaseId: ID!
   position: Int,
   primaryArtists: [String!],
   featuredArtists: [String!],

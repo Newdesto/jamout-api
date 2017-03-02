@@ -38,12 +38,12 @@ export default {
     const track = await Release.addTrack({ ...input, releaseId })
     return track
   },
-  async updateReleaseTrack(root, { trackId, input }, { user, Release }) {
+  async updateReleaseTrack(root, { releaseId, trackId, input }, { user, Release }) {
     if (!user) {
       throw new Error('Authentication failed.')
     }
 
-    const track = await Release.updateTrack({ ...input, trackId })
+    const track = await Release.updateTrack({ ...input, releaseId, id: trackId })
     return track
   },
   async deleteReleaseTrack(root, { releaseId }, { user, Release }) {
