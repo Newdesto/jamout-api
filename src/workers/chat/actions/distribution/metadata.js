@@ -1,8 +1,6 @@
 import { publishMessages } from 'utils/chat'
 import { createJob } from 'io/queue'
-import { deleteContextByName, addContexts } from 'io/apiai'
 import { logger } from 'io'
-import R from 'ramda'
 
 const metadata = async function metadata({ senderId, channelId }, result, messages) {
   logger.debug('Processing distribution/metadata action.')
