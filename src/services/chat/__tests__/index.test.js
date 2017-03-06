@@ -172,7 +172,7 @@ test.serial('Chat.updateMessage should call updateAsync and publishMessage metho
   }
 
   // Stubzzz
-  sinon.stub(Message, 'updateAsync').returns({ attrs })
+  sinon.stub(Message, 'updateAsync').returns(attrs)
   sinon.stub(Chat, 'publishMessages')
 
   // Assert and restore, bro.
