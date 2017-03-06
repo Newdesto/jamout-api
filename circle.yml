@@ -20,7 +20,6 @@ dependencies:
     - yarn install
     - yarn global add pm2
     - yarn run build
-    - docker build --rm=false -t jamout/api .
 
 # @TODO also test the container itself
 # It's difficult to test the actual container because of env vars
@@ -39,6 +38,7 @@ deployment:
   production:
     tag: /v[0-9]+(\.[0-9]+)*/
     commands:
+      - docker build --rm=false -t jamout/api .
       - chmod +x ./ecr-push
       - chmod +x ./ecs-deploy
       - ./ecr-push
