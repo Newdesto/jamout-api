@@ -16,7 +16,8 @@ const Release = vogels.define('Release', {
     position: Joi.number(),
     explicit: Joi.boolean(),
     // No original as we don't transcode audio, yet.
-    s3Key: Joi.string()
+    s3Key: Joi.string(),
+    price: Joi.number()
   }
 })
 

@@ -20,4 +20,5 @@ input ReleaseTrackInput {
   position: Int
   explicit: Boolean
   s3Key: String
+  price: Int
 }

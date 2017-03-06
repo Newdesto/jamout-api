@@ -140,7 +140,16 @@ type ReleaseTracklistAttachment implements MessageAttachment {
   done: Boolean
 }
 
-type ReleaseConfirmAndPay implements MessageAttachment {
+type ReleaseRightsHolderAttachment implements MessageAttachment {
+  type: String! # EditRelease
+  action: String # redirect, message, postback
+  postbackId: String # *
+  disableInput: Boolean!
+  releaseId: ID!
+  done: Boolean
+}
+
+type ReleaseConfirmAndPayAttachment implements MessageAttachment {
   type: String! # EditRelease
   action: String # redirect, message, postback
   postbackId: String # *

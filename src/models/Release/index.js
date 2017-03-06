@@ -111,14 +111,9 @@ export default class Release {
       throw err
     }
   }
-  static async deleteTrack(userId, id) {
+  static async deleteTrack(userId, releaseId, trackId) {
     try {
-      const params = {}
-      params.ConditionExpression = '#userId = :userId'
-      params.ExpressionAttributeNames = { '#userId': 'userId' }
-      params.ExpressionAttributeValues = { ':userId': userId }
-      await trackModel.destroyAsync(id, params)
-      return id
+      await trackModel.destroyAsync({ releaseId, id: trackId })
     } catch (err) {
       if (err.code === 'ConditionalCheckFailedException') {
         throw new Error('Authorization failed.')
@@ -138,7 +133,7 @@ export default class Release {
       throw err
     }
   }
-  static async pay({ id, email, customerId, source }) {
+  static async pay({ id, email, customerId, source, metadata }) {
     // get the order
     const order = await Release.fetchById(id)
 
@@ -149,7 +144,8 @@ export default class Release {
       items: [{
         type: 'sku',
         parent: distroSkus[order.type]
-      }]
+      }],
+      metadata
     })
 
     // pay the order

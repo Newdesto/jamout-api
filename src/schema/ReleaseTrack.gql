@@ -5,10 +5,11 @@
 type ReleaseTrack {
   id: ID!
   releaseId: ID!
-  position: Int,
-  primaryArtists: [String!],
-  featuredArtists: [String!],
-  title: String,
-  explicit: Boolean,
-  s3Key: String,
+  position: Int
+  primaryArtists: [String!]
+  featuredArtists: [String!]
+  title: String
+  explicit: Boolean
+  s3Key: String
+  price: Int
 }

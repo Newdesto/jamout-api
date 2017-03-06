@@ -46,12 +46,12 @@ export default {
     const track = await Release.updateTrack({ ...input, releaseId, id: trackId })
     return track
   },
-  async deleteReleaseTrack(root, { releaseId }, { user, Release }) {
+  async deleteReleaseTrack(root, { releaseId, trackId }, { user, Release }) {
     if (!user) {
       throw new Error('Authentication failed.')
     }
 
-    await Release.deleteTrack(user.id, releaseId)
+    await Release.deleteTrack(user.id, releaseId, trackId)
   },
   async payForRelease(root, { id, stripeToken, saveSource }, { user: u, Release, User }) {
     let user = u

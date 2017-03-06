@@ -21,7 +21,8 @@ const Release = vogels.define('Release', {
     primaryGenre: Joi.string(),
     secondaryGenre: Joi.string(),
     releaseDate: Joi.date().iso(), // ISO date string
-    price: Joi.number()
+    price: Joi.number(),
+    rightsHolder: Joi.object()
   }
 })
 

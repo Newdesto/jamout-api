@@ -16,4 +16,5 @@ type Release {
   releaseDate: String,
   price: Int,
   tracklist: [ReleaseTrack!]
+  rightsHolder: JSON
 }

@@ -13,6 +13,8 @@ const resolvers = {
         return 'ReleaseArtworkAttachment'
       case 'ReleaseTracklist':
         return 'ReleaseTracklistAttachment'
+      case 'ReleaseRightsHolder':
+        return 'ReleaseRightsHolderAttachment'
       case 'ReleaseConfirmAndPay':
         return 'ReleaseConfirmAndPayAttachment'
       case 'StudioSessionInquiry':
