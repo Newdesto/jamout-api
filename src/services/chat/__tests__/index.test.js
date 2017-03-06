@@ -161,29 +161,6 @@ test.serial('Chat.updateMessage should throw errors', async (t) => {
   t.throws(chat.updateMessage({ timestamp: '242323423.1233' }))
 })
 
-test.serial('Chat.updateMessage should call updateAsync and publishMessage methods', async (t) => {
-  const channelId = 'abc123'
-  const timestamp = '12345.123'
-  const text = 'This is an update.'
-  const attrs = {
-    channelId,
-    timestamp,
-    text
-  }
-
-  // Stubzzz
-  sinon.stub(Message, 'updateAsync').returns(attrs)
-  sinon.stub(Chat, 'publishMessages')
-
-  // Assert and restore, bro.
-  const chat = new Chat({ userId: 'gabe' })
-  const result = await chat.updateMessage(attrs)
-  t.deepEqual(result, attrs)
-
-  Message.updateAsync.restore()
-  Chat.publishMessages.restore()
-})
-
 test.serial('Chat.getChannelById should return a channel in an array', async (t) => {
   const userId = 'gabe'
   const channelId = 'channelId'
