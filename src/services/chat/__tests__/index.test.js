@@ -4,7 +4,6 @@ import BPromise from 'bluebird'
 import Chat from '../index'
 import Channel from '../channel'
 import Subscription from '../subscription'
-import Message from '../message'
 
 test.serial('Chat class should set the userId property', (t) => {
   const userId = 'gabe'
