@@ -5,7 +5,8 @@ import User, { UserIdLoader, UserUsernameLoader, UserPermalinkLoader } from 'mod
 import { eventRequest } from 'io/apiai'
 import { createCustomer, updateCustomer } from 'utils/stripe'
 
-const confirmAndPayHandler = async function confirmAndPayHandler({ user, channelId, values }) {
+const confirmAndPayHandler = async function confirmAndPayHandler({ user: u, channelId, values }) {
+  let user = u
   // Since updateMessage deep merges we can just add a done: true property.
   await Chat.updateMessage({
     channelId,

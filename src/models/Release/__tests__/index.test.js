@@ -23,7 +23,7 @@ test.serial('Release.fetchAll should return an array of releases with a status, 
   }
 
   sinon.stub(releaseModel, 'scan').returns(mockScan)
-  const existingRelease = await Release.fetchAll()
+  const existingRelease = await Release.getAll()
 
   t.truthy(existingRelease)
   t.deepEqual(existingRelease, [release.attrs])
