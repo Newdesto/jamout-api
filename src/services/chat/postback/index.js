@@ -1,7 +1,9 @@
 import studioSessions from './studio-sessions'
+import distribution from './distribution'
 
 const postbackHandlers = {
-  ...studioSessions
+  ...studioSessions,
+  ...distribution
 }
 
 const handlePostback = async function handlePostback(postback) {

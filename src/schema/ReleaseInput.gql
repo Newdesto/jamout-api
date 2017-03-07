@@ -12,3 +12,13 @@ input ReleaseInput {
   trackPrice: Int,
   tracklist: [ReleaseInputTrack!]
 }
+
+input ReleaseTrackInput {
+  title: String
+  primaryArtists: [String!]
+  featuredArtists: [String!]
+  position: Int
+  explicit: Boolean
+  s3Key: String
+  price: Int
+}

@@ -1,7 +1,8 @@
 export default {
-  release(root, { id }, { user, Release }) {
+  async release(root, { id }, { user, Release }) {
     if (!user) { throw new Error('Authentication failed.') }
 
-    return Release.fetchById(id, user.id)
+    const release = await Release.fetchById(id, user.id)
+    return release
   }
 }

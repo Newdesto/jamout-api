@@ -7,6 +7,7 @@ import Message from './message'
 import MessageAttachment from './messageAttachment'
 import ImageAttachment from './imageAttachment'
 import CardGroupAttachment from './cardGroupAttachment'
+import ReleaseArtworkAttachment from './releaseArtworkAttachment'
 import Me from './me'
 import User from './user'
 import Release from './release'
@@ -20,6 +21,7 @@ export default {
   MessageAttachment,
   ImageAttachment,
   CardGroupAttachment,
+  ReleaseArtworkAttachment,
   Me,
   User,
   Release,

@@ -30,6 +30,18 @@ export function getCustomer(id) {
   })
 }
 
+export function updateCustomer(id, input) {
+  return new Promise((resolve, reject) => {
+    stripe.customers.update(id, input, (err, customer) => {
+      if (err) {
+        reject(err)
+      }
+
+      resolve(customer)
+    })
+  })
+}
+
 export function createOrder(args) {
   return new Promise((resolve, reject) => {
     stripe.orders.create(args, (error, order) => {

@@ -5,6 +5,18 @@ const resolvers = {
         return 'ImageAttachment'
       case 'CardGroup':
         return 'CardGroupAttachment'
+      case 'ReleaseType':
+        return 'ReleaseTypeAttachment'
+      case 'ReleaseMetadata':
+        return 'ReleaseMetadataAttachment'
+      case 'ReleaseArtwork':
+        return 'ReleaseArtworkAttachment'
+      case 'ReleaseTracklist':
+        return 'ReleaseTracklistAttachment'
+      case 'ReleaseRightsHolder':
+        return 'ReleaseRightsHolderAttachment'
+      case 'ReleaseConfirmAndPay':
+        return 'ReleaseConfirmAndPayAttachment'
       case 'StudioSessionInquiry':
         return 'StudioSessionInquiryAttachment'
       case 'Event':

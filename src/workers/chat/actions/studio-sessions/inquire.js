@@ -6,7 +6,7 @@ import microtime from 'microtime'
 import shortid from 'shortid'
 import format from 'date-fns/format'
 
-const inquire = async function inquire({ userId, channelId }, result, messages) {
+const inquire = async function inquire({ channelId }, result, messages) {
   logger.debug('Processing studio-sessions.inquire action.')
   logger.debug(JSON.stringify(result))
   // Schedule Persistence.
