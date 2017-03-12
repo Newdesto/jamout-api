@@ -5,6 +5,7 @@ import S3 from 'aws-sdk/clients/s3'
 import { handleAPIAIAction } from 'workers/chat/actions'
 import { eventRequest } from 'io/apiai'
 import logger from 'io/logger'
+import { createJob } from 'io/queue'
 
 const s3 = new S3()
 const artworkHandler = async function artworkHandler({ user, channelId, values }) {
@@ -21,6 +22,9 @@ const artworkHandler = async function artworkHandler({ user, channelId, values }
       })
     })
     logger.info(url)
+    const buffer3000 = await createJob('distribution.resize', { url })
+    console.log(buffer3000)
+    /*
     const image = await Jimp.read(url)
     image.resize(3000, 3000)
 
@@ -33,7 +37,7 @@ const artworkHandler = async function artworkHandler({ user, channelId, values }
         resolve(buffer)
       })
     })
-
+*/
     // PutObject into the bucket
     const artworkS3Key = await new Promise((resolve, reject) => {
       s3.putObject({
