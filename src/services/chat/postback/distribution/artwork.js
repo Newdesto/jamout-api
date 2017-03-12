@@ -21,12 +21,28 @@ const artworkHandler = async function artworkHandler({ user, channelId, values }
         if (err) {
           reject(err)
         }
-
         resolve(buffer)
       })
     })
 
+    const artworkParams = {
+      ACL: 'private',
+      Body: buffer3000,
+      Bucket: 'jamout-distribution',
+      Key: `${values.releaseId}/artwork-3000.jpg`,
+      Metadata: {
+        userId: user.id
+      }
+    }
+    s3.getSignedUrl('putObject', artworkParams, (err, signedUrl) => {
+      if (err) {
+        console.log(err)
+      }
+      return signedUrl
+    })
+    const artworkS3Key = `${values.releaseId}/artwork-3000.jpg`
     // PutObject into the bucket
+    /*
     const artworkS3Key = await new Promise((resolve, reject) => {
       s3.putObject({
         ACL: 'private',
@@ -44,7 +60,7 @@ const artworkHandler = async function artworkHandler({ user, channelId, values }
         resolve(`${values.releaseId}/artwork-3000.jpg`)
       })
     })
-
+*/
     // Update the release with the original and the 3000x3000 keys.
     // @TODO No need to store the key. Since it's just the id and "artwork.jpg"
     // It's a waste of a network call.
