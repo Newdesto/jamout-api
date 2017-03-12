@@ -11,7 +11,15 @@ const artworkHandler = async function artworkHandler({ user, channelId, values }
   try {
     // Resize the original to 3000x3000.
     const params = { Bucket: 'jamout-distribution', Key: `${values.artworkOriginalS3Key}` }
-    const url = s3.getSignedUrl('getObject', params)
+    const url = await new Promise((resolve, reject) => {
+      s3.getSignedUrl('getObject', params, (err, presigned) => {
+        if (err) {
+          reject(err)
+        }
+
+        resolve(presigned)
+      })
+    })
     logger.info(url)
     const image = await Jimp.read(url)
     image.resize(3000, 3000)
