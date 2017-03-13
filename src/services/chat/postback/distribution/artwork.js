@@ -22,48 +22,14 @@ const artworkHandler = async function artworkHandler({ user, channelId, values }
       })
     })
     logger.info(url)
-    const buffer3000 = await createJob('distribution.resize', { url })
-    console.log(buffer3000)
-    /*
-    const image = await Jimp.read(url)
-    image.resize(3000, 3000)
 
-    const buffer3000 = await new Promise((resolve, reject) => {
-      image.getBuffer(Jimp.MIME_JPEG, (err, buffer) => {
-        if (err) {
-          reject(err)
-        }
-
-        resolve(buffer)
-      })
-    })
-*/
-    // PutObject into the bucket
-    const artworkS3Key = await new Promise((resolve, reject) => {
-      s3.putObject({
-        ACL: 'private',
-        Body: buffer3000,
-        Bucket: 'jamout-distribution',
-        Key: `${values.releaseId}/artwork-3000.jpg`,
-        Metadata: {
-          userId: user.id
-        }
-      }, (err) => {
-        if (err) {
-          reject(err)
-        }
-
-        resolve(`${values.releaseId}/artwork-3000.jpg`)
-      })
-    })
-
-    // Update the release with the original and the 3000x3000 keys.
-    // @TODO No need to store the key. Since it's just the id and "artwork.jpg"
-    // It's a waste of a network call.
-    await Release.update(values.releaseId, {
-      artworkS3Key,
-      artworkOriginals3Key: values.artworkOriginalS3Key
-    })
+    const jobParams = {
+      artworkOriginalS3Key: values.artworkOriginalS3Key,
+      userId: user.id,
+      releaseId: values.releaseId,
+      url
+    }
+    createJob('distribution.resize', jobParams)
 
     // Let's update the ReleaseArtwork message to show the artwork.
     await Chat.updateMessage({
