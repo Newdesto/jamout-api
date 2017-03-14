@@ -6,7 +6,7 @@ import { createJob } from 'io/queue'
 
 const artworkHandler = async function artworkHandler({ user, channelId, values }) {
   try {
-    logger.info(`Uploading artwork`)
+    logger.info('Uploading artwork')
     const jobParams = {
       artworkOriginalS3Key: values.artworkOriginalS3Key,
       userId: user.id,
