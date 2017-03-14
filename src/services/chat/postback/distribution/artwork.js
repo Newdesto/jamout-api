@@ -11,23 +11,10 @@ const s3 = new S3()
 const artworkHandler = async function artworkHandler({ user, channelId, values }) {
   try {
     // Resize the original to 3000x3000.
-    const params = { Bucket: 'jamout-distribution', Key: `${values.artworkOriginalS3Key}` }
-    const url = await new Promise((resolve, reject) => {
-      s3.getSignedUrl('getObject', params, (err, presigned) => {
-        if (err) {
-          reject(err)
-        }
-
-        resolve(presigned)
-      })
-    })
-    logger.info(url)
-
     const jobParams = {
       artworkOriginalS3Key: values.artworkOriginalS3Key,
       userId: user.id,
       releaseId: values.releaseId,
-      url
     }
     createJob('distribution.resize', jobParams)
 
