@@ -37,7 +37,7 @@ queue.process('distribution.resize', async ({ data: { releaseId, userId, artwork
       Bucket: 'jamout-distribution',
       Key: `${releaseId}/artwork-3000.jpg`,
       Metadata: {
-        userId: userId
+        userId
       }
     }, (err) => {
       if (err) {

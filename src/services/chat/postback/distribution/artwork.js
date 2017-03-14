@@ -1,20 +1,16 @@
 import Chat from 'services/chat'
-import Release from 'models/Release'
-import Jimp from 'jimp'
-import S3 from 'aws-sdk/clients/s3'
 import { handleAPIAIAction } from 'workers/chat/actions'
 import { eventRequest } from 'io/apiai'
 import logger from 'io/logger'
 import { createJob } from 'io/queue'
 
-const s3 = new S3()
 const artworkHandler = async function artworkHandler({ user, channelId, values }) {
   try {
-    // Resize the original to 3000x3000.
+    logger.info(`Uploading artwork`)
     const jobParams = {
       artworkOriginalS3Key: values.artworkOriginalS3Key,
       userId: user.id,
-      releaseId: values.releaseId,
+      releaseId: values.releaseId
     }
     createJob('distribution.resize', jobParams)
 
