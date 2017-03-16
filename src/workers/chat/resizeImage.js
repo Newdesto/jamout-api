@@ -1,7 +1,7 @@
 import { logger, queue } from 'io'
 import S3 from 'aws-sdk/clients/s3'
 import Release from 'models/Release'
-import sharp from 'sharp';
+import sharp from 'sharp'
 
 const s3 = new S3()
 queue.process('distribution.resize', async ({ data: { releaseId, userId, artworkOriginalS3Key } }, done) => {
