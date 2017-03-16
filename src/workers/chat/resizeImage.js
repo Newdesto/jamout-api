@@ -1,34 +1,29 @@
 import { logger, queue } from 'io'
 import S3 from 'aws-sdk/clients/s3'
 import Release from 'models/Release'
-import Jimp from 'jimp'
+import sharp from 'sharp'
 
 const s3 = new S3()
 queue.process('distribution.resize', async ({ data: { releaseId, userId, artworkOriginalS3Key } }, done) => {
   logger.info(`Resizing Image (${artworkOriginalS3Key})`)
 
   const params = { Bucket: 'jamout-distribution', Key: `${artworkOriginalS3Key}` }
-  const url = await new Promise((resolve, reject) => {
-    s3.getSignedUrl('getObject', params, (err, presigned) => {
+  const image = await new Promise((resolve, reject) => {
+    s3.getObject(params, (err, data) => {
       if (err) {
         reject(err)
       }
-      resolve(presigned)
+      resolve(data.Body)
     })
   })
 
-  logger.info(url)
-  const image = await Jimp.read(url)
-  image.resize(3000, 3000)
-
-  const buffer3000 = await new Promise((resolve, reject) => {
-    image.getBuffer(Jimp.MIME_JPEG, (err, buffer) => {
-      if (err) {
-        reject(err)
-      }
-      resolve(buffer)
+  logger.info(image)
+  const buffer3000 = await sharp(image)
+    .resize(3000, 3000)
+    .jpeg({
+      quality: 100
     })
-  })
+    .toBuffer()
   // PutObject into the bucket
   const artworkS3Key = await new Promise((resolve, reject) => {
     s3.putObject({
@@ -46,7 +41,6 @@ queue.process('distribution.resize', async ({ data: { releaseId, userId, artwork
       resolve(`${releaseId}/artwork-3000.jpg`)
     })
   })
-  logger.debug(artworkOriginalS3Key)
   // Update the release with the original and the 3000x3000 keys.
   // @TODO No need to store the key. Since it's just the id and "artwork.jpg"
   // It's a waste of a network call.
