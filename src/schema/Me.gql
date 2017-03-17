@@ -6,7 +6,6 @@ type Me {
   updatedAt: String
   id: ID!
   username: String!
-  email: String!
   permalink: String!
   displayName: String!
   location: String
