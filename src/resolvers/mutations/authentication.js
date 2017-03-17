@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 const secret = process.env.JWT_SECRET
 
 const resolvers = {
-  login(root, args, { user: authedUser, User }) {
+  login(root, args, { user: authedUser, User, logger }) {
     try {
       if (authedUser) {
         throw new Error('Unauthorized.')
