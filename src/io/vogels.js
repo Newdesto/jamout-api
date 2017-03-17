@@ -25,6 +25,8 @@ BPromise.promisifyAll(vogels)
 
 // Configure AWS, dude.
 vogels.AWS.config.update({
+  // If we're not in prod connect to local DDB.
+  endpoint: process.env.NODE_ENV !== 'production' && 'http://localhost:4567',
   region: process.env.AWS_REGION,
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
