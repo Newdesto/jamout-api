@@ -3,7 +3,6 @@ import { startSubscriptionServer } from 'io/subscription'
 import http from 'http'
 import 'workers'
 import request from 'request'
-import { startDynalite, createTables, loadTestData } from 'io/ddb'
 import { app, logger } from './io'
 import { jwt, graphql, graphiql } from './middleware'
 
@@ -12,15 +11,17 @@ const launch = async function launch() {
 
   // Init DDB if dev env.
   if (process.env.NODE_ENV !== 'production') {
+    // eslint-disable-next-line import/no-extraneous-dependencies, global-require
+    const ddb = require('io/ddb')
     logger.info('Starting dynalite.')
-    await startDynalite()
+    await ddb.startDynalite()
     logger.info('Dynalite started on port 4567.')
     logger.info('Creating tables in Dynalite.')
-    const tables = await createTables()
+    const tables = await ddb.createTables()
     logger.info('Created tables in Dynalite.')
     logger.info(tables)
     logger.info('Loading test data into Dynalite.')
-    await loadTestData()
+    await ddb.loadTestData()
     logger.info('Loaded test data into Dynalite.')
     logger.info('Starting dynamodb-admin.')
     // @TODO Await dynamodb-admin start up.
