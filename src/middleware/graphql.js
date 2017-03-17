@@ -79,7 +79,10 @@ export default graphqlExpress(async (req) => {
       Track: new Track(),
       Chat: chatConnector
     },
-    formatError,
+    formatError: (err) => {
+      console.trace(err)
+      return formatError(err)
+    },
     logger
   }
 })
