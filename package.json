@@ -4,7 +4,7 @@
   "description": "The API for Jamout - Built using GraphQL, DataLoader, Dgraph, DynamoDB, etc",
   "main": "src/index.js",
   "scripts": {
-    "dev": "BABEL_DISABLE_CACHE=1 nodemon --inspect ./src/index.babel.js",
+    "dev": "BABEL_DISABLE_CACHE=1 nodemon  ./src/index.babel.js",
     "clean": "rm -rf build && mkdir build",
     "build": "babel -d ./build ./src",
     "prod": "NODE_ENV=production pm2-docker ./index.js",
@@ -108,6 +108,8 @@
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "babel-runtime": "^6.22.0",
+    "dynalite": "^1.2.0",
+    "dynamodb-admin": "^1.10.0",
     "eslint": "^3.14.1",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-plugin-import": "^2.2.0",
