@@ -4,11 +4,16 @@ const secret = process.env.JWT_SECRET
 
 const resolvers = {
   login(root, args, { user: authedUser, User }) {
-    if (authedUser) {
-      throw new Error('Unauthorized.')
-    }
+    try {
+      if (authedUser) {
+        throw new Error('Unauthorized.')
+      }
 
-    return User.login(args)
+      return User.login(args)
+    } catch (err) {
+      logger.error(err)
+      throw err
+    }
   },
   signUp(root, args, { user: authedUser, User }) {
     if (authedUser) {
