@@ -3,11 +3,18 @@ import { startSubscriptionServer } from 'io/subscription'
 import http from 'http'
 import 'workers'
 import request from 'request'
+import rollbar from 'rollbar'
 import { app, logger } from './io'
 import { jwt, graphql, graphiql } from './middleware'
 
 const launch = async function launch() {
   logger.info('Starting Jamout API, woohoo!')
+
+  // Init Rollbar error logging
+  if (process.env.NODE_ENV === 'production') {
+    rollbar.init('96cf2e7c080147fca2c44cd219fac8fc')
+    rollbar.handleUncaughtExceptionsAndRejections('96cf2e7c080147fca2c44cd219fac8fc')
+  }
 
   // Init DDB if dev env.
   if (process.env.NODE_ENV !== 'production') {
