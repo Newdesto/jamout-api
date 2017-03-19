@@ -3,9 +3,9 @@ import { startSubscriptionServer } from 'io/subscription'
 import http from 'http'
 import 'workers'
 import request from 'request'
+import rollbar from 'rollbar'
 import { app, logger } from './io'
 import { jwt, graphql, graphiql } from './middleware'
-import rollbar from 'rollbar'
 
 const launch = async function launch() {
   logger.info('Starting Jamout API, woohoo!')
