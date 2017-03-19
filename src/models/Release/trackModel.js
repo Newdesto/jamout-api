@@ -1,7 +1,7 @@
 import vogels from 'io/vogels'
 import Joi from 'joi'
 
-const Release = vogels.define('Release', {
+const ReleaseTrack = vogels.define('ReleaseTrack', {
   hashKey: 'releaseId',
   rangeKey: 'id',
   tableName: 'distribution.track',
@@ -21,4 +21,4 @@ const Release = vogels.define('Release', {
   }
 })
 
-export default Release
+export default ReleaseTrack
