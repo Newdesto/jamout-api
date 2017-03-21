@@ -15,7 +15,8 @@ export default [
     permalink: 'gpsamson',
     roles: [
       'artist',
-      'partner:studio-circle-recordings'
+      'partner:studio-circle-recordings',
+      'partner:deptive-media'
     ],
     updatedAt: '2017-01-23T08:45:31.656Z',
     username: 'gpsamson'
