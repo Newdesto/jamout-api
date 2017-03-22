@@ -33,8 +33,8 @@ export default [
       'customerId': 'cus_AKhPBedSGaSkjL'
     },
     roles: [
-      artist,
-      partner:studio-circle-recordings,
+      'artist',
+      'partner:studio-circle-recordings',
     ],
     context: {
       web: {
