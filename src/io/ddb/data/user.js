@@ -30,11 +30,11 @@ export default [
     id: 'a93fd142-b480-44ea-9672-539f08b68380',
     createdAt: '2017-03-22T05:27:48.920Z',
     stripe: {
-      'customerId': 'cus_AKhPBedSGaSkjL'
+      customerId: 'cus_AKhPBedSGaSkjL'
     },
     roles: [
       'artist',
-      'partner:studio-circle-recordings',
+      'partner:studio-circle-recordings'
     ],
     context: {
       web: {
