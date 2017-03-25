@@ -22,9 +22,9 @@ export default [
     username: 'gpsamson'
   },
   {
-    email: 'partner@123.com',
-    username: 'partner',
-    displayName: 'partner',
+    email: 'studio@123.com',
+    username: 'studio',
+    displayName: 'studio',
     permalink: 'BJ6Uity3x',
     password: '$2a$10$SFyo92wgwyEgHsNr/QBFZeW1.nRE2WXR11DQIrh0u4NZ0Zf11vPne',
     id: 'a93fd142-b480-44ea-9672-539f08b68380',
