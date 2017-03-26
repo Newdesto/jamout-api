@@ -97,7 +97,7 @@ export default class StudioEvent {
           preferredDate: payload.preferredDate,
           username: artist.username
         })
-        return session.attrs
+        return session
       case 'inquiry accepted':
         session = await studioEventModel.createAsync({
           userId: artist.id, // id the user who made the request
@@ -107,7 +107,7 @@ export default class StudioEvent {
           type: 'inquiry accepted',
           sessionId: payload.sessionId
         })
-        return session.attrs
+        return session
       case 'inquiry denied':
         session = await studioEventModel.createAsync({
           userId: artist.id, // id the user who made the request
@@ -117,7 +117,7 @@ export default class StudioEvent {
           type: 'inquiry denied',
           sessionId: payload.sessionId
         })
-        return session.attrs
+        return session
       case 'session planned':
         session = await studioEventModel.createAsync({
           userId: user.id, // id the user who made the request
@@ -128,7 +128,7 @@ export default class StudioEvent {
           type: 'session planned',
           sessionId: payload.sessionId
         })
-        return session.attrs
+        return session
       case 'artist paid':
         session = await studioEventModel.createAsync({
           userId: user.id, // id the user who made the request
@@ -139,7 +139,7 @@ export default class StudioEvent {
           type: 'artist paid',
           sessionId: payload.sessionId
         })
-        return session.attrs
+        return session
       default:
         return session
     }
