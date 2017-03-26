@@ -42,5 +42,27 @@ export default [
       }
     },
     updatedAt: '2017-03-22T05:27:49.248Z'
+  },
+  {
+    email: 'distro@123.com',
+    username: 'distro',
+    displayName: 'distro',
+    permalink: 'BJ6Uity3y',
+    password: '$2a$10$SFyo92wgwyEgHsNr/QBFZeW1.nRE2WXR11DQIrh0u4NZ0Zf11vPne',
+    id: 'a93fd142-b480-44ea-9672-539f08b68381',
+    createdAt: '2017-03-22T05:27:48.920Z',
+    stripe: {
+      customerId: 'cus_AKhPBedSGaSkjZ'
+    },
+    roles: [
+      'artist',
+      'partner:deptiv-media'
+    ],
+    context: {
+      web: {
+        role: 'artist'
+      }
+    },
+    updatedAt: '2017-03-22T05:27:49.248Z'
   }
 ]
