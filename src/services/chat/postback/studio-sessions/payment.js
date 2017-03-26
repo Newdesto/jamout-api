@@ -38,7 +38,6 @@ const paymentHandler = async function paymentHandler({ user, channelId, values }
       price: values.price
     })
 
-
     const paidMessage = {
       channelId,
       id: shortid.generate(),
