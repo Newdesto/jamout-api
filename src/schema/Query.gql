@@ -6,6 +6,7 @@ type Query {
   release(id: ID!): Release
   releases: [Release!]!
   user(id: ID, permalink: String, username: String): User!
+  users: [User!]
   studioEvent: [[StudioEvent]]
   musicEvents: [MusicEvent]
   eventArtist(eventId: ID): [EventArtist]

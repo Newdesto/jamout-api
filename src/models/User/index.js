@@ -36,6 +36,7 @@ export default class User {
     this.login = User.login
     this.create = User.create
     this.update = User.update
+    this.fetchAll = User.fetchAll
   }
   static async usernameExists(username) {
     const existingUsernames = await userModel
@@ -122,6 +123,14 @@ export default class User {
     })
 
     return accessToken
+  }
+  static async fetchAll() {
+    const { Items } = await userModel
+    .scan()
+    .loadAll()
+    .execAsync()
+
+    return Items.map(i => i.attrs)
   }
   async fetchById(id) {
     const user = await this.idLoader.load(id)
