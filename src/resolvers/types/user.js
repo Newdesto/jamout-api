@@ -7,7 +7,7 @@ const resolvers = {
     if (!user.avatarKey) {
       return null
     }
-    
+
     const params = { Bucket: 'jamout-profile', Key: `${user.id}/avatar.png` }
     const url = s3.getSignedUrl('getObject', params)
     return url
