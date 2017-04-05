@@ -2,7 +2,7 @@ type Mutation {
   # Connection
   addConnection(friendId: ID!): [Connection!]!
   deleteConnection(friendId: ID!): [Connection!]
-  acceptConnectiom(friendId: ID!): [Connection!]!
+  acceptConnection(friendId: ID!): [Connection!]!
   # Authentication + Utils
   login(email: String!, password: String!): String!
   signUp(email: String!, username: String!, password: String!): String!

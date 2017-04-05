@@ -81,7 +81,7 @@ export default class Connection {
    * Confirms a connections. If the user is denying the connection use
    * deleteConnection above.
    */
-  static async acceptConection(userId, friendId) {
+  static async acceptConnection(userId, friendId) {
     try {
       // Throws an error out if userId is the user who need not confirm.
       const user = await model.updateAsync({
