@@ -8,9 +8,11 @@ import createMusicEvent from './musicEvent'
 import eventArtist from './eventArtist'
 import track from './track'
 import user from './user'
+import connection from './connection'
 
 const resolvers = {
   Mutation: merge(
+    connection,
     authentication,
     generateS3Signature,
     studioEvent,

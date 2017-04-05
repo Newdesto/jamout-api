@@ -1,5 +1,6 @@
 import logger from 'io/logger'
 import shortid from 'shortid'
+import Chat from 'services/chat'
 import model from './model'
 
 /**
@@ -53,7 +54,7 @@ export default class Connection {
         { id, userId: friendId, friendId: userId, status: 'a' }
       ], { overwrite: false })
 
-      return connections
+      return connections.map(connection => connection.attrs)
     } catch (err) {
       if (err.code === 'ConditionalCheckFailedException') {
         // @TODO Return the connection...
@@ -80,7 +81,7 @@ export default class Connection {
    * Confirms a connections. If the user is denying the connection use
    * deleteConnection above.
    */
-  static async acceptConection(userId, friendId) {
+  static async acceptConnection(userId, friendId) {
     try {
       // Throws an error out if userId is the user who need not confirm.
       const user = await model.updateAsync({
@@ -94,6 +95,14 @@ export default class Connection {
         friendId: userId,
         status: 'c'
       })
+
+      // On confirmation create a chat channel.
+      const chat = new Chat({ userId })
+      await chat.createChannel({
+        type: 'd',
+        users: [userId, friendId]
+      })
+
 
       return [user.attrs, friend.attrs]
     } catch (err) {
