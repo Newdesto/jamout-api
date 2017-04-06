@@ -8,4 +8,5 @@ type Track {
   playCount: Int
   audioUrl: String,
   artworkUrl: String,
+  createdAt: String
 }
