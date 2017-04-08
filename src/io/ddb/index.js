@@ -1,9 +1,8 @@
 /**
  * Starts a local dynalite instance for development.
  */
-
-import vogels from 'io/vogels'
 import dynalite from 'dynalite' // eslint-disable-line import/no-extraneous-dependencies
+import vogels from 'io/vogels'
 
 import User from 'models/User/model'
 import Partner from 'models/Partner/model'
