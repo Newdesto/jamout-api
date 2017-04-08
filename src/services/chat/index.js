@@ -146,6 +146,11 @@ export default class Chat {
    * Sends a text message on behalf of the user.
    */
   async sendMessage({ message }) {
+    // Special case, check this so we don't have to do extra logic
+    if (message.channelId === 'general') {
+      const { attrs } = await Message.createAsync(message)
+      return attrs
+    }
     // Check if the user is subscribed to this channel.
     const subscription =
     await Subscription.getAsync({ channelId: message.channelId, userId: this.userId })

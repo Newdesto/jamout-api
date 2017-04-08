@@ -1,11 +1,12 @@
 /**
  * Starts a local dynalite instance for development.
  */
-
+import dynalite from 'dynalite' // eslint-disable-line import/no-extraneous-dependencies
 import vogels from 'io/vogels'
+
 import User from 'models/User/model'
 import Partner from 'models/Partner/model'
-import dynalite from 'dynalite' // eslint-disable-line import/no-extraneous-dependencies
+
 import userData from './data/user'
 import partnerData from './data/partner'
 
