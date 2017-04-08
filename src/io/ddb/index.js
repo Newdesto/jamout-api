@@ -53,5 +53,4 @@ export const loadTestData = async function loadTestData() {
 
   // Load the Channel test data
   await Promise.all(channelData.map(channel => Channel.createAsync(channel)))
-
 }
