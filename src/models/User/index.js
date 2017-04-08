@@ -11,6 +11,7 @@ import {
 } from './loaders'
 import { createCustomer } from '../../utils/stripe'
 import { hashPassword, authenticate } from '../../utils/auth'
+import Chat from '../../services/chat'
 
 const s3 = new AWS.S3()
 const secret = process.env.JWT_SECRET
@@ -101,6 +102,9 @@ export default class User {
       permalink: shortid.generate(),
       password: hashedPassword
     })
+
+    // sign them up to the general chat
+    Chat.addUsersToGroup({ channelId: 'general', users: [user.id] })
 
     // Creates a Stripe customer for the new user.
     // @TODO queue a job.
