@@ -62,6 +62,35 @@ export default class Chat {
       users: sortedUsers
     }
   }
+  static async addUsersToGroup({ channelId, users }) {
+    if (!users || !Array.isArray(users)) {
+      throw new Error('Invalid argument: users.')
+    }
+    if (!channelId) {
+      throw new Error('Invalid argument: channelId.')
+    }
+
+    // get the general channel data
+    const channel = await Channel.getAsync({ id: channelId })
+    const channelData = channel.attrs
+    const currentChannelUsers = channelData.users || []
+
+    // get all users, make new hash
+    const allChannelUsers = [...users, ...currentChannelUsers]
+    const sorted = Chat.sortUsersAndHash({ users: allChannelUsers })
+    const newChannel = await Channel.updateAsync({
+      id: channelId,
+      users: sorted.users,
+      usersHash: sorted.usersHash
+    })
+
+    // subscribe new user to channel
+    const subscriptions = await Chat.createSubscriptions({ users, channelId })
+    return {
+      newChannel: newChannel.attrs,
+      subscriptions
+    }
+  }
   /**
    * Returns the channel of a user hash if it exists, and returns false
    * if it doesn't.

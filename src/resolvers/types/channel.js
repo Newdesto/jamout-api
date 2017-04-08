@@ -13,7 +13,9 @@ const resolvers = {
       const hash = channel.id.replace(/\W/g, '')
       return `https://tiley.herokuapp.com/avatar/${hash}/${initial}.png?s=55`
     }
-
+    if (!channel.users) {
+      throw new Error('No users in Channel')
+    }
     // Use a random user's name + id
     const users = await User.fetchByIds(channel.users)
     const random = users

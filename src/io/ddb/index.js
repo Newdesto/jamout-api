@@ -3,11 +3,15 @@
  */
 
 import vogels from 'io/vogels'
+import dynalite from 'dynalite' // eslint-disable-line import/no-extraneous-dependencies
+
 import User from 'models/User/model'
 import Partner from 'models/Partner/model'
-import dynalite from 'dynalite' // eslint-disable-line import/no-extraneous-dependencies
+import Channel from '../../services/chat/channel'
+
 import userData from './data/user'
 import partnerData from './data/partner'
+import channelData from './data/channel'
 
 export const startDynalite = function startDynalite() {
   const dynaliteServer = dynalite({ path: './.jamout-db', createTableMs: 50 })
@@ -46,4 +50,7 @@ export const loadTestData = async function loadTestData() {
 
   // Load the Partner test data.
   await Promise.all(partnerData.map(partner => Partner.createAsync(partner)))
+
+  // Load the Channel test data
+  await Promise.all(channelData.map(channel => Channel.createAsync(channel)))
 }
