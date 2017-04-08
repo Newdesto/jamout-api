@@ -103,9 +103,6 @@ export default class User {
       password: hashedPassword
     })
 
-    // sign them up to the general chat
-    Chat.addUsersToGroup({ channelId: 'general', users: [user.id] })
-
     // Creates a Stripe customer for the new user.
     // @TODO queue a job.
     const stripeCustomer = await createCustomer({
