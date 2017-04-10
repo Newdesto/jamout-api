@@ -4,7 +4,10 @@ export default {
       throw new Error('Authentication failed.')
     }
 
-    const users = await User.fetchAll()
-    return users
+    const allUsers = await User.fetchAll()
+
+    // Filter out users with a private acl field.
+    const publicUsers = allUsers.filter(u => u.acl !== 'private')
+    return publicUsers
   }
 }
