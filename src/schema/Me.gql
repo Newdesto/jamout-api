@@ -16,6 +16,7 @@ type Me {
   roles: [String!]
   permissions: [String!]
   context: MeContext
+  acl: String # *, null, private
 }
 
 type MeContext {
@@ -35,6 +36,7 @@ input MeInput {
   location: String
   avatarKey: String
   context: MeContextInput
+  acl: String
 }
 
 input MeContextInput {

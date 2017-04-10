@@ -33,8 +33,9 @@ const User = vogels.define('User', {
       })
     }),
     // User roles. (e.g.; artist, partner:jd2Dw)
-    roles: Joi.array().items(Joi.string())
+    roles: Joi.array().items(Joi.string()),
     // @TODO Permissions?
+    acl: Joi.string()
   },
   indexes: [
     { hashKey: 'email', name: 'email-index', type: 'global' },
