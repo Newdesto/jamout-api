@@ -41,6 +41,18 @@ const resolvers = {
       a: 'ACTION',
       p: 'PENDING'
     }[exists.status]
+  },
+  async tracks({ id }, args, { user, Track }) {
+    if (!user) {
+      throw new Error('Authentication failed.')
+    }
+
+    if (!id) {
+      return null
+    }
+    console.log(id)
+    const tracks = await Track.fetchByUserId(id)
+    return tracks
   }
 }
 
