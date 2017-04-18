@@ -9,6 +9,9 @@ const resolvers = {
     return url
   },
   artworkUrl(track) {
+    if (!track.artworkKey) {
+      return null
+    }
     const params = { Bucket: 'jamout-music', Key: `${track.artworkKey}` }
     const url = s3.getSignedUrl('getObject', params)
     return url

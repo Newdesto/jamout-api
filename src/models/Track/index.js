@@ -3,6 +3,7 @@ import userModel from '../User/model'
 
 export default class Track {
   constructor() {
+    this.fetchById = Track.fetchById
     this.fetchAll = Track.fetchAll
     this.fetchByUserId = Track.fetchByUserId
     this.fetchMyTracks = Track.fetchMyTracks
@@ -11,6 +12,15 @@ export default class Track {
     this.createTrack = Track.createTrack
     this.editTrack = Track.editTrack
     this.deleteTrack = Track.deleteTrack
+  }
+  static async fetchById(id) {
+    const Item = await trackModel.getAsync(id)
+
+    if (!Item) {
+      return null
+    }
+
+    return Item.attrs
   }
   /**
    * Fetches all public tracks.

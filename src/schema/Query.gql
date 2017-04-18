@@ -10,5 +10,5 @@ type Query {
   studioEvent: [[StudioEvent]]
   musicEvents: [MusicEvent]
   eventArtist(eventId: ID): [EventArtist]
-  track(userId: ID, permalink: String): [Track]
+  track(id: ID!): Track
 }
