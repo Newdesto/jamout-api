@@ -24,6 +24,7 @@ const UsernameExistsError = createError('UsernameExistsError', {
   message: 'Username already exists.'
 })
 
+
 export default class User {
   constructor({ idLoader, usernameLoader, permalinkLoader }) {
     this.idLoader = idLoader
@@ -63,8 +64,10 @@ export default class User {
     }
 
     // Compare the passwords.
-    await authenticate(password, user.password)
-
+    const authenticated = await authenticate(password, user.password)
+    if (!authenticated) {
+      throw new InvalidLoginError()
+    }
     delete user.password
 
     const params = { Bucket: 'jamout-profile', Key: `${user.id}/avatar.png` }
