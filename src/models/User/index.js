@@ -62,9 +62,14 @@ export default class User {
       throw new InvalidLoginError()
     }
 
-    // Compare the passwords.
-    await authenticate(password, user.password)
+    console.log(password)
+    console.log(user.password)
 
+    // Compare the passwords.
+    const authenticated = await authenticate(password, user.password)
+    if (!authenticated) {
+      throw new InvalidLoginError()
+    }
     delete user.password
 
     const params = { Bucket: 'jamout-profile', Key: `${user.id}/avatar.png` }
