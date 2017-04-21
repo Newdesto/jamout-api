@@ -3,13 +3,14 @@ import jwt from 'jsonwebtoken'
 const secret = process.env.JWT_SECRET
 
 const resolvers = {
-  login(root, args, { user: authedUser, User, logger }) {
+  async login(root, args, { user: authedUser, User, logger }) {
     try {
       if (authedUser) {
         throw new Error('Unauthorized.')
       }
 
-      return User.login(args)
+      const token = await User.login(args)
+      return token
     } catch (err) {
       logger.error(err)
       throw err
