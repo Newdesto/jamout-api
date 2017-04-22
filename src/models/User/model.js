@@ -38,7 +38,7 @@ const User = vogels.define('User', {
     acl: Joi.string(),
     premium: Joi.object().keys({
       stripeId: vogels.types.uuid(),
-      createdAt: Joi.string()
+      createdAt: Joi.number().integer()
     })
   },
   indexes: [

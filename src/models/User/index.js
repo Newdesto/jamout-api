@@ -38,6 +38,18 @@ export default class User {
     this.create = User.create
     this.update = User.update
     this.fetchAll = User.fetchAll
+    this.upgradeToPremium = User.upgradeToPremium
+  }
+  // Take the stripe id and the time stamp returned from stripe and add it to the user
+  // We store createdAt as an integer because that's what stripe wants
+  static async upgradeToPremium({customerId, createdAt, userId}) {
+    const { attrs: userStripe } = await userModel.updateAsync({
+      id: userId,
+      premium: {
+        stripeId: customerId,
+        createdAt: createdAt
+      }
+    })
   }
   static async usernameExists(username) {
     const existingUsernames = await userModel
@@ -93,7 +105,7 @@ export default class User {
     if (await User.usernameExists(username)) {
       throw new UsernameExistsError()
     }
-
+    
     const hashedPassword = await hashPassword(password)
     const { attrs: user } = await userModel.createAsync({
       email,
