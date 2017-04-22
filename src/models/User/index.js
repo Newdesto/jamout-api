@@ -42,14 +42,19 @@ export default class User {
   }
   // Take the stripe id and the time stamp returned from stripe and add it to the user
   // We store createdAt as an integer because that's what stripe wants
-  static async upgradeToPremium({customerId, createdAt, userId}) {
+  static async upgradeToPremium({ stripeToken, userId }) {
+    const stripeCustomer = await createCustomer({
+      source: stripeToken,
+      metadata: { userId: user.id } // @TODO figure out if this is good lol
+    })
     const { attrs: userStripe } = await userModel.updateAsync({
       id: userId,
       premium: {
-        stripeId: customerId,
-        createdAt: createdAt
+        stripeId: stripeCustomer.id,
+        createdAt: stripeCustomer.created
       }
     })
+    return userStripe
   }
   static async usernameExists(username) {
     const existingUsernames = await userModel

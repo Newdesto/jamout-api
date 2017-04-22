@@ -31,7 +31,8 @@ type MeWebContext {
 
 type Premium {
   stripeId: String,
-  createdAt: Int
+  createdAt: Int,
+  metadata: JSON
 }
 
 input MeInput {
