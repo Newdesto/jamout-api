@@ -13,6 +13,9 @@ import StudioEvent from 'models/StudioEvent'
 import MusicEvent from 'models/MusicEvent'
 import Track from 'models/Track'
 import EventArtist from 'models/EventArtist'
+import { formatError } from 'apollo-errors'
+import { logger } from 'io'
+import { createJob } from 'io/queue'
 
 // Create a GQL subscription manager using an EventEmitter as the pubsub
 // engine, the setupFunctions from our resolver/subscription
@@ -42,7 +45,7 @@ export const startSubscriptionServer = function startSubscriptionServer(httpServ
       }
 
       // For now, only authenticated users will use subscriptions.
-      let user = jwt.verify(jwt, process.env.JWT_SECRET)
+      let user = jwt.verify(authToken, process.env.JWT_SECRET)
       const idLoader = new UserIdLoader({ userId: user.id })
       const usernameLoader = new UserUsernameLoader({ username: user.username })
       const permalinkLoader = new UserPermalinkLoader({ permalink: user.permalink })
