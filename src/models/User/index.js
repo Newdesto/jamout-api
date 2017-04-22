@@ -9,7 +9,7 @@ import {
   UserUsernameLoader,
   UserPermalinkLoader
 } from './loaders'
-import { createCustomer, createSubscription } from '../../utils/stripe'
+import { createCustomer /* , createSubscription */ } from '../../utils/stripe'
 import { hashPassword, authenticate } from '../../utils/auth'
 
 const s3 = new AWS.S3()
@@ -45,7 +45,7 @@ export default class User {
   static async upgradeToPremium({ stripeToken, userId }) {
     const stripeCustomer = await createCustomer({
       source: stripeToken,
-      metadata: { userId: user.id } // @TODO figure out if this is good lol
+      metadata: { userId } // @TODO figure out if this is good lol
     })
 
     // now we need to subscribe the customer to the premium subscription
@@ -57,10 +57,10 @@ export default class User {
         /*
         subscriptionId: subscription.id,
         subscriptionCreatedAt: subscription.created,
-`       periodEnd: subscription.current_period_end,
+        periodEnd: subscription.current_period_end,
         periodStart: subscription.current_period_start,
         cancelAtEnd: subscription.cancel_at_period_end,
-        */ 
+        */
         customerCreatedAt: stripeCustomer.created
       }
     })
@@ -121,7 +121,7 @@ export default class User {
     if (await User.usernameExists(username)) {
       throw new UsernameExistsError()
     }
-    
+
     const hashedPassword = await hashPassword(password)
     const { attrs: user } = await userModel.createAsync({
       email,

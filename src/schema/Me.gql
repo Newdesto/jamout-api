@@ -31,8 +31,13 @@ type MeWebContext {
 
 type Premium {
   stripeId: String,
-  createdAt: Int,
+  customerCreatedAt: Int,
   metadata: JSON
+  subscriptionId: String,
+  subscriptionCreatedAt: Int,
+  periodEnd: Int,
+  periodStart: Int,
+  cancelAtEnd: Boolean
 }
 
 input MeInput {
