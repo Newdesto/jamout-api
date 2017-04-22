@@ -35,7 +35,11 @@ const User = vogels.define('User', {
     // User roles. (e.g.; artist, partner:jd2Dw)
     roles: Joi.array().items(Joi.string()),
     // @TODO Permissions?
-    acl: Joi.string()
+    acl: Joi.string(),
+    premium: Joi.object().keys({
+        stripeId: vogels.types.uuid(),
+        createdAt: Joi.string()
+    })
   },
   indexes: [
     { hashKey: 'email', name: 'email-index', type: 'global' },
