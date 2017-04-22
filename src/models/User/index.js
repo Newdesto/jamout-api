@@ -9,7 +9,7 @@ import {
   UserUsernameLoader,
   UserPermalinkLoader
 } from './loaders'
-import { createCustomer } from '../../utils/stripe'
+import { createCustomer, createSubscription } from '../../utils/stripe'
 import { hashPassword, authenticate } from '../../utils/auth'
 
 const s3 = new AWS.S3()
@@ -47,13 +47,24 @@ export default class User {
       source: stripeToken,
       metadata: { userId: user.id } // @TODO figure out if this is good lol
     })
+
+    // now we need to subscribe the customer to the premium subscription
+    // const subscription = await createSubscription(stripeCustomer.id, plan)
     const { attrs: userStripe } = await userModel.updateAsync({
       id: userId,
       premium: {
         stripeId: stripeCustomer.id,
-        createdAt: stripeCustomer.created
+        /*
+        subscriptionId: subscription.id,
+        subscriptionCreatedAt: subscription.created,
+`       periodEnd: subscription.current_period_end,
+        periodStart: subscription.current_period_start,
+        cancelAtEnd: subscription.cancel_at_period_end,
+        */ 
+        customerCreatedAt: stripeCustomer.created
       }
     })
+
     return userStripe
   }
   static async usernameExists(username) {

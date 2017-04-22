@@ -84,6 +84,11 @@ export default [
         role: 'artist'
       }
     },
-    updatedAt: '2017-03-22T05:27:49.248Z'
+    updatedAt: '2017-03-22T05:27:49.248Z',
+    premium: {
+        stripeId: '1234',
+        createdAt: 1234,
+        metadata: { userId: '693fd142-b480-44ea-9672-539f08b68389' }
+    }
   }
 ]
