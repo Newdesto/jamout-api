@@ -5,7 +5,7 @@ type Query {
   messages(channelId: ID!, limit: Int): [Message!]!
   release(id: ID!): Release
   releases: [Release!]!
-  user(id: ID, permalink: String, username: String): User!
+  user(id: ID, permalink: String, username: String): User
   users: [User!]
   studioEvent: [[StudioEvent]]
   musicEvents: [MusicEvent]
