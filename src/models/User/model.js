@@ -37,8 +37,8 @@ const User = vogels.define('User', {
     // @TODO Permissions?
     acl: Joi.string(),
     premium: Joi.object().keys({
-        stripeId: vogels.types.uuid(),
-        createdAt: Joi.string()
+      stripeId: vogels.types.uuid(),
+      createdAt: Joi.string()
     })
   },
   indexes: [
