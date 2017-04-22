@@ -50,7 +50,7 @@ const resolvers = {
     if (!id) {
       return null
     }
-    console.log(id)
+
     const tracks = await Track.fetchByUserId(id)
     return tracks
   }

@@ -163,6 +163,9 @@ export default class User {
   }
   async fetchByPermalink(permalink) {
     const user = await this.permalinkLoader.load(permalink)
+    if (!user) {
+      return null
+    }
     this.idLoader.prime(user.id, user)
     this.usernameLoader.prime(user.username, user)
     return user
