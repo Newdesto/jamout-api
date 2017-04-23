@@ -1,6 +1,6 @@
 import R from 'ramda'
 import userResolvers from './user'
-// import { getCustomer } from '../../utils/stripe'
+import { getCustomer } from '../../utils/stripe'
 
 const resolvers = {
   ...R.omit(['connected'], userResolvers),
@@ -43,7 +43,7 @@ const resolvers = {
     try {
       const customer = await getCustomer(user.stripeCustomerId)
       return customer
-    } catch(e) {
+    } catch (err) {
       return null
     }
   }
