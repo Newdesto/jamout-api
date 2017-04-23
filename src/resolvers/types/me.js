@@ -1,5 +1,6 @@
 import R from 'ramda'
 import userResolvers from './user'
+import { getCustomer } from '../../utils/stripe'
 
 const resolvers = {
   ...R.omit(['connected'], userResolvers),
@@ -33,7 +34,16 @@ const resolvers = {
     )
 
     return partnerPermissions.map(permissions => permissions.attrs.permissions)
+  },
+
+  async premium(root, args, { user }) {
+    if (!user.premium) 
+      return null
+    // needa make a stripe customer first!
+    // const customer = await getCustomer(user.premium)
+    // return customer
   }
+
 }
 
 export default resolvers

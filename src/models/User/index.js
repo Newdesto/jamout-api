@@ -57,6 +57,10 @@ export default class User {
 
     return userStripe
   }
+
+  static async endPremium({ premium }) {
+
+  }
   static async usernameExists(username) {
     const existingUsernames = await userModel
       .query(username)
