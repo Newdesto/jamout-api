@@ -1,6 +1,6 @@
 import R from 'ramda'
 import userResolvers from './user'
-import { getCustomer } from '../../utils/stripe'
+// import { getCustomer } from '../../utils/stripe'
 
 const resolvers = {
   ...R.omit(['connected'], userResolvers),
@@ -37,11 +37,13 @@ const resolvers = {
   },
 
   async premium(root, args, { user }) {
-    if (!user.premium) 
+    if (!user.premium) {
       return null
+    }
     // needa make a stripe customer first!
     // const customer = await getCustomer(user.premium)
     // return customer
+    return user.premium
   }
 
 }
