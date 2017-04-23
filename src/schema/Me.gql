@@ -17,7 +17,7 @@ type Me {
   permissions: [String!]
   context: MeContext
   acl: String # *, null, private
-  premium: Premium # null or 
+  premium: JSON # null or 
 }
 
 type MeContext {
@@ -27,17 +27,6 @@ type MeContext {
 
 type MeWebContext {
   role: String
-}
-
-type Premium {
-  stripeId: String,
-  customerCreatedAt: Int,
-  metadata: JSON
-  subscriptionId: String,
-  subscriptionCreatedAt: Int,
-  periodEnd: Int,
-  periodStart: Int,
-  cancelAtEnd: Boolean
 }
 
 input MeInput {

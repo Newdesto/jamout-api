@@ -52,17 +52,7 @@ export default class User {
     // const subscription = await createSubscription(stripeCustomer.id, plan)
     const { attrs: userStripe } = await userModel.updateAsync({
       id: userId,
-      premium: {
-        stripeId: stripeCustomer.id,
-        /*
-        subscriptionId: subscription.id,
-        subscriptionCreatedAt: subscription.created,
-        periodEnd: subscription.current_period_end,
-        periodStart: subscription.current_period_start,
-        cancelAtEnd: subscription.cancel_at_period_end,
-        */
-        customerCreatedAt: stripeCustomer.created
-      }
+      premium: stripeCustomer.id
     })
 
     return userStripe
