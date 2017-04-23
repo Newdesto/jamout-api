@@ -85,6 +85,6 @@ export default [
       }
     },
     updatedAt: '2017-03-22T05:27:49.248Z',
-    premium: '1234'
+    stripeCustomerId: '1234'
   }
 ]

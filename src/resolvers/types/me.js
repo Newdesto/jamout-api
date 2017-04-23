@@ -36,14 +36,16 @@ const resolvers = {
     return partnerPermissions.map(permissions => permissions.attrs.permissions)
   },
 
-  async premium(root, args, { user }) {
-    if (!user.premium) {
+  async stripeCustomer(root, args, { user }) {
+    if (!user.stripeCustomerId) {
       return null
     }
-    // needa make a stripe customer first!
-    // const customer = await getCustomer(user.premium)
-    // return customer
-    return user.premium
+    try {
+      const customer = await getCustomer(user.stripeCustomerId)
+      return customer
+    } catch(e) {
+      return null
+    }
   }
 
 }

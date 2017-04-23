@@ -45,14 +45,14 @@ export default class User {
   static async upgradeToPremium({ stripeToken, userId }) {
     const stripeCustomer = await createCustomer({
       source: stripeToken,
-      metadata: { userId } // @TODO figure out if this is good lol
+      metadata: { userId }
     })
 
     // now we need to subscribe the customer to the premium subscription
     // const subscription = await createSubscription(stripeCustomer.id, plan)
     const { attrs: userStripe } = await userModel.updateAsync({
       id: userId,
-      premium: stripeCustomer.id
+      stripeCustomerId: stripeCustomer.id
     })
 
     return userStripe
