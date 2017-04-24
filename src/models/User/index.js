@@ -9,7 +9,7 @@ import {
   UserUsernameLoader,
   UserPermalinkLoader
 } from './loaders'
-import { createCustomer /* , createSubscription */ } from '../../utils/stripe'
+import { createCustomer, deleteCustomer /* , createSubscription */ } from '../../utils/stripe'
 import { hashPassword, authenticate } from '../../utils/auth'
 
 const s3 = new AWS.S3()
@@ -57,11 +57,13 @@ export default class User {
 
     return userStripe
   }
-/*
-  static async endPremium({ premium }) {
 
+  // delete stripe customer entirely
+  static async endPremium({ customerId }) {
+    const confirmation = await deleteCustomer(customerId)
+    return confirmation
   }
-*/
+
   static async usernameExists(username) {
     const existingUsernames = await userModel
       .query(username)

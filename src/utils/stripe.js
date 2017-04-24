@@ -30,6 +30,18 @@ export function getCustomer(id) {
   })
 }
 
+export function deleteCustomer(id) {
+  return new Promise((resolve, reject) => {
+    stripe.customers.del(
+      id,
+      (err, confirmation) => {
+        if (err) { reject(err) }
+        resolve(confirmation)
+      }
+    )
+  })
+}
+
 export function updateCustomer(id, input) {
   return new Promise((resolve, reject) => {
     stripe.customers.update(id, input, (err, customer) => {
