@@ -9,7 +9,7 @@ import {
   UserUsernameLoader,
   UserPermalinkLoader
 } from './loaders'
-import { createCustomer } from '../../utils/stripe'
+import { createCustomer, deleteCustomer /* , createSubscription */ } from '../../utils/stripe'
 import { hashPassword, authenticate } from '../../utils/auth'
 
 const s3 = new AWS.S3()
@@ -38,7 +38,32 @@ export default class User {
     this.create = User.create
     this.update = User.update
     this.fetchAll = User.fetchAll
+    this.upgradeToPremium = User.upgradeToPremium
   }
+  // Take the stripe id and the time stamp returned from stripe and add it to the user
+  // We store createdAt as an integer because that's what stripe wants
+  static async upgradeToPremium({ stripeToken, userId }) {
+    const stripeCustomer = await createCustomer({
+      source: stripeToken,
+      metadata: { userId }
+    })
+
+    // now we need to subscribe the customer to the premium subscription
+    // const subscription = await createSubscription(stripeCustomer.id, plan)
+    const { attrs: userStripe } = await userModel.updateAsync({
+      id: userId,
+      stripeCustomerId: stripeCustomer.id
+    })
+
+    return userStripe
+  }
+
+  // delete stripe customer entirely
+  static async endPremium({ customerId }) {
+    const confirmation = await deleteCustomer(customerId)
+    return confirmation
+  }
+
   static async usernameExists(username) {
     const existingUsernames = await userModel
       .query(username)

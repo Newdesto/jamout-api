@@ -17,6 +17,8 @@ type Me {
   permissions: [String!]
   context: MeContext
   acl: String # *, null, private
+  stripeCustomerId: String # or null
+  stripeCustomer: JSON # or null
 }
 
 type MeContext {

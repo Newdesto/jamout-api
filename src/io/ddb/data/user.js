@@ -84,6 +84,7 @@ export default [
         role: 'artist'
       }
     },
-    updatedAt: '2017-03-22T05:27:49.248Z'
+    updatedAt: '2017-03-22T05:27:49.248Z',
+    stripeCustomerId: '1234'
   }
 ]
