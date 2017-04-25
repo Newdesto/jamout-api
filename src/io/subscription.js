@@ -2,7 +2,6 @@ import { SubscriptionManager, PubSub } from 'graphql-subscriptions'
 import { SubscriptionServer } from 'subscriptions-transport-ws'
 import schema from 'schema'
 import { setupFunctions } from 'resolvers/subscriptions'
-import { setupSubscriptionContext } from 'middleware/graphql'
 import jwt from 'jsonwebtoken'
 import Release from 'models/Release'
 import Connection from 'models/Connection'
@@ -13,7 +12,6 @@ import StudioEvent from 'models/StudioEvent'
 import MusicEvent from 'models/MusicEvent'
 import Track from 'models/Track'
 import EventArtist from 'models/EventArtist'
-import { formatError } from 'apollo-errors'
 import { logger } from 'io'
 import { createJob } from 'io/queue'
 
@@ -27,18 +25,9 @@ const subscriptionManager = new SubscriptionManager({
   setupFunctions
 })
 
-/**
- * An onSubscribe listener that initializes the context and parameters for
- * the resolvers.
- */
-const onSubscribe = (msg, params) => ({
-  ...params,
-  context: setupSubscriptionContext(msg.variables && msg.variables.jwt)
-})
-
 export const startSubscriptionServer = function startSubscriptionServer(httpServer) {
-  return new SubscriptionServer({ 
-    subscriptionManager, 
+  return new SubscriptionServer({
+    subscriptionManager,
     onConnect: async function onConnect({ authToken }) {
       if (!authToken) {
         throw new Error('Missing authentication token.')
