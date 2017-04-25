@@ -36,8 +36,7 @@ const User = vogels.define('User', {
     roles: Joi.array().items(Joi.string()),
     // @TODO Permissions?
     acl: Joi.string(),
-    stripeCustomerId: Joi.string(), // just store the customerId
-    stripeCustomer: Joi.object() // actual customer object
+    stripeCustomerId: Joi.string() // just store the customerId
   },
   indexes: [
     { hashKey: 'email', name: 'email-index', type: 'global' },
