@@ -3,13 +3,24 @@ import userModel from '../User/model'
 
 export default class Track {
   constructor() {
+    this.fetchById = Track.fetchById
     this.fetchAll = Track.fetchAll
     this.fetchByUserId = Track.fetchByUserId
     this.fetchMyTracks = Track.fetchMyTracks
     this.fetchByPermalink = Track.fetchByPermalink
+    this.fetchByUsername = Track.fetchByUsername
     this.createTrack = Track.createTrack
     this.editTrack = Track.editTrack
     this.deleteTrack = Track.deleteTrack
+  }
+  static async fetchById(id) {
+    const Item = await trackModel.getAsync(id)
+
+    if (!Item) {
+      return null
+    }
+
+    return Item.attrs
   }
   /**
    * Fetches all public tracks.
@@ -52,6 +63,26 @@ export default class Track {
       .scan()
       .where('permalink')
       .equals(permalink)
+      .execAsync()
+    const user = data.Items[0].attrs
+
+    const { Items } = await trackModel
+      .scan()
+      .where('userId')
+      .equals(user.id)
+      .where('isPublic')
+      .equals(true)
+      .execAsync()
+
+    const tracks = Items.map(t => t.attrs)
+
+    return tracks
+  }
+  static async fetchByUsername(username) {
+    const data = await userModel
+      .scan()
+      .where('username')
+      .equals(username)
       .execAsync()
     const user = data.Items[0].attrs
 
