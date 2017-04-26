@@ -24,6 +24,7 @@ const UsernameExistsError = createError('UsernameExistsError', {
   message: 'Username already exists.'
 })
 
+
 export default class User {
   constructor({ idLoader, usernameLoader, permalinkLoader }) {
     this.idLoader = idLoader
@@ -61,9 +62,6 @@ export default class User {
     if (!user) {
       throw new InvalidLoginError()
     }
-
-    console.log(password)
-    console.log(user.password)
 
     // Compare the passwords.
     const authenticated = await authenticate(password, user.password)
