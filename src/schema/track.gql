@@ -8,5 +8,12 @@ type Track {
   playCount: Int
   audioUrl: String,
   artworkUrl: String,
-  createdAt: String
+  createdAt: String,
+  user: TrackUser
 }
+
+type TrackUser {
+  userId: ID,
+  displayName: String
+}
+
