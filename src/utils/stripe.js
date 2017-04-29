@@ -8,14 +8,14 @@ export const distroSkus = {
   a: 'distro_album'
 }
 
-export function charge(charge) {
+export function charge(args) {
   return new Promise((resolve, reject) => {
-    stripe.charges.create(charge, (err, charge) => {
+    stripe.charges.create(args, (err, object) => {
       if (err) {
         reject(err)
       }
 
-      resolve(charge)
+      resolve(object)
     })
   })
 }
