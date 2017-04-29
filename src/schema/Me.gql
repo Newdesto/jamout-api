@@ -17,6 +17,7 @@ type Me {
   permissions: [String!]
   context: MeContext
   acl: String # *, null, private
+  didReservePremium: Boolean
 }
 
 type MeContext {

@@ -9,6 +9,7 @@ import eventArtist from './eventArtist'
 import track from './track'
 import user from './user'
 import connection from './connection'
+import reservePremium from './reservePremium'
 
 const resolvers = {
   Mutation: merge(
@@ -21,7 +22,8 @@ const resolvers = {
     chat,
     release,
     track,
-    user
+    user,
+    reservePremium
   )
 }
 

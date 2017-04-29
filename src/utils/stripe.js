@@ -8,6 +8,18 @@ export const distroSkus = {
   a: 'distro_album'
 }
 
+export function charge(charge) {
+  return new Promise((resolve, reject) => {
+    stripe.charges.create(charge, (err, charge) => {
+      if (err) {
+        reject(err)
+      }
+
+      resolve(charge)
+    })
+  })
+}
+
 export function createCustomer(args) {
   return new Promise((resolve, reject) => {
     // creates a stripe customer

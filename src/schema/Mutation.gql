@@ -1,4 +1,6 @@
 type Mutation {
+  # Reserve Premium
+  reservePremium(input: PremiumInput!): JSON
   # Connection
   addConnection(friendId: ID!): [Connection!]!
   deleteConnection(friendId: ID!): [Connection!]
@@ -32,4 +34,10 @@ type Mutation {
   createTrack(title: String!, isPublic: Boolean!): Track!
   deleteTrack(trackId: ID!): String!
   updateUser(updatedUser: UpdateUserInput!): User!
+}
+
+# @TODO Remove when true premium is up
+input PremiumInput {
+  id: ID!
+  email: String!
 }
