@@ -4,7 +4,12 @@ const s3 = new AWS.S3()
 
 const resolvers = {
   audioUrl(track) {
-    const params = { Bucket: 'jamout-music', Key: `${track.audioKey}` }
+    let params
+    if (process.env.NODE_ENV !== 'production') {
+      params = { Bucket: 'jamout-test-data', Key: `${track.audioKey}` }
+    } else {
+      params = { Bucket: 'jamout-music', Key: `${track.audioKey}` }
+    }
     const url = s3.getSignedUrl('getObject', params)
     return url
   },

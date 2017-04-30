@@ -6,9 +6,11 @@ import vogels from 'io/vogels'
 
 import User from 'models/User/model'
 import Partner from 'models/Partner/model'
+import Track from 'models/Track/model'
 
 import userData from './data/user'
 import partnerData from './data/partner'
+import trackData from './data/track'
 
 export const startDynalite = function startDynalite() {
   const dynaliteServer = dynalite({ path: './.jamout-db', createTableMs: 50 })
@@ -47,4 +49,7 @@ export const loadTestData = async function loadTestData() {
 
   // Load the Partner test data.
   await Promise.all(partnerData.map(partner => Partner.createAsync(partner)))
+
+  // Load the Track test data.
+  await Promise.all(trackData.map(track => Track.createAsync(track)))
 }
