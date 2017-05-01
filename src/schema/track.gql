@@ -9,11 +9,6 @@ type Track {
   audioUrl: String,
   artworkUrl: String,
   createdAt: String,
-  user: TrackUser
-}
-
-type TrackUser {
-  userId: ID,
-  displayName: String
+  user: User!
 }
 
