@@ -1,5 +1,6 @@
 import trackModel from './model'
 import userModel from '../User/model'
+import uuid from 'uuid'
 
 export default class Track {
   constructor() {
@@ -121,15 +122,13 @@ export default class Track {
     return updatedResponse.attrs
   }
 
-  static async createTrack(user, title, isPublic) {
+  static async createTrack(user, title, isPublic, audioKeyExtension) {
     if (!user) { throw new Error('User ID is undefined.') }
-
+    const id = uuid()
     const { attrs } = await trackModel.createAsync({
+      id,
       userId: user.id, // assumes JWT is up to date
-      user: {
-        id: user.id,
-        displayName: user.username
-      },
+      audioKey: user.id + '/' + id + '.' + audioKeyExtension,
       title: title || 'Untitled',
       isPublic: isPublic || false,
       status: 'processing', // processing, failed, finished

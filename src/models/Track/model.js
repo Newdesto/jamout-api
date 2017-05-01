@@ -6,7 +6,6 @@ const Track = vogels.define('Track', {
   tableName: 'music.track',
   timestamps: true,
   schema: {
-    id: vogels.types.uuid(),
     userId: Joi.string(),
     user: {
       id: Joi.string(),
