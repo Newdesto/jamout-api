@@ -1,6 +1,6 @@
+import uuid from 'uuid'
 import trackModel from './model'
 import userModel from '../User/model'
-import uuid from 'uuid'
 
 export default class Track {
   constructor() {
@@ -128,7 +128,7 @@ export default class Track {
     const { attrs } = await trackModel.createAsync({
       id,
       userId: user.id, // assumes JWT is up to date
-      audioKey: user.id + '/' + id + '.' + audioKeyExtension,
+      audioKey: `${user.id}/${id}.${audioKeyExtension}`,
       title: title || 'Untitled',
       isPublic: isPublic || false,
       status: 'processing', // processing, failed, finished
