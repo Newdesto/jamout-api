@@ -10,10 +10,6 @@ export default [
     title: 'The Let Out',
     type: 'original',
     updatedAt: '2017-04-03T00:42:13.559Z',
-    user: {
-      displayName: 'chris',
-      id: '693fd142-b480-44ea-9672-539f08b68389'
-    },
     userId: '693fd142-b480-44ea-9672-539f08b68389'
   },
   {
@@ -26,10 +22,7 @@ export default [
     title: 'Work',
     type: 'original',
     updatedAt: '2017-04-03T00:42:13.559Z',
-    user: {
-      displayName: 'chris',
-      id: '693fd142-b480-44ea-9672-539f08b68389'
-    },
-    userId: '693fd142-b480-44ea-9672-539f08b68389'
+    userId: '2b1d3544-bc9d-49cf-b5c7-e0258b2aa6f3',
+    featuredUserIds: ['2b1d3544-bc9d-49cf-b5c7-e0258b2aa6f3', 'gabe']
   }
 ]

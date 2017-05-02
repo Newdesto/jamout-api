@@ -10,5 +10,14 @@ type Track {
   artworkUrl: String,
   createdAt: String,
   user: User!
+  featuredUsers: [User]
+  privacySetting: TrackPrivacySetting!
+}
+
+
+enum TrackPrivacySetting {
+  PRIVATE
+  CONNECTIONS_ONLY
+  PUBLIC
 }
 

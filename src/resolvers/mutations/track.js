@@ -7,12 +7,12 @@ export default {
     return Track.editTrack(user, trackId, updatedTrack)
   },
 
-  createTrack(root, { title, isPublic, audioKeyExtension }, { user, Track }) {
+  createTrack(root, { title, privacySetting, audioKeyExtension }, { user, Track }) {
     if (!user) {
       throw new Error('Authentication failed.')
     }
 
-    return Track.createTrack(user, title, isPublic, audioKeyExtension)
+    return Track.createTrack(user, title, privacySetting, audioKeyExtension)
   },
 
   deleteTrack(root, { trackId }, { user, Track }) {

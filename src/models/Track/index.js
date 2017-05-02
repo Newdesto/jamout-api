@@ -122,7 +122,7 @@ export default class Track {
     return updatedResponse.attrs
   }
 
-  static async createTrack(user, title, isPublic, audioKeyExtension) {
+  static async createTrack(user, title, privacySetting, audioKeyExtension) {
     if (!user) { throw new Error('User ID is undefined.') }
     const id = uuid()
     const { attrs } = await trackModel.createAsync({
@@ -130,7 +130,7 @@ export default class Track {
       userId: user.id, // assumes JWT is up to date
       audioKey: `${user.id}/${id}.${audioKeyExtension}`,
       title: title || 'Untitled',
-      isPublic: isPublic || false,
+      privacySetting: privacySetting || 0,
       status: 'processing', // processing, failed, finished
       type: 'original',
       playCount: 0

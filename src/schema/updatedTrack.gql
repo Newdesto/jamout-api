@@ -2,7 +2,7 @@ input updatedTrack {
   title: String
   artworkKey: String
   type: String
-  isPublic: Boolean
+  privacySetting: Int
   status: String
   audioKey: String
 }

@@ -1,4 +1,5 @@
 import DataLoader from 'dataloader'
+import { zipObj } from 'ramda'
 import userModel from '../model'
 
 export default class UserIdLoader {
@@ -12,9 +13,15 @@ export default class UserIdLoader {
   static async list(userId, ids) {
     // @NOTE: Here is where we would do policy checks...
     // @TODO Password deletion
-    const users = await userModel.getItemsAsync(ids)
-    return users
-      .map(u => u.attrs)
+    // @BUG IDs that don't exist don't return null
+    // @IMPORTANT Right now this is only used for one
+    // user ID at a time. So we have a generic conditional
+    // that injects null if the array is empty
+    const models = await userModel.getItemsAsync(ids)
+    const users = zipObj(models.map(m => m.attrs.id), models.map(m => m.attrs))
+
+    return ids
+      .map(id => users[id] || null)
   }
   prime(key, value) {
     return this.loader.prime(key, value)
