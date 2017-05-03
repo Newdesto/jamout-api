@@ -28,7 +28,7 @@ type Mutation {
   createMusicEvent(eventData: MusicEventInput): MusicEvent!
   createEventArtist(artistData: EventArtistInput): EventArtist!
   updateEventArtist(eventArtist: UpdateEventArtistInput!, response: String!): EventArtist!
-  editTrack(trackId: ID!, updatedTrack: updatedTrack): Track!
+  updateTrack(id: ID!, input: TrackInput!): Track!
   createTrack(title: String!, privacySetting: Int!, audioKeyExtension: String!): Track!
   deleteTrack(trackId: ID!): String!
   updateUser(updatedUser: UpdateUserInput!): User!

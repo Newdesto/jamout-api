@@ -1,8 +1,0 @@
-input updatedTrack {
-  title: String
-  artworkKey: String
-  type: String
-  privacySetting: Int
-  status: String
-  audioKey: String
-}

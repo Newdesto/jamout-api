@@ -21,3 +21,11 @@ enum TrackPrivacySetting {
   PUBLIC
 }
 
+input TrackInput {
+  artworkKey: String,
+  audioKey: String,
+  type: String,
+  title: String!,
+  featuredUserIds: [String!]
+  privacySetting: TrackPrivacySetting
+}
