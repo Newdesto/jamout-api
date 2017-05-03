@@ -5,6 +5,7 @@ export default [
     createdAt: '2017-04-03T00:42:12.090Z',
     id: '10ca7f99-28f8-4a42-93be-0927e3709139',
     isPublic: true,
+    spotlight: false,
     playCount: 420,
     status: 'done',
     title: 'The Let Out',
@@ -18,6 +19,7 @@ export default [
   },
   {
     audioKey: 'track/work.mp3',
+    spotlight: true,
     createdAt: '2017-04-03T00:42:12.090Z',
     id: '1aee4f3a-0e81-4531-a0c6-a8972ec36296',
     isPublic: true,
