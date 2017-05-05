@@ -17,7 +17,8 @@ const Track = vogels.define('Track', {
     artworkKey: Joi.string(), // used to provision s3 temp url
     audioKey: Joi.string(), // used to provision s3 temp url
     type: Joi.string(),
-    playCount: Joi.number()
+    playCount: Joi.number(),
+    spotlight: Joi.boolean()
   }
 })
 
