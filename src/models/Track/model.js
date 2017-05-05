@@ -10,7 +10,6 @@ const Track = vogels.define('Track', {
     userId: Joi.string(),
     featuredUserIds: Joi.array().items(Joi.string()),
     title: Joi.string(),
-    isPublic: Joi.boolean(),
     privacySetting: Joi.number(), // 0 = private, 1 = connections, 2 = public
     genres: vogels.types.stringSet(), // [0] = primary, [1], secondary
     tags: vogels.types.stringSet(),

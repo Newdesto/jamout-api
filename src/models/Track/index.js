@@ -30,7 +30,7 @@ export default class Track {
     const { Items } = await trackModel
       .scan()
       .loadAll()
-      .where('isPublic').equals(true)
+      .where('privacySetting').equals(2)
       .execAsync()
 
     return Items.map(t => t.attrs)
@@ -46,8 +46,8 @@ export default class Track {
       .scan()
       .where('userId')
       .equals(userId)
-      .where('isPublic')
-      .equals(true)
+      .where('privacySetting')
+      .equals(2)
       .execAsync()
 
     const tracks = Items.map(t => t.attrs)
@@ -71,8 +71,8 @@ export default class Track {
       .scan()
       .where('userId')
       .equals(user.id)
-      .where('isPublic')
-      .equals(true)
+      .where('privacySetting')
+      .equals(2)
       .execAsync()
 
     const tracks = Items.map(t => t.attrs)
@@ -91,8 +91,8 @@ export default class Track {
       .scan()
       .where('userId')
       .equals(user.id)
-      .where('isPublic')
-      .equals(true)
+      .where('privacySetting')
+      .equals(2)
       .execAsync()
 
     const tracks = Items.map(t => t.attrs)
