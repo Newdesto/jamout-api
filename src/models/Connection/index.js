@@ -96,7 +96,7 @@ export default class Connection {
       })
 
       // On confirmation create a chat channel.
-      /*const chat = new Chat({ userId })
+      /* const chat = new Chat({ userId })
       await chat.createChannel({
         type: 'd',
         users: [userId, friendId]

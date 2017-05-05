@@ -58,7 +58,7 @@ export const startSubscriptionServer = function startSubscriptionServer(httpServ
         MusicEvent: new MusicEvent(),
         EventArtist: new EventArtist(),
         Track: new Track()
-       }
+      }
     }
   }, {
     server: httpServer

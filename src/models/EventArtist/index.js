@@ -62,12 +62,12 @@ export default class EventArtist {
         id: eventArtist.id,
         status: response
       })
-    const users = [eventArtist.userId, eventArtist.partnerId]
+    // const users = [eventArtist.userId, eventArtist.partnerId]
 
-    /*if (response === 'accepted') {
+    /* if (response === 'accepted') {
       const channel = new Channel()
       await channel.createChannel('d', users)
-    }*/
+    } */
 
     return attrs
   }
