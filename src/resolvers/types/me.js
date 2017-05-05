@@ -10,12 +10,12 @@ const resolvers = {
 
     return jwt
   },
-  async assistantChannel(root, args, { user, Chat }) {
+  async assistantChannel(root, args, { user }) {
     if (!user) {
       throw new Error('Authentication failed.')
     }
 
-    //const channel = await Chat.getAssistantChannel()
+    // const channel = await Chat.getAssistantChannel()
     return null
   },
   async permissions(user, args, { Partner }) {
