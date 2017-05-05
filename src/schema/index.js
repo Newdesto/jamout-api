@@ -26,7 +26,6 @@ import EventArtist from './EventArtist.gql'
 import EventArtistInput from './EventArtistInput.gql'
 import UpdateEventArtistInput from './UpdateEventArtistInput.gql'
 import track from './track.gql'
-import updatedTrack from './updatedTrack.gql'
 import Connection from './Connection.gql'
 import UpdateUserInput from './UpdateUserInput.gql'
 import Me from './Me.gql'
@@ -55,7 +54,6 @@ const typeDefs = [
   EventArtistInput,
   UpdateEventArtistInput,
   track,
-  updatedTrack,
   Connection,
   UpdateUserInput
 ]

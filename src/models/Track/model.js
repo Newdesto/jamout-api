@@ -6,14 +6,11 @@ const Track = vogels.define('Track', {
   tableName: 'music.track',
   timestamps: true,
   schema: {
-    id: vogels.types.uuid(),
+    id: Joi.string(),
     userId: Joi.string(),
-    user: {
-      id: Joi.string(),
-      displayName: Joi.string()
-    },
+    featuredUserIds: Joi.array().items(Joi.string()),
     title: Joi.string(),
-    isPublic: Joi.boolean(),
+    privacySetting: Joi.number(), // 0 = private, 1 = connections, 2 = public
     genres: vogels.types.stringSet(), // [0] = primary, [1], secondary
     tags: vogels.types.stringSet(),
     status: Joi.string(), // processing, failed, finished

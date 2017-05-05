@@ -1,18 +1,27 @@
 export default {
-  editTrack(root, { trackId, updatedTrack }, { user, Track }) {
+  updateTrack(root, { id, input }, { user, Track }) {
     if (!user) {
       throw new Error('Authentication failed.')
     }
 
-    return Track.editTrack(user, trackId, updatedTrack)
+    // Convert the publicity setting enum
+    if (input.privacySetting) {
+      input.privacySetting = {
+        PRIVATE: 0,
+        CONNECTIONS_ONLY: 1,
+        PUBLIC: 2
+      }[input.privacySetting]
+    }
+
+    return Track.editTrack(user, id, input)
   },
 
-  createTrack(root, { title, isPublic }, { user, Track }) {
+  createTrack(root, { title, privacySetting, audioKeyExtension }, { user, Track }) {
     if (!user) {
       throw new Error('Authentication failed.')
     }
 
-    return Track.createTrack(user, title, isPublic)
+    return Track.createTrack(user, title, privacySetting, audioKeyExtension)
   },
 
   deleteTrack(root, { trackId }, { user, Track }) {
