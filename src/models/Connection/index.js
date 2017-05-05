@@ -1,6 +1,5 @@
 import logger from 'io/logger'
 import shortid from 'shortid'
-import Chat from 'services/chat'
 import model from './model'
 
 /**
@@ -97,11 +96,11 @@ export default class Connection {
       })
 
       // On confirmation create a chat channel.
-      const chat = new Chat({ userId })
+      /*const chat = new Chat({ userId })
       await chat.createChannel({
         type: 'd',
         users: [userId, friendId]
-      })
+      })*/
 
 
       return [user.attrs, friend.attrs]

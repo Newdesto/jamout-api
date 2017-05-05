@@ -1,10 +1,8 @@
 import shortid from 'shortid'
 import microtime from 'microtime'
 import { publishMessages } from 'utils/chat'
-import { createJob } from 'io/queue'
 import userModel from 'models/User/model'
 // @TODO Strictly use the Chat class. Do NOT work with the model directly.
-import Chat from 'services/chat'
 import studioEventModel from './model'
 
 export default class StudioEvent {
@@ -57,7 +55,7 @@ export default class StudioEvent {
     .where('id').equals(payload.userId)
     .execAsync()
 
-    const artist = Items[0].attrs
+    /*const artist = Items[0].attrs
 
     if (type === 'inquiry accepted') {
       // create channel
@@ -81,9 +79,9 @@ export default class StudioEvent {
           sessionId: payload.sessionId
         }
       }
-      await createJob('chat.persistMessage', { message: introMessage })
-      await publishMessages(newChannel.id, payload.studioId, [introMessage])
-    }
+      const { attrs } = await Message.createAsync(introMessage)
+      await publishMessages(newChannel.id, payload.studioId, [attrs])
+  }*/
 
   // session types: inquiry pending, inquiry denied, inquiry accepted,
   // session planned, artist paid, session completed, review

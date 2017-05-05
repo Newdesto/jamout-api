@@ -5,7 +5,6 @@ import { setupFunctions } from 'resolvers/subscriptions'
 import jwt from 'jsonwebtoken'
 import Release from 'models/Release'
 import Connection from 'models/Connection'
-import Chat from 'services/chat'
 import User, { UserIdLoader, UserUsernameLoader, UserPermalinkLoader } from 'models/User'
 import Partner from 'models/Partner/model'
 import StudioEvent from 'models/StudioEvent'
@@ -13,7 +12,6 @@ import MusicEvent from 'models/MusicEvent'
 import Track from 'models/Track'
 import EventArtist from 'models/EventArtist'
 import { logger } from 'io'
-import { createJob } from 'io/queue'
 
 // Create a GQL subscription manager using an EventEmitter as the pubsub
 // engine, the setupFunctions from our resolver/subscription
@@ -45,24 +43,10 @@ export const startSubscriptionServer = function startSubscriptionServer(httpServ
         user = await userConnector.fetchById(user.id)
       }
 
-      // If the web context is partner then we append it so Chat can query the
-      // using the correct IDs.
-      let chatConnector
-      if (user.context && user.context.web && user.context.web.role === 'partner') {
-        chatConnector = new Chat({
-          userId: `${user.id}:partner`
-        })
-      } else {
-        // Default the to implicit artist context.
-        chatConnector = new Chat({
-          userId: user.id
-        })
-      }
 
       // Return the context of the subscription.
       return {
         user,
-        createJob,
         logger,
         pubsub,
         Connection,
@@ -73,9 +57,8 @@ export const startSubscriptionServer = function startSubscriptionServer(httpServ
         StudioEvent: new StudioEvent(),
         MusicEvent: new MusicEvent(),
         EventArtist: new EventArtist(),
-        Track: new Track(),
-        Chat: chatConnector
-      }
+        Track: new Track()
+       }
     }
   }, {
     server: httpServer
