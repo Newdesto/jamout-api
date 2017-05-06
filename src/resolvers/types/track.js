@@ -54,7 +54,12 @@ const resolvers = {
     if (!track.artworkKey) {
       return null
     }
-    const params = { Bucket: 'jamout-music', Key: `${track.artworkKey}` }
+    let params
+    if (process.env.NODE_ENV !== 'production') {
+      params = { Bucket: 'jamout-test-data', Key: `${track.artworkKey}` }
+    } else {
+      params = { Bucket: 'jamout-music', Key: `${track.artworkKey}` }
+    }
     const url = s3.getSignedUrl('getObject', params)
     return url
   }
