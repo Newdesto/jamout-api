@@ -1,7 +1,6 @@
 import 'app-module-path/register'
 import { startSubscriptionServer } from 'io/subscription'
 import http from 'http'
-import 'workers'
 import request from 'request'
 import rollbar from 'rollbar'
 import { app, logger } from './io'

@@ -10,13 +10,13 @@ const resolvers = {
 
     return jwt
   },
-  async assistantChannel(root, args, { user, Chat }) {
+  async assistantChannel(root, args, { user }) {
     if (!user) {
       throw new Error('Authentication failed.')
     }
 
-    const channel = await Chat.getAssistantChannel()
-    return channel
+    // const channel = await Chat.getAssistantChannel()
+    return null
   },
   async permissions(user, args, { Partner }) {
     // If the user has no roles(default artist) just null out

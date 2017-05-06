@@ -12,6 +12,7 @@ type Track {
   user: User!
   featuredUsers: [User]
   privacySetting: TrackPrivacySetting!
+  spotlight: Boolean
 }
 
 
