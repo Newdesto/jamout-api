@@ -50,11 +50,11 @@ const resolvers = {
     if (!id) {
       return null
     }
-    let tracks = [];
+    let tracks = []
     const types = {
-        '0': 'PRIVATE',
-        '1': 'CONNECTIONS_ONLY',
-        '2': 'PUBLIC'
+      0: 'PRIVATE',
+      1: 'CONNECTIONS_ONLY',
+      2: 'PUBLIC'
     }
 
     if (id === user.id) {
@@ -63,11 +63,12 @@ const resolvers = {
       tracks = await Track.fetchByUserId(id)
     }
 
-    const enumeratedTracks = tracks.map(track => {
-      track.privacySetting = types[track.privacySetting]
+    const enumeratedTracks = tracks.map((track) => {
+      const newTrack = track
+      newTrack.privacySetting = types[track.privacySetting]
       return track
     })
-    return tracks
+    return enumeratedTracks
   }
 }
 

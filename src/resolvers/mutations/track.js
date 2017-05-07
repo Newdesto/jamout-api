@@ -3,17 +3,17 @@ export default {
     if (!user) {
       throw new Error('Authentication failed.')
     }
-
+    const newInput = input
     // Convert the publicity setting enum
     if (input.privacySetting) {
-      input.privacySetting = {
+      newInput.privacySetting = {
         PRIVATE: 0,
         CONNECTIONS_ONLY: 1,
         PUBLIC: 2
       }[input.privacySetting]
     }
 
-    return Track.editTrack(user, id, input)
+    return Track.editTrack(user, id, newInput)
   },
 
   createTrack(root, { title, privacySetting, audioKeyExtension }, { user, Track }) {

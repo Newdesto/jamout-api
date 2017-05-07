@@ -1,5 +1,5 @@
 import AWS from 'aws-sdk'
-import { zipObj} from 'ramda'
+import { zipObj } from 'ramda'
 
 const s3 = new AWS.S3()
 
@@ -22,7 +22,7 @@ const resolvers = {
   },
   async featuredUsers({ featuredUserIds }, args, { User }) {
     if (!featuredUserIds) {
-      return
+      return null
     }
 
     // @TODO Refactor. Is there a better way to handle this?
@@ -30,7 +30,7 @@ const resolvers = {
     const realUsers = users.filter(u => !!u)
     const realUsersObject = zipObj(realUsers.map(u => u.id), realUsers)
     const nonUsers = featuredUserIds.filter(id => !realUsersObject[id])
-    
+
     // Fake a user object for non users.
     return [
       ...realUsers,
