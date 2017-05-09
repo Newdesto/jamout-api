@@ -143,8 +143,8 @@ export default class User {
   }
   async fetchByIds(ids) {
     const users = await this.idLoader.loadMany(ids)
-    users.map(u => this.usernameLoader.prime(u.username, u))
-    users.map(u => this.permalinkLoader.prime(u.permalink, u))
+    users.map(u => u && this.usernameLoader.prime(u.username, u))
+    users.map(u => u && this.permalinkLoader.prime(u.permalink, u))
     return users
   }
   async fetchByUsername(username) {
