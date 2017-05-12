@@ -30,7 +30,7 @@ type Channel {
 type Message {
 	id: ID!
 	createdAt: String!
-	updatedAt: String!
+	updatedAt: String
   isBotChannel: Boolean
 	channelId: String! # ID, 't', 'c', userID if isbot
 	timestamp: String!
@@ -38,7 +38,7 @@ type Message {
   sender: User!
 	action: String # Typing, Read Receipt, Disable Input
 	type: String # Defaults to Text
-	intialState: JSON # Current message state
+	initialState: JSON # Current message state
 	actions: [JSON!] # Playable actions
 }
 
@@ -55,7 +55,6 @@ input MessageActionInput {
 }
 
 input TextMessageInput {
-  id: ID!
   isBotChannel: Boolean
   channelId: ID
   text: String!

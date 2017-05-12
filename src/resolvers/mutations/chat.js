@@ -7,6 +7,7 @@ import { pubsub } from 'io/subscription'
 import { createMessage } from 'models/Message'
 import botSideEffect from 'services/chat/botSideEffect'
 import { propEq, cond } from 'ramda'
+import uuid from 'uuid'
 
 const channelTypeEnum = {
   BOT: 'b',
@@ -68,9 +69,9 @@ export default {
 
       logger.debug('Creating item in DDB.')
       const message = await createMessage({
-        id,
         isBotChannel,
         channelId,
+        id: uuid(),
         senderId: viewerId,
         initialState: { text },
         timestamp: microtime.nowDouble().toString(),
