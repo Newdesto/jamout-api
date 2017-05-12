@@ -100,3 +100,16 @@ import R from 'ramda'
       ...channel
     }
   }
+
+export const hasSubscriptionToChannel = async function({ channelId, viewerId: userId }) {
+	const subscription =
+	await SubscriptionModel.getAsync({ channelId, userId })
+
+	// If the sender was the assistnat don't throw an error.
+	// The 'assistant' user doesn't receive a subscription.
+	if (subscription) {
+		return true
+	}
+
+	return false
+}

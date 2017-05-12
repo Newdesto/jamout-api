@@ -1,9 +1,18 @@
 /**
  * The chat mutation resolvers.
  */
-import shortid from 'shortid'
 import microtime from 'microtime'
-import { createChannel } from 'models/Channel'
+import { createChannel, hasSubscriptionToChannel } from 'models/Channel'
+import { pubsub } from 'io/subscription'
+import { createMessage } from 'models/Message'
+import botSideEffect from 'services/chat/botSideEffect'
+import { propEq, cond } from 'ramda'
+
+const channelTypeEnum = {
+  BOT: 'b',
+  TEAM_JAMOUT: 't',
+  COMMUNITY: 'c'
+}
 
 export default {
   async createChannel(root, { input }, { viewer, logger }) {
@@ -37,39 +46,49 @@ export default {
       throw err
     }
   },
-  async sendTextMessage(root, { channelId, text }, context) {
-    // Special case, check this so we don't have to do extra logic
-    if (message.channelId === 'general') {
-      const { attrs } = await Message.createAsync(message)
-      return attrs
-    }
-    // Check if the user is subscribed to this channel.
-    const subscription =
-    await Subscription.getAsync({ channelId: message.channelId, userId: this.userId })
+  async sendTextMessage(root, { input: { id, channelId: cid, text, isBotChannel } }, { logger, viewer: { id: viewerId } }) {
+    try {
+      logger.debug('New text message received.')
+      const isTeamJamout = cid === 'TEAM_JAMOUT'
+      const isCommunity = cid === 'COMMUNITY'
+      const isUserCreatedChannel = !isBotChannel && !isTeamJamout && !isCommunity
+      const channelId = cond([
+        [ ({ isBotChannel }) => isBotChannel, () => viewerId ],
+        [ ({ isUserCreatedChannel }) => !isUserCreatedChannel, () => channelTypeEnum[cid] ],
+        [ ({ isUserCreatedChannel }) => isUserCreatedChannel, () => cid ]
+      ])({ isBotChannel, isUserCreatedChannel })
 
-    // If the sender was the assistnat don't throw an error.
-    // The 'assistant' user doesn't receive a subscription.
-    if (!subscription) {
-      throw new Error('Authorization failed.')
-    }
+      if (isUserCreatedChannel) {
+        logger.debug('Checking for a subscription.')
+        const hasSubscription = await hasSubscriptionToChannel({ channelId, viewerId })
+        if (!hasSubscription) {
+          throw new Error('Authorization failed.')
+        }
+      }
 
-    // Get the channel so we can check what type it is.
-    const channel = await Channel.getAsync(message.channelId)
-    if (!channel.attrs) {
-      throw new Error('Subscription exists but the channel does not.')
-    }
+      logger.debug('Creating item in DDB.')
+      const message = await createMessage({
+        id,
+        isBotChannel,
+        channelId,
+        senderId: viewerId,
+        initialState: { text },
+        timestamp: microtime.nowDouble().toString(),
+      })
 
-    // Persist the message before we queue it up or publish it. We don't want
-    // to process or publish a message that failed to save.
-    const { attrs } = await Message.createAsync(message)
+      logger.debug('Publishing to PubSub.')
+      pubsub.publish('message', message)
 
-    // Check out the channel type.
-    if (channel.attrs.type === 'a') {
-      // It's an assistant channel, queue up a job to process this message.
-      await createJob('chat.processMessage', { message })
-    } else {
-      // It's a DM or Group channel publish the message for any listeners.
-      await Chat.publishMessages(attrs.channelId, attrs.senderId, [attrs])
+      logger.debug('Triggering side effects.')
+      await cond([
+        [propEq('isBotChannel', true), botSideEffect],
+        [propEq('channelId', 't'), () => console.log('Send POST to Slack Thread.')]
+      ])(message)
+
+      return message
+    } catch (err) {
+      console.error(err)
+      return err
     }
   }
 }
