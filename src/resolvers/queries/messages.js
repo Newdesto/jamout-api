@@ -1,13 +1,15 @@
+import { getMessagesByChannelId } from 'models/Message'
+
 export default {
-  async messages(root, { channelId, limit }, { user, Chat, logger }) {
+  async messages(root, { channelId }, { viewer: { id: viewerId }, Chat, logger }) {
     try {
-      if (!user) {
+      if (!viewerId) {
         throw new Error('Authentication failed.')
       }
-      const messages = await Chat.getMessagesByChannelId({ channelId, limit })
+
+      const messages = await getMessagesByChannelId(channelId)
       return messages
     } catch (err) {
-      logger.info('Caught errror in messages resolver.')
       logger.error(err)
       throw err
     }

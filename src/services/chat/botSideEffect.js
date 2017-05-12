@@ -16,10 +16,10 @@ const botSideEffect = async function botSideEffect(message) {
     // Convert the messages to Jamout's format.
     const dirtyMessages = fulfillmentToMessages(message.channelId, result.fulfillment)
     const messages = cleanDeep(dirtyMessages)
-    console.log(JSON.stringify(messages))
+
     // Save and publish.
     const createdMessages = await Promise.all(messages.map(m => createMessage(m)))
-    console.log(JSON.stringify(createdMessages))
+
     const sortByTimestamp = sortBy(prop('timestamp'))
     sortByTimestamp(createdMessages)
         .map(m => pubsub.publish('messages', m))

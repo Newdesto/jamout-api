@@ -47,17 +47,18 @@ export default {
       throw err
     }
   },
-  async sendTextMessage(root, { input: { id, channelId: cid, text, isBotChannel } }, { logger, viewer: { id: viewerId } }) {
+  async sendTextMessage(root, { input: { id, channelId: cid, text } }, { logger, viewer: { id: viewerId } }) {
     try {
       logger.debug('New text message received.')
+      const isBot = cid === viewerId
       const isTeamJamout = cid === 'TEAM_JAMOUT'
       const isCommunity = cid === 'COMMUNITY'
-      const isUserCreatedChannel = !isBotChannel && !isTeamJamout && !isCommunity
+      const isUserCreatedChannel = !isBot && !isTeamJamout && !isCommunity
       const channelId = cond([
-        [ ({ isBotChannel }) => isBotChannel, () => viewerId ],
+        [ ({ isBot }) => isBot, () => viewerId ],
         [ ({ isUserCreatedChannel }) => !isUserCreatedChannel, () => channelTypeEnum[cid] ],
         [ ({ isUserCreatedChannel }) => isUserCreatedChannel, () => cid ]
-      ])({ isBotChannel, isUserCreatedChannel })
+      ])({ isBot, isUserCreatedChannel })
 
       if (isUserCreatedChannel) {
         logger.debug('Checking for a subscription.')
@@ -69,7 +70,6 @@ export default {
 
       logger.debug('Creating item in DDB.')
       const message = await createMessage({
-        isBotChannel,
         channelId,
         id: uuid(),
         senderId: viewerId,
@@ -78,11 +78,12 @@ export default {
       })
 
       logger.debug('Publishing to PubSub.')
-      pubsub.publish('message', message)
+      console.log(message)
+      pubsub.publish('messages', message)
 
       logger.debug('Triggering side effects.')
       await cond([
-        [propEq('isBotChannel', true), botSideEffect],
+        [propEq('channelId', viewerId), botSideEffect],
         [propEq('channelId', 't'), () => console.log('Send POST to Slack Thread.')]
       ])(message)
 

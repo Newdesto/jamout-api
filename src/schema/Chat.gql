@@ -31,7 +31,6 @@ type Message {
 	id: ID!
 	createdAt: String!
 	updatedAt: String
-  isBotChannel: Boolean
 	channelId: String! # ID, 't', 'c', userID if isbot
 	timestamp: String!
 	senderId: ID!
@@ -55,7 +54,6 @@ input MessageActionInput {
 }
 
 input TextMessageInput {
-  isBotChannel: Boolean
   channelId: ID
   text: String!
 }

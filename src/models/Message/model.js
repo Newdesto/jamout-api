@@ -9,7 +9,6 @@ const Message = vogels.define('Message', {
   schema: {
     id: Joi.string().required(),
     timestamp: Joi.string().required(),
-    isBotChannel: Joi.boolean(),
     channelId: Joi.string().required(),
     senderId: Joi.string().required(),
     action: Joi.string(),

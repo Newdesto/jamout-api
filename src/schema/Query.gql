@@ -2,7 +2,7 @@ type Query {
   me: Me
   assistantChannel: Channel
   channels(excludeAssistant: Boolean, messageLimit: Int, channelId: ID): [Channel!]!
-  messages(channelId: ID!, limit: Int): [Message!]!
+  messages(channelId: ID!): [Message!]!
   release(id: ID!): Release
   releases: [Release!]!
   user(id: ID, permalink: String, username: String): User
