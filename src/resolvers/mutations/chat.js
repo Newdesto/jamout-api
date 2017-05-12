@@ -3,12 +3,13 @@
  */
 import shortid from 'shortid'
 import microtime from 'microtime'
+import { createChannel } from 'models/Channel'
 
 export default {
-  openChannel(root, a, { user, Chat, logger }) {
-    const args = a
+  async createChannel(root, { input }, { viewer, logger }) {
+    const args = input
     try {
-      if (!user) {
+      if (!viewer) {
         throw new Error('Authentication failed.')
       }
 
@@ -16,76 +17,59 @@ export default {
       const type = {
         DM: 'd',
         GROUP: 'g',
-        ASSISTANT: 'a'
       }[args.type]
 
-      // Do some name validation.
-      if (type === 'a') {
-        args.name = 'assistant'
-      } else if (type === 'd') {
+      // Do some name  validation.
+      if (type === 'd') {
         delete args.name
       }
 
-      return Chat.createChannel({
+      const channel = await createChannel({
         type,
         name: args.name,
-        users: args.users
+        userIds: args.userIds,
+		    viewerId: viewer.id
       })
+
+	  return channel
     } catch (err) {
       logger.error(err)
       throw err
     }
   },
-  /**
-   * Any message sent using this method isn't published to the channel's channel.
-   * @type {[type]}
-   */
-  async sendMessage(root, { message }, { user: currentUser, Chat, logger }) {
-    try {
-      if (!currentUser) {
-        throw new Error('Authentication failed.')
-      }
-
-      const savedMessage = await Chat.sendMessage({ message: {
-        ...message,
-        senderId: currentUser.id,
-        id: shortid.generate(),
-        timestamp: microtime.nowDouble().toString()
-      } })
-
-      return savedMessage
-    } catch (err) {
-      logger.error(err)
-      throw err
+  async sendTextMessage(root, { channelId, text }, context) {
+    // Special case, check this so we don't have to do extra logic
+    if (message.channelId === 'general') {
+      const { attrs } = await Message.createAsync(message)
+      return attrs
     }
-  },
-  async postback(root, { input }, { user, Chat, logger }) {
-    try {
-      if (!user) {
-        throw new Error('Authentication failed.')
-      }
+    // Check if the user is subscribed to this channel.
+    const subscription =
+    await Subscription.getAsync({ channelId: message.channelId, userId: this.userId })
 
-      await Chat.postback({ postback: {
-        user,
-        ...input
-      } })
-      return
-    } catch (err) {
-      logger.error(err)
-      throw err
+    // If the sender was the assistnat don't throw an error.
+    // The 'assistant' user doesn't receive a subscription.
+    if (!subscription) {
+      throw new Error('Authorization failed.')
     }
-  },
-  async updateMessage(root, args, { user, Chat, logger }) {
-    try {
-      if (!user) {
-        throw new Error('Authentication failed.')
-      }
 
-      const message = await Chat.updateMessage(args.input)
-      return message
-    } catch (err) {
-      logger.error(err)
-      throw err
+    // Get the channel so we can check what type it is.
+    const channel = await Channel.getAsync(message.channelId)
+    if (!channel.attrs) {
+      throw new Error('Subscription exists but the channel does not.')
+    }
+
+    // Persist the message before we queue it up or publish it. We don't want
+    // to process or publish a message that failed to save.
+    const { attrs } = await Message.createAsync(message)
+
+    // Check out the channel type.
+    if (channel.attrs.type === 'a') {
+      // It's an assistant channel, queue up a job to process this message.
+      await createJob('chat.processMessage', { message })
+    } else {
+      // It's a DM or Group channel publish the message for any listeners.
+      await Chat.publishMessages(attrs.channelId, attrs.senderId, [attrs])
     }
   }
 }

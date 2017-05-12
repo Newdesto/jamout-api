@@ -4,10 +4,6 @@
 
 import Channel from './channel'
 import Message from './message'
-import MessageAttachment from './messageAttachment'
-import ImageAttachment from './imageAttachment'
-import CardGroupAttachment from './cardGroupAttachment'
-import ReleaseArtworkAttachment from './releaseArtworkAttachment'
 import Me from './me'
 import User from './user'
 import Release from './release'
@@ -18,10 +14,6 @@ import Track from './track'
 export default {
   Channel,
   Message,
-  MessageAttachment,
-  ImageAttachment,
-  CardGroupAttachment,
-  ReleaseArtworkAttachment,
   Me,
   User,
   Release,

@@ -1,6 +1,9 @@
-# @NOTE that chat subscriptions objects function as an index for user's and their
-# channels. They are merged into channel objects after the query. The GQL and
-# the schema are blind to them.
+
+enum ChannelType {
+  DM
+  GROUP
+}
+
 type Channel {
   createdAt: String!
   updatedAt: String
@@ -24,263 +27,33 @@ type Channel {
   mentionCount: Int
 }
 
-# A summary of a channel that can be embedded in the Message type or any other object.
-type ChannelSummary {
-  id: ID!
-  type: ChannelType!
-  name: String # null if channel type = DM
-}
-
-# The different types of channels, dude.
-enum ChannelType {
-  ASSISTANT
-  DM
-  GROUP
-}
-
-input UpdateMessageInput {
-  # ID of the channel it was sent in.
-  channelId: ID!
-  timestamp: String!
-  # ID of the user who sent the message.
-  # 'assistant' if the bot is a sender.
-  senderId: ID
-  text: String
-  # attachments are disabled on the GQL schema until needed.
-}
-
-# A chat message or action.
 type Message {
-  createdAt: String!
-  updatedAt: String
-  id: ID!
-  timestamp: String!
-  # ID of the channel it was sent in.
-  channelId: ID!
-  # ID of the user who sent the message.
-  # 'assistant' if the bot is a sender.
-  senderId: ID!
+	id: ID!
+	createdAt: String!
+	updatedAt: String!
+	channelId: String! # ID, 'b', 'tj', 'c'
+	timestamp: String!
+	senderId: ID!
   sender: User!
-  # Mainly for real time interactions like typing, read receipts, and
-  # disabling inputs.
-  action: String
-  # Text and attachment fields are mutually exclusive. If a message needs
-  # an attachment and a text then the attachment should include a text element.
-  text: String
-  attachment: MessageAttachment
-  # Who this message is visible to
-  visibleTo: [ID]
+	action: String # Typing, Read Receipt, Disable Input
+	type: String # Defaults to Text
+	intialState: JSON # Current message state
+	actions: [JSON!] # Playable actions
 }
 
-# An attachment that can give messages superpowers. It outlines a specific
-# component that can be displayed in place of a text message. It may be
-# a card, image, etc.
-interface MessageAttachment {
-  # The component to be displayed. Could be generic or could be specific.
+input ChannelInput {
   type: String!
-  # The action this component should trigger. Possible actions are: redirect,
-  # message, postback. A redirect action redirects the client to a specific
-  # route. A message postback sends a message for the user. Postback
-  # sends a postback mutation and let's a service handle it. If the action
-  # is a postback then the postbackId must be set.
-  # The action can be overridden by an element. Elements may have different
-  # actions - this is handled by the specific components though.
-  action: String
-  # Postback ID corresponds to some sort of unique action. The chat service
-  # is unaware of any logic behind postbacks - it's just the messenger.
-  # It's not a required field because an attachment might just be something
-  # uninteractive like text.
-  postbackId: String
-  # Whether or not to disable the input that's displayed at the time the message
-  # is received. If we're in the flow of things and don't want the using
-  # messing it up we can disable the input. This happens often actually.
-  disableInput: Boolean!
-  # Was this attachment used? This will tell components to render the success
-  # message.
-  done: Boolean
-  # Fields that are specific to the attachment are defined by types that
-  # implement the interface.
+  userIds: [ID!]!
+  name: String
 }
 
-type ReleaseTypeAttachment implements MessageAttachment {
-  type: String! # EditRelease
-  action: String # redirect, message, postback
-  postbackId: String # *
-  disableInput: Boolean!
-  releaseId: ID
-  selectedType: String
-  done: Boolean # Was the type selected already.
-}
-
-type ReleaseMetadataAttachment implements MessageAttachment {
-  type: String! # EditRelease
-  action: String # redirect, message, postback
-  postbackId: String # *
-  disableInput: Boolean!
-  releaseId: ID!
-  done: Boolean
-}
-
-type ReleaseArtworkAttachment implements MessageAttachment {
-  type: String! # EditRelease
-  action: String # redirect, message, postback
-  postbackId: String # *
-  disableInput: Boolean!
-  releaseId: ID!
-  done: Boolean
-  artworkOriginal: String
-}
-
-type ReleaseTracklistAttachment implements MessageAttachment {
-  type: String! # EditRelease
-  action: String # redirect, message, postback
-  postbackId: String # *
-  disableInput: Boolean!
-  releaseId: ID!
-  done: Boolean
-}
-
-type ReleaseRightsHolderAttachment implements MessageAttachment {
-  type: String! # EditRelease
-  action: String # redirect, message, postback
-  postbackId: String # *
-  disableInput: Boolean!
-  releaseId: ID!
-  done: Boolean
-}
-
-type ReleaseConfirmAndPayAttachment implements MessageAttachment {
-  type: String! # EditRelease
-  action: String # redirect, message, postback
-  postbackId: String # *
-  disableInput: Boolean!
-  releaseId: ID!
-  done: Boolean
-}
-
-type StudioSessionSessionPaidAttatchment implements MessageAttachment {
-  type: String! # Image
-  action: String # redirect, message, postback
-  postbackId: String # *
-  disableInput: Boolean!
-  hideButtons: Boolean
-  sessionId: ID
-  startDate: String
-  endDate: String
-  price: Float
-  done: Boolean
-}
-
-type StudioSessionNewSessionAttatchment implements MessageAttachment {
-  type: String! # Image
-  action: String # redirect, message, postback
-  postbackId: String # *
-  disableInput: Boolean!
-  hideButtons: Boolean
-  sessionId: ID
-  done: Boolean
-}
-
-type StudioSessionSetDateAttatchment implements MessageAttachment {
-  type: String! # Image
-  action: String # redirect, message, postback
-  postbackId: String # *
-  startDate: String
-  endDate: String
-  price: Float
-  sessionId: ID
-  disableInput: Boolean!
-  hideButtons: Boolean
-  dateMessageStamp: String
-  done: Boolean
-}
-
-type StudioSessionNewDateAttatchment implements MessageAttachment {
-  type: String! # Image
-  action: String # redirect, message, postback
-  postbackId: String # *
-  sessionId: ID
-  disableInput: Boolean!
-  hideButtons: Boolean
-  done: Boolean
-}
-
-type StudioSessionInquiryAttachment implements MessageAttachment {
-  type: String! # Image
-  action: String # redirect, message, postback
-  postbackId: String # *
-  disableInput: Boolean!
-  studio: String!,
-  date: String!
-  hideButtons: Boolean
-  done: Boolean
-}
-
-type ImageAttachment implements MessageAttachment {
-  type: String! # Image
-  action: String # redirect, message, postback
-  postbackId: String # *
-  disableInput: Boolean!
-  src: String!
-  done: Boolean
-}
-
-# Shows a hint-like, centered text.
-type EventAttachment implements MessageAttachment {
-  type: String! # Image
-  action: String # redirect, message, postback
-  postbackId: String # *
-  disableInput: Boolean!
-  text: String!
-  done: Boolean
-}
-
-type CardGroupAttachment implements MessageAttachment {
-  type: String! # CardGroup
-  action: String # redirect, message, postback
-  postbackId: String # *
-  cards: [CardElement!]!
-  disableInput: Boolean!
-  done: Boolean
-}
-
-type CardElement {
-  title: String!
-  subtitle: String
-  buttons: [CardElementButton!]
-}
-
-type CardElementButton {
-  title: String!
-  # The unique name for this button.
-  name: String!
-  # The unique value for this button. The action attachment determines
-  # what happens to this value.
-  value: String!
-  action: String!
-}
-
-# Chat postbacks are sent from attachments. It's up to the attachment component
-# to sent a postback. Postbacks are then translated to service-specific functions.
-input ChatPostbackInput {
-  # Knowing what channel this postback came from would be useful.
-  channelId: String!
-  # What logic needs to be executed.
-  id: String!
-  # When was the postback initialized.
-  # @NOTE we have to use microtime in case a message is returned.
-  createdAt: String!
-  # Values are optional, but most postbacks should include values to feed
-  # to the logic functions.
-  values: JSON
-}
-
-input MessageInput {
-  # ID of the channel it was sent in.
+input MessageActionInput {
   channelId: ID!
-  # senderId is derived from the JWT since there are no aliases.
-  # action can be something such as typing, read receipt, etc.0
-  action: String
-  text: String
-  # attachments are disabled for now since users should only send text messages.
+  type: String!
+  payload: JSON
+}
+
+input TextMessageInput {
+  channelId: ID!
+  text: String!
 }

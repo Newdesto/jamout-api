@@ -12,6 +12,7 @@ import { formatError } from 'apollo-errors'
 import { logger, pubsub } from 'io'
 
 export default graphqlExpress(async (req) => {
+  console.log(req)
   let user = req.user // Who am I?
   const idLoader = new UserIdLoader({ userId: user && user.id })
   const usernameLoader = new UserUsernameLoader({ username: user && user.username })
@@ -33,6 +34,7 @@ export default graphqlExpress(async (req) => {
       Partner,
       Release,
       currentUser: user,
+      viewer: user,
       jwt: user && req.headers.authorization.slice(7),
       User: userConnector,
       StudioEvent: new StudioEvent(),
