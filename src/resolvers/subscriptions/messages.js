@@ -1,4 +1,4 @@
-import JWT from 'jsonwebtoken'
+// import JWT from 'jsonwebtoken'
 
 export const resolver = {
   messages(message, args) {

@@ -25,7 +25,7 @@ export default {
       // Get the ENUM values.
       const type = {
         DM: 'd',
-        GROUP: 'g',
+        GROUP: 'g'
       }[args.type]
 
       // Do some name  validation.
@@ -37,16 +37,19 @@ export default {
         type,
         name: args.name,
         userIds: args.userIds,
-		    viewerId: viewer.id
+        viewerId: viewer.id
       })
 
-	  return channel
+      return channel
     } catch (err) {
       logger.error(err)
       throw err
     }
   },
-  async sendTextMessage(root, { input: { id, channelId: cid, text } }, { logger, viewer: { id: viewerId } }) {
+  async sendTextMessage(
+    root,
+    { input: { id, channelId: cid, text } }, { logger, viewer: { id: viewerId } }
+    ) {
     try {
       logger.debug('New text message received.')
       const isBot = cid === viewerId
@@ -54,9 +57,9 @@ export default {
       const isCommunity = cid === 'COMMUNITY'
       const isUserCreatedChannel = !isBot && !isTeamJamout && !isCommunity
       const channelId = cond([
-        [ ({ isBot }) => isBot, () => viewerId ],
-        [ ({ isUserCreatedChannel }) => !isUserCreatedChannel, () => channelTypeEnum[cid] ],
-        [ ({ isUserCreatedChannel }) => isUserCreatedChannel, () => cid ]
+        [({ isBot }) => isBot, () => viewerId],
+        [({ isUserCreatedChannel }) => !isUserCreatedChannel, () => channelTypeEnum[cid]],
+        [({ isUserCreatedChannel }) => isUserCreatedChannel, () => cid]
       ])({ isBot, isUserCreatedChannel })
 
       if (isUserCreatedChannel) {
@@ -73,7 +76,7 @@ export default {
         id: uuid(),
         senderId: viewerId,
         initialState: { text },
-        timestamp: microtime.nowDouble().toString(),
+        timestamp: microtime.nowDouble().toString()
       })
 
       logger.debug('Publishing to PubSub.')

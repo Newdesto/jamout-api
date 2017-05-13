@@ -1,7 +1,7 @@
 import { getMessagesByChannelId } from 'models/Message'
 
 export default {
-  async messages(root, { channelId }, { viewer: { id: viewerId }, Chat, logger }) {
+  async messages(root, { channelId }, { viewer: { id: viewerId }, /* Chat , */ logger }) {
     try {
       if (!viewerId) {
         throw new Error('Authentication failed.')

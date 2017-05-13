@@ -1,115 +1,115 @@
-import ChannelModel from './model'
-import SubscriptionModel from './subscriptionModel'
 import crypto from 'crypto'
 import R from 'ramda'
 
-  /**
-   * Sorts an array of user IDs and creates a unique SHA1 hash.
-   */
-  const sortUserIdsAndHash = function sortUserIdsAndHash({ userIds }) {
-    if (!userIds || !Array.isArray(userIds)) {
-      throw new Error('Invalid argument: userIds.')
-    }
+import ChannelModel from './model'
+import SubscriptionModel from './subscriptionModel'
 
-    const sortedUserIds = userIds.sort()
-    const userIdsHash = crypto.createHash('sha1').update(JSON.stringify(sortedUserIds)).digest('hex')
-
-    return {
-      userIdsHash,
-      userIds: sortedUserIds
-    }
+/**
+ * Sorts an array of user IDs and creates a unique SHA1 hash.
+ */
+const sortUserIdsAndHash = function sortUserIdsAndHash({ userIds }) {
+  if (!userIds || !Array.isArray(userIds)) {
+    throw new Error('Invalid argument: userIds.')
   }
 
-  /**
-   * Returns the channel of a user hash if it exists, and returns false
-   * if it doesn't.
-   */
-  const channelExistsByHash = async function channelExistsByHash({ userIdsHash }) {
-    if (!userIdsHash) {
-      throw new Error('The argument userHash is undefined.')
-    }
+  const sortedUserIds = userIds.sort()
+  const userIdsHash = crypto.createHash('sha1').update(JSON.stringify(sortedUserIds)).digest('hex')
 
-    const { Items } = await ChannelModel
-      .query(userIdsHash)
-      .usingIndex('userIdsHashIndex')
-      .execAsync()
+  return {
+    userIdsHash,
+    userIds: sortedUserIds
+  }
+}
 
-    if (Items.length !== 0) {
-      return Items[0].attrs
-    }
-
-    return false
+/**
+ * Returns the channel of a user hash if it exists, and returns false
+ * if it doesn't.
+ */
+const channelExistsByHash = async function channelExistsByHash({ userIdsHash }) {
+  if (!userIdsHash) {
+    throw new Error('The argument userHash is undefined.')
   }
 
-    /**
-   * Creates subscriptions to a single channel for a set of users.
-   */
-  const createSubscriptions = async function createSubscriptions({ userIds, channelId }) {
-    if (!Array.isArray(userIds) || !channelId) {
-      throw new Error('Invalid arguments to create channel subscriptions.')
-    }
+  const { Items } = await ChannelModel
+    .query(userIdsHash)
+    .usingIndex('userIdsHashIndex')
+    .execAsync()
 
-    const subscriptions = await Promise.all(
-      userIds.map(userId => SubscriptionModel.createAsync({
-        channelId,
-        userId
-      }))
-    )
-
-    // Unneccessary flatten for tests.
-    return R.flatten(subscriptions).map(s => s.attrs)
+  if (Items.length !== 0) {
+    return Items[0].attrs
   }
 
-  /**
-   * Creates a new channel using the channel type and an array of users. Checks
-   * to see if a channel already exists for the set of users. If so, it returns
-   * it.
-   */
-  export const createChannel = async function createChannel({ type, userIds, name, viewerId }) {
-    // Sort the users array and hash that shit.
-    const sorted = sortUserIdsAndHash({ userIds })
+  return false
+}
 
-    // Check if a channel already exists for this user set.
-    const existingChannel = await channelExistsByHash({
-      userIdsHash: sorted.userIdsHash
-    })
-
-    // Return the existing channel, dude.
-    if (existingChannel) {
-      return existingChannel
-    }
-
-    // No channels exist so let's create one.
-    const { attrs: channel } = await ChannelModel.createAsync({
-      type,
-      name,
-      userIds: sorted.userIds,
-      userIdsHash: sorted.userIdsHash,
-      ownerId: (type === 'g' && viewerId) || undefined 
-    })
-
-    // Let's create a subscription for each user in the set.
-    const subscriptions = await createSubscriptions({
-      userIds: sorted.userIds,
-      channelId: channel.id
-    })
-
-    // Return the channel and subscription for the user.
-    return {
-      ...R.find(R.propEq('userId', viewerId))(subscriptions),
-      ...channel
-    }
+/**
+ * Creates subscriptions to a single channel for a set of users.
+ */
+const createSubscriptions = async function createSubscriptions({ userIds, channelId }) {
+  if (!Array.isArray(userIds) || !channelId) {
+    throw new Error('Invalid arguments to create channel subscriptions.')
   }
 
-export const hasSubscriptionToChannel = async function({ channelId, viewerId: userId }) {
-	const subscription =
-	await SubscriptionModel.getAsync({ channelId, userId })
+  const subscriptions = await Promise.all(
+    userIds.map(userId => SubscriptionModel.createAsync({
+      channelId,
+      userId
+    }))
+  )
 
-	// If the sender was the assistnat don't throw an error.
-	// The 'assistant' user doesn't receive a subscription.
-	if (subscription) {
-		return true
-	}
+  // Unneccessary flatten for tests.
+  return R.flatten(subscriptions).map(s => s.attrs)
+}
 
-	return false
+/**
+ * Creates a new channel using the channel type and an array of users. Checks
+ * to see if a channel already exists for the set of users. If so, it returns
+ * it.
+ */
+export const createChannel = async function createChannel({ type, userIds, name, viewerId }) {
+  // Sort the users array and hash that shit.
+  const sorted = sortUserIdsAndHash({ userIds })
+
+  // Check if a channel already exists for this user set.
+  const existingChannel = await channelExistsByHash({
+    userIdsHash: sorted.userIdsHash
+  })
+
+  // Return the existing channel, dude.
+  if (existingChannel) {
+    return existingChannel
+  }
+
+  // No channels exist so let's create one.
+  const { attrs: channel } = await ChannelModel.createAsync({
+    type,
+    name,
+    userIds: sorted.userIds,
+    userIdsHash: sorted.userIdsHash,
+    ownerId: (type === 'g' && viewerId) || undefined
+  })
+
+  // Let's create a subscription for each user in the set.
+  const subscriptions = await createSubscriptions({
+    userIds: sorted.userIds,
+    channelId: channel.id
+  })
+
+  // Return the channel and subscription for the user.
+  return {
+    ...R.find(R.propEq('userId', viewerId))(subscriptions),
+    ...channel
+  }
+}
+
+export const hasSubscriptionToChannel = async function ({ channelId, viewerId: userId }) {
+  const subscription =
+  await SubscriptionModel.getAsync({ channelId, userId })
+
+  // If the sender was the assistnat don't throw an error.
+  // The 'assistant' user doesn't receive a subscription.
+  if (subscription) {
+    return true
+  }
+  return false
 }

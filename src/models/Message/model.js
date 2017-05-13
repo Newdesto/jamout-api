@@ -15,9 +15,9 @@ const Message = vogels.define('Message', {
     type: Joi.string(),
     initialState: Joi.object(),
     actions: Joi.array().items(Joi.object().keys({
-        type: Joi.string().required(),
-        payload: Joi.any(),
-        error: Joi.boolean()
+      type: Joi.string().required(),
+      payload: Joi.any(),
+      error: Joi.boolean()
     }))
   }
 })

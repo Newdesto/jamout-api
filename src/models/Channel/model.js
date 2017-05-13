@@ -1,6 +1,5 @@
 import vogels from 'io/vogels'
 import Joi from 'joi'
-import uuid from 'uuid'
 
 const Channel = vogels.define('Channel', {
   hashKey: 'id',
