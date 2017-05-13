@@ -8,9 +8,9 @@ export const resolver = {
 }
 
 export const mapper = {
-  messages: ({ context: { viewer } }, { channelId }) => ({
+  messages: (options, { channelId }) => ({
     messages: {
-      filter: message => message.channelId === channelId
+      filter: (message, { viewer }) => viewer && message.channelId === channelId
     }
   })
 }

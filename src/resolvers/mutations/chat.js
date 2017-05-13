@@ -10,7 +10,6 @@ import { propEq, cond } from 'ramda'
 import uuid from 'uuid'
 
 const channelTypeEnum = {
-  BOT: 'b',
   TEAM_JAMOUT: 't',
   COMMUNITY: 'c'
 }
