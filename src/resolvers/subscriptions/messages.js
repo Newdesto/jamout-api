@@ -1,8 +1,7 @@
 // import JWT from 'jsonwebtoken'
 
 export const resolver = {
-  messages(message, args) {
-    console.log(message)
+  messages(message) {
     return message
   }
 }

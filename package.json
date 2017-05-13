@@ -30,6 +30,7 @@
     "extends": "airbnb",
     "rules": {
       "no-loop-func": "off",
+      "no-shadow": "off",
       "unicorn/filename-case": [
         "error",
         {

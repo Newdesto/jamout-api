@@ -102,7 +102,8 @@ export const createChannel = async function createChannel({ type, userIds, name,
   }
 }
 
-export const hasSubscriptionToChannel = async function ({ channelId, viewerId: userId }) {
+export const hasSubscriptionToChannel =
+async function hasSubscriptionToChannel({ channelId, viewerId: userId }) {
   const subscription =
   await SubscriptionModel.getAsync({ channelId, userId })
 

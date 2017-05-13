@@ -18,7 +18,6 @@ const convertImageMessage = function convertImageMessage(channelId, url) {
     channelId,
     id: uuid(),
     senderId: 'bot',
-    initialState: { text: s },
     timestamp: microtime.nowDouble().toString(),
     type: 'Image',
     intialState: {
@@ -64,7 +63,7 @@ const convertMessage = function convertMessage(channelId, message) {
  * @param  {Array} fulfillments Array of API.ai message objects (https://docs.api.ai/docs/query#section-message-objects)
  * @return {Array}              Array of Jamout message objects.
  */
-export const fulfillmentToMessages =
+const fulfillmentToMessages =
 function fulfillmentToMessages(channelId, { speech, messages }) {
   if (!channelId) {
     throw new Error('No channel ID provided.')
@@ -86,3 +85,4 @@ function fulfillmentToMessages(channelId, { speech, messages }) {
   return flatten(messages.map(m => convertMessage(channelId, m)))
 }
 
+export default fulfillmentToMessages

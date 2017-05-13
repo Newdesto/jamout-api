@@ -1,5 +1,5 @@
 import { textRequest } from 'io/apiai'
-import { fulfillmentToMessages } from 'utils/apiai'
+import fulfillmentToMessages from 'utils/apiai'
 import { pubsub } from 'io/subscription'
 import { createMessage } from 'models/Message'
 import { sortBy, prop } from 'ramda'
