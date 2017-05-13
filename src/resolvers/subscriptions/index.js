@@ -7,6 +7,6 @@ export const setupFunctions = merge(
 
 export const resolvers = {
   Subscription: merge(
-    messages.resolvers
+    messages.resolver
   )
 }
