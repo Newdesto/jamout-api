@@ -1,24 +1,15 @@
-import JWT from 'jsonwebtoken'
+// import JWT from 'jsonwebtoken'
 
-export const resolvers = {
+export const resolver = {
   messages(message) {
     return message
   }
 }
 
 export const mapper = {
-  messages(root, { jwt, channelId }) {
-    if (!jwt) {
-      throw new Error('Authentication failed.')
+  messages: (options, { channelId }) => ({
+    messages: {
+      filter: (message, { viewer }) => viewer && message.channelId === channelId
     }
-
-    // Throws an error if invalid
-    JWT.verify(jwt, process.env.JWT_SECRET)
-
-    return {
-      messages: {
-        filter: message => message.channelId === channelId
-      }
-    }
-  }
+  })
 }

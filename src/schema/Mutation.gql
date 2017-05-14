@@ -10,12 +10,10 @@ type Mutation {
   updateMe(input: MeInput!): Me!
   generateS3Signature(stringToSign: String!, datetime: String!): String!
   # Chat
-  openChannel(type: ChannelType!, users: [ID!]!): Channel
-  # A postback can return several message. e.g.; one updated message and one
-  # new message.
-  postback(input: ChatPostbackInput!): [Message!]
-  sendMessage(message: MessageInput!): Message!
-  updateMessage(input: UpdateMessageInput!): Message!
+  createChannel(input: ChannelInput!): Channel
+  dispatchMessageAction(input: MessageActionInput!): Message!
+  sendTextMessage(input: TextMessageInput): Message!
+
   # Distribution
   createRelease(input: ReleaseInput!): Release
   createStudioEvent(type: String, nextEvent: StudioEventInput): StudioEvent

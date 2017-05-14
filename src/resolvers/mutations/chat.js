@@ -1,91 +1,98 @@
 /**
  * The chat mutation resolvers.
  */
-import shortid from 'shortid'
 import microtime from 'microtime'
+import { createChannel, hasSubscriptionToChannel } from 'models/Channel'
+import { pubsub } from 'io/subscription'
+import { createMessage } from 'models/Message'
+import botSideEffect from 'services/chat/botSideEffect'
+import { propEq, cond } from 'ramda'
+import uuid from 'uuid'
+
+const channelTypeEnum = {
+  TEAM_JAMOUT: 't',
+  COMMUNITY: 'c'
+}
 
 export default {
-  openChannel(root, a, { user, Chat, logger }) {
-    const args = a
+  async createChannel(root, { input }, { viewer, logger }) {
+    const args = input
     try {
-      if (!user) {
+      if (!viewer) {
         throw new Error('Authentication failed.')
       }
 
       // Get the ENUM values.
       const type = {
         DM: 'd',
-        GROUP: 'g',
-        ASSISTANT: 'a'
+        GROUP: 'g'
       }[args.type]
 
-      // Do some name validation.
-      if (type === 'a') {
-        args.name = 'assistant'
-      } else if (type === 'd') {
+      // Do some name  validation.
+      if (type === 'd') {
         delete args.name
       }
 
-      return Chat.createChannel({
+      const channel = await createChannel({
         type,
         name: args.name,
-        users: args.users
+        userIds: args.userIds,
+        viewerId: viewer.id
       })
+
+      return channel
     } catch (err) {
       logger.error(err)
       throw err
     }
   },
-  /**
-   * Any message sent using this method isn't published to the channel's channel.
-   * @type {[type]}
-   */
-  async sendMessage(root, { message }, { user: currentUser, Chat, logger }) {
+  async sendTextMessage(
+    root,
+    { input: { id, channelId: cid, text } }, { logger, viewer: { id: viewerId } }
+    ) {
     try {
-      if (!currentUser) {
-        throw new Error('Authentication failed.')
+      logger.debug('New text message received.')
+      const isBot = cid === viewerId
+      const isTeamJamout = cid === 'TEAM_JAMOUT'
+      const isCommunity = cid === 'COMMUNITY'
+      const isUserCreatedChannel = !isBot && !isTeamJamout && !isCommunity
+      const channelId = cond([
+        [({ isBot }) => isBot, () => viewerId],
+        [({ isUserCreatedChannel }) => !isUserCreatedChannel, () => channelTypeEnum[cid]],
+        [({ isUserCreatedChannel }) => isUserCreatedChannel, () => cid]
+      ])({ isBot, isUserCreatedChannel })
+
+      if (isUserCreatedChannel) {
+        logger.debug('Checking for a subscription.')
+        const hasSubscription = await hasSubscriptionToChannel({ channelId, viewerId })
+        if (!hasSubscription) {
+          throw new Error('Authorization failed.')
+        }
       }
 
-      const savedMessage = await Chat.sendMessage({ message: {
-        ...message,
-        senderId: currentUser.id,
-        id: shortid.generate(),
+      logger.debug('Creating item in DDB.')
+      const message = await createMessage({
+        channelId,
+        id: uuid(),
+        senderId: viewerId,
+        initialState: { text },
         timestamp: microtime.nowDouble().toString()
-      } })
+      })
 
-      return savedMessage
-    } catch (err) {
-      logger.error(err)
-      throw err
-    }
-  },
-  async postback(root, { input }, { user, Chat, logger }) {
-    try {
-      if (!user) {
-        throw new Error('Authentication failed.')
-      }
+      logger.debug('Publishing to PubSub.')
+      console.log(message)
+      pubsub.publish('messages', message)
 
-      await Chat.postback({ postback: {
-        user,
-        ...input
-      } })
-      return
-    } catch (err) {
-      logger.error(err)
-      throw err
-    }
-  },
-  async updateMessage(root, args, { user, Chat, logger }) {
-    try {
-      if (!user) {
-        throw new Error('Authentication failed.')
-      }
+      logger.debug('Triggering side effects.')
+      await cond([
+        [propEq('channelId', viewerId), botSideEffect],
+        [propEq('channelId', 't'), () => console.log('Send POST to Slack Thread.')]
+      ])(message)
 
-      const message = await Chat.updateMessage(args.input)
       return message
     } catch (err) {
-      logger.error(err)
-      throw err
+      console.error(err)
+      return err
     }
   }
 }

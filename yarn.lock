@@ -34,9 +34,9 @@
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
 
-"@types/ws@0.0.38":
-  version "0.0.38"
-  resolved "https://registry.yarnpkg.com/@types/ws/-/ws-0.0.38.tgz#42106fff4b422ca956734e29f0d73a6d893194d3"
+"@types/ws@0.0.40":
+  version "0.0.40"
+  resolved "https://registry.yarnpkg.com/@types/ws/-/ws-0.0.40.tgz#c10c705ab30b51531b76f99a4581544edf09756d"
   dependencies:
     "@types/node" "*"
 
@@ -1557,6 +1557,15 @@ clean-css@^3.3.0:
     commander "2.8.x"
     source-map "0.4.x"
 
+clean-deep@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/clean-deep/-/clean-deep-3.0.0.tgz#7f1508e87e52f37ac277adfd899bbe475463c990"
+  dependencies:
+    lodash.isarray "^4.0.0"
+    lodash.isempty "^4.4.0"
+    lodash.isplainobject "^4.0.6"
+    lodash.transform "^4.6.0"
+
 clean-yaml-object@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/clean-yaml-object/-/clean-yaml-object-0.1.0.tgz#63fb110dc2ce1a84dc21f6d9334876d010ae8b68"
@@ -2476,7 +2485,7 @@ event-stream@~3.3.0:
     stream-combiner "~0.0.4"
     through "~2.3.1"
 
-eventemitter3@^2.0.2:
+eventemitter3@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-2.0.3.tgz#b5e1079b59fb5e1ba2771c0a993be060a58c99ba"
 
@@ -2978,12 +2987,12 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
-graphql-redis-subscriptions@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/graphql-redis-subscriptions/-/graphql-redis-subscriptions-1.1.5.tgz#69166bebd8d92243d6f8e80c97ebf4c588d80c8d"
+graphql-redis-subscriptions@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/graphql-redis-subscriptions/-/graphql-redis-subscriptions-1.1.6.tgz#ee930013d089f34168957473ff164183aeb8a7ec"
   dependencies:
     async "^2.0.1"
-    graphql-subscriptions "^0.2.0"
+    graphql-subscriptions "^0.3.1"
     redis "^2.6.3"
 
 graphql-server-core@^0.7.0:
@@ -2992,35 +3001,29 @@ graphql-server-core@^0.7.0:
   optionalDependencies:
     "@types/graphql" "^0.9.0"
 
-graphql-server-express@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/graphql-server-express/-/graphql-server-express-0.7.1.tgz#6038f7eac8f87938a0e4fc5a39eb8aaac00c84c5"
+graphql-server-express@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/graphql-server-express/-/graphql-server-express-0.7.2.tgz#d71f22509f38b2e364349d90e7cafd03b52e02cd"
   dependencies:
     graphql-server-core "^0.7.0"
-    graphql-server-module-graphiql "^0.7.1"
+    graphql-server-module-graphiql "^0.7.2"
   optionalDependencies:
     "@types/express" "^4.0.35"
     "@types/graphql" "^0.9.0"
 
-graphql-server-module-graphiql@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/graphql-server-module-graphiql/-/graphql-server-module-graphiql-0.7.1.tgz#09cc2b80595bcb1165f3673138c268dd2166feb5"
+graphql-server-module-graphiql@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/graphql-server-module-graphiql/-/graphql-server-module-graphiql-0.7.2.tgz#aa1f2a26eadbf7127c1b077e633d5086da52b330"
 
-graphql-subscriptions@^0.2.0:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/graphql-subscriptions/-/graphql-subscriptions-0.2.3.tgz#75f9a02cb6d2b456b1703ce95670f793dacee607"
-  dependencies:
-    es6-promise "^3.2.1"
-
-graphql-subscriptions@^0.3.0, graphql-subscriptions@^0.3.1:
+graphql-subscriptions@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/graphql-subscriptions/-/graphql-subscriptions-0.3.1.tgz#0cedc2d507420cf26cf414080b079f05402f0303"
   dependencies:
     es6-promise "^3.2.1"
 
-graphql-tag@^1.2.4:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-1.3.2.tgz#7abb3a8fd9f3415d07163314ed237061c785b759"
+graphql-tag@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.0.0.tgz#f3efe3b4d64f33bfe8479ae06a461c9d72f2a6fe"
 
 graphql-tools@^0.11.0:
   version "0.11.0"
@@ -3036,11 +3039,11 @@ graphql-type-json@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/graphql-type-json/-/graphql-type-json-0.1.4.tgz#89f13f5d32ce08c9a76c79fdf9c1968384d81a4e"
 
-graphql@^0.9.1, graphql@^0.9.3:
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.9.3.tgz#71fc0fa331bffb9c20678485861cfb370803118e"
+graphql@^0.9.3, graphql@^0.9.6:
+  version "0.9.6"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.9.6.tgz#514421e9d225c29dfc8fd305459abae58815ef2c"
   dependencies:
-    iterall "1.0.3"
+    iterall "^1.0.0"
 
 handlebars@^4.0.3:
   version "4.0.6"
@@ -3598,9 +3601,9 @@ items@2.x.x:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/items/-/items-2.1.1.tgz#8bd16d9c83b19529de5aea321acaada78364a198"
 
-iterall@1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.0.3.tgz#e0b31958f835013c323ff0b10943829ac69aa4b7"
+iterall@^1.0.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.1.1.tgz#f7f0af11e9a04ec6426260f5019d9fcca4d50214"
 
 jimp@^0.2.27:
   version "0.2.27"
@@ -4025,6 +4028,14 @@ lodash.isarray@^3.0.0:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
 
+lodash.isarray@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-4.0.0.tgz#2aca496b28c4ca6d726715313590c02e6ea34403"
+
+lodash.isempty@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.isempty/-/lodash.isempty-4.4.0.tgz#6f86cbedd8be4ec987be9aaf33c9684db1b31e7e"
+
 lodash.isequal@^4.4.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
@@ -4072,6 +4083,10 @@ lodash.set@^4.0.0:
 lodash.snakecase@^4.0.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.snakecase/-/lodash.snakecase-4.1.1.tgz#39d714a35357147837aefd64b5dcbb16becd8f8d"
+
+lodash.transform@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.transform/-/lodash.transform-4.6.0.tgz#12306422f63324aed8483d3f38332b5f670547a0"
 
 lodash.upperfirst@^4.2.0:
   version "4.3.1"
@@ -4586,10 +4601,6 @@ optionator@^0.8.2:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
     wordwrap "~1.0.0"
-
-options@>=0.0.5:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/options/-/options-0.0.6.tgz#ec22d312806bb53e731773e7cdaefcf1c643128f"
 
 os-homedir@^1.0.0, os-homedir@^1.0.1:
   version "1.0.2"
@@ -5529,7 +5540,7 @@ rx-lite@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-3.1.2.tgz#19ce502ca572665f3b647b10939f97fd1615f102"
 
-safe-buffer@^5.0.1:
+safe-buffer@^5.0.1, safe-buffer@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.0.1.tgz#d263ca54696cd8a306b5ca6551e92de57918fbe7"
 
@@ -5886,19 +5897,19 @@ stylus@0.54.5, stylus@~0.54.5:
     sax "0.5.x"
     source-map "0.1.x"
 
-subscriptions-transport-ws@^0.5.5:
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/subscriptions-transport-ws/-/subscriptions-transport-ws-0.5.5.tgz#7715ed4306f532a9dd53c02cbd789d2ee8871bb9"
+subscriptions-transport-ws@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/subscriptions-transport-ws/-/subscriptions-transport-ws-0.6.0.tgz#8fc6138b1cb0a68da3747e3ae631e8a7e60c0ebb"
   dependencies:
-    "@types/ws" "0.0.38"
+    "@types/ws" "0.0.40"
     backo2 "^1.0.2"
-    eventemitter3 "^2.0.2"
-    graphql "^0.9.1"
-    graphql-subscriptions "^0.3.0"
-    graphql-tag "^1.2.4"
+    eventemitter3 "^2.0.3"
+    graphql "^0.9.3"
+    graphql-subscriptions "^0.3.1"
+    graphql-tag "^2.0.0"
     lodash.isobject "^3.0.2"
     lodash.isstring "^4.0.1"
-    ws "^1.1.0"
+    ws "^2.3.1"
 
 supports-color@^2.0.0:
   version "2.0.0"
@@ -6161,9 +6172,9 @@ uid2@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/uid2/-/uid2-0.0.3.tgz#483126e11774df2f71b8b639dcd799c376162b82"
 
-ultron@1.0.x:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
+ultron@~1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.1.0.tgz#b07a2e6a541a815fc6a34ccd4533baec307ca864"
 
 undefsafe@0.0.3:
   version "0.0.3"
@@ -6423,12 +6434,12 @@ write@^0.2.1:
   dependencies:
     mkdirp "^0.5.1"
 
-ws@^1.1.0:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-1.1.4.tgz#57f40d036832e5f5055662a397c4de76ed66bf61"
+ws@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-2.3.1.tgz#6b94b3e447cb6a363f785eaf94af6359e8e81c80"
   dependencies:
-    options ">=0.0.5"
-    ultron "1.0.x"
+    safe-buffer "~5.0.1"
+    ultron "~1.1.0"
 
 x-path@^0.0.2:
   version "0.0.2"
