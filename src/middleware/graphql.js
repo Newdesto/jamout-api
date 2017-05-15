@@ -33,6 +33,7 @@ export default graphqlExpress(async (req) => {
       Partner,
       Release,
       currentUser: user,
+      viewer: user,
       jwt: user && req.headers.authorization.slice(7),
       User: userConnector,
       StudioEvent: new StudioEvent(),

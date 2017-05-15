@@ -53,6 +53,7 @@ export const startSubscriptionServer = function startSubscriptionServer(httpServ
         Partner,
         Release,
         currentUser: user,
+        viewer: user,
         User: userConnector,
         StudioEvent: new StudioEvent(),
         MusicEvent: new MusicEvent(),

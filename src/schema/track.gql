@@ -9,12 +9,24 @@ type Track {
   audioUrl: String,
   artworkUrl: String,
   createdAt: String,
-  user: TrackUser
+  user: User!
+  featuredUsers: [User]
+  privacySetting: TrackPrivacySetting!
   spotlight: Boolean
 }
 
-type TrackUser {
-  userId: ID,
-  displayName: String
+
+enum TrackPrivacySetting {
+  PRIVATE
+  CONNECTIONS_ONLY
+  PUBLIC
 }
 
+input TrackInput {
+  artworkKey: String,
+  audioKey: String,
+  type: String,
+  title: String!,
+  featuredUserIds: [String!]
+  privacySetting: TrackPrivacySetting
+}

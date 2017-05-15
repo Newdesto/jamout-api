@@ -1,30 +1,27 @@
-import shortid from 'shortid'
+import uuid from 'uuid'
 import microtime from 'microtime'
 import { flatten } from 'lodash'
 
 const convertTextMessage = function convertTextMessage(channelId, speech) {
   const speeches = speech.split('\\n')
   return speeches.map(s => ({
-    channelId, // sessionId = userId, both auth and anon
-    // isAnon: data.isAnon, // @TODO work anon into context
-    text: s,
-    senderId: 'assistant',
-    id: shortid.generate(),
+    channelId,
+    id: uuid(),
+    senderId: 'bot',
+    initialState: { text: s },
     timestamp: microtime.nowDouble().toString()
   }))
 }
 
 const convertImageMessage = function convertImageMessage(channelId, url) {
   return {
-    channelId, // sessionId = userId, both auth and anon
-    // isAnon: data.isAnon, // @TODO work anon into context
-    senderId: 'assistant',
-    id: shortid.generate(),
+    channelId,
+    id: uuid(),
+    senderId: 'bot',
     timestamp: microtime.nowDouble().toString(),
-    attachment: {
-      disableInput: false,
-      src: url,
-      type: 'Image'
+    type: 'Image',
+    intialState: {
+      src: url
     }
   }
 }
@@ -35,8 +32,8 @@ const convertCustomPayloadMessage = function convertCustomPayloadMessage(channel
     return payload.jamout.map(message => ({
       ...message,
       channelId,
-      senderId: 'assistant',
-      id: shortid.generate(),
+      id: uuid(),
+      senderId: 'bot',
       timestamp: microtime.nowDouble().toString()
     }))
   }

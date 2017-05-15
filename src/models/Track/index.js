@@ -1,3 +1,4 @@
+import uuid from 'uuid'
 import trackModel from './model'
 import userModel from '../User/model'
 
@@ -29,7 +30,7 @@ export default class Track {
     const { Items } = await trackModel
       .scan()
       .loadAll()
-      .where('isPublic').equals(true)
+      .where('privacySetting').equals(2)
       .execAsync()
 
     return Items.map(t => t.attrs)
@@ -45,8 +46,8 @@ export default class Track {
       .scan()
       .where('userId')
       .equals(userId)
-      .where('isPublic')
-      .equals(true)
+      .where('privacySetting')
+      .equals(2)
       .execAsync()
 
     const tracks = Items.map(t => t.attrs)
@@ -70,8 +71,8 @@ export default class Track {
       .scan()
       .where('userId')
       .equals(user.id)
-      .where('isPublic')
-      .equals(true)
+      .where('privacySetting')
+      .equals(2)
       .execAsync()
 
     const tracks = Items.map(t => t.attrs)
@@ -90,8 +91,8 @@ export default class Track {
       .scan()
       .where('userId')
       .equals(user.id)
-      .where('isPublic')
-      .equals(true)
+      .where('privacySetting')
+      .equals(2)
       .execAsync()
 
     const tracks = Items.map(t => t.attrs)
@@ -121,17 +122,15 @@ export default class Track {
     return updatedResponse.attrs
   }
 
-  static async createTrack(user, title, isPublic) {
+  static async createTrack(user, title, privacySetting, audioKeyExtension) {
     if (!user) { throw new Error('User ID is undefined.') }
-
+    const id = uuid()
     const { attrs } = await trackModel.createAsync({
+      id,
       userId: user.id, // assumes JWT is up to date
-      user: {
-        id: user.id,
-        displayName: user.username
-      },
+      audioKey: `${user.id}/${id}.${audioKeyExtension}`,
       title: title || 'Untitled',
-      isPublic: isPublic || false,
+      privacySetting: privacySetting || 0,
       status: 'processing', // processing, failed, finished
       type: 'original',
       playCount: 0

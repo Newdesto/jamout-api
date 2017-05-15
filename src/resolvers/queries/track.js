@@ -5,10 +5,6 @@ export default {
     }
 
     const track = await Track.fetchById(id)
-    if (track && track.isPublic) {
-      return track
-    }
-
-    return null
+    return track
   }
 }
