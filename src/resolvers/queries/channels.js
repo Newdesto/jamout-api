@@ -5,11 +5,11 @@ export default {
       if (!user) {
         throw new Error('Authentication failed.')
       }
-      const channels = await getChannels(user.id)
-
       if (args.channelId) {
         return getChannelById({ channelId: args.channelId })
       }
+
+      const channels = await getChannels(user.id)
       return channels
     } catch (err) {
       logger.error(err)

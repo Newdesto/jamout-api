@@ -47,7 +47,8 @@ export const getChannels = async function getChannels(userId) {
     .scan()
     .where('userIds').contains(userId)
     .execAsync()
-  return Items
+  const channels = Items.map(c => c.attrs)
+  return channels
 }
 
 export const getChannelById = async function getChannelById({ channelId }) {
