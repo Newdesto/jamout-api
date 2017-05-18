@@ -36,10 +36,6 @@ const launch = async function launch() {
 
   const httpServer = http.createServer()
 
-  process.env.REQUEST_TOKEN = 'd47bdd673c76e84643111eea89483e49'
-  process.env.LANGUAGE = 'en'
-  process.env.PORT = '3000'
-
   // jwt authentication
   logger.info('Mounting JWT authentication.')
   app.use(jwt)
