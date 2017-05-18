@@ -4,7 +4,7 @@
 import microtime from 'microtime'
 import { createChannel, hasSubscriptionToChannel } from 'models/Channel'
 import { pubsub } from 'io/subscription'
-import { createMessage } from 'models/Message'
+import { createMessage, updateMessage } from 'models/Message'
 import botSideEffect from 'services/chat/botSideEffect'
 import { propEq, cond } from 'ramda'
 import uuid from 'uuid'
@@ -94,5 +94,23 @@ export default {
       console.error(err)
       return err
     }
+  },
+  async dispatchMessageActions(root, { channelId, timestamp, actions }, context) {
+    // Save the actions
+    const params = {
+      UpdateExpression: 'SET #actions = list_append(if_not_exists(#actions, :emptyList), :newActions)',
+      ExpressionAttributeNames: {
+        '#actions': 'actions'
+      },
+      ExpressionAttributeValues: {
+        ':emptyList': [],
+        ':newActions': actions
+      }
+    }
+    const message = await updateMessage({ channelId, timestamp }, params)
+    // Run side effects
+    // Save side effect actions
+    console.log(message)
+    return message
   }
 }

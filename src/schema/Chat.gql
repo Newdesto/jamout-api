@@ -48,10 +48,10 @@ input ChannelInput {
 }
 
 input MessageActionInput {
-  channelId: ID!
   type: String!
   payload: JSON
 }
+
 
 input TextMessageInput {
   channelId: ID

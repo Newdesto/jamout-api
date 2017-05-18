@@ -5,6 +5,11 @@ export const createMessage = async function createMessage(message) {
   return attrs
 }
 
+export const updateMessage = async function updateMessage(message, params) {
+  const { attrs } = await MessageModel.updateAsync(message, params)
+  return attrs
+}
+
 export const getMessagesByChannelId = async function getMessageByChannelId(channelId) {
   if (!channelId) {
     throw new Error('Missing channel ID.')
