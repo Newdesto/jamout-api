@@ -85,5 +85,26 @@ export default [
       }
     },
     updatedAt: '2017-03-22T05:27:49.248Z'
+  },
+  {
+    email: 'chris@1234.com',
+    username: 'chris2',
+    displayName: 'chris2',
+    permalink: 'BJ6Uity3a2',
+    password: '$2a$10$SFyo92wgwyEgHsNr/QBFZeW1.nRE2WXR11DQIrh0u4NZ0Zf11vPne',
+    id: '693fd142-b480-44ea-9672-539f08b68382',
+    createdAt: '2017-03-22T05:27:48.920Z',
+    stripe: {
+      customerId: 'cus_AKhPBedSGaSkjB'
+    },
+    roles: [
+      'artist'
+    ],
+    context: {
+      web: {
+        role: 'artist'
+      }
+    },
+    updatedAt: '2017-03-22T05:27:49.248Z'
   }
 ]
