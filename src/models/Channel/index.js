@@ -52,7 +52,7 @@ export const getChannels = async function getChannels(userId) {
 }
 
 export const getChannelById = async function getChannelById({ channelId }) {
-    const { Items } = await ChannelModel
+  const { Items } = await ChannelModel
     .scan()
     .where('id').contains(channelId)
     .execAsync()

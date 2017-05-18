@@ -2,6 +2,7 @@
  * message.js
  * This file contains your bot code
  */
+/* eslint-disable */
 
 const recastai = require('recastai')
 

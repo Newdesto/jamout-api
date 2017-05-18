@@ -1,7 +1,6 @@
 import 'app-module-path/register'
 import { startSubscriptionServer } from 'io/subscription'
 import http from 'http'
-import request from 'request'
 import rollbar from 'rollbar'
 import { app, logger } from './io'
 import { jwt, graphql, graphiql } from './middleware'
@@ -38,9 +37,9 @@ const launch = async function launch() {
 
   const httpServer = http.createServer()
 
-process.env.REQUEST_TOKEN = 'd47bdd673c76e84643111eea89483e49'
-process.env.LANGUAGE = 'en'
-process.env.PORT = '3000'
+  process.env.REQUEST_TOKEN = 'd47bdd673c76e84643111eea89483e49'
+  process.env.LANGUAGE = 'en'
+  process.env.PORT = '3000'
 
   // Temporary platform watch webhook.
   app.use('/recastai', (req, res) => {

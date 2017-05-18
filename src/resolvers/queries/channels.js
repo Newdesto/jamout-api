@@ -1,4 +1,5 @@
 import { getChannels, getChannelById } from '../../models/Channel'
+
 export default {
   async channels(root, args, { user, logger }) {
     try {

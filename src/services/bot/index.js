@@ -8,7 +8,8 @@
  *   curl -X "POST" "http://localhost:5000" -d '{"text": "YOUR_TEXT"}' -H "Content-Type: application/json; charset=utf-8"
  *
  *
- * The Recast.AI SDK will handle the message and call your reply bot function (ie. replyMessage function)
+ * The Recast.AI SDK will handle the message and
+ * call your reply bot function (ie. replyMessage function)
  */
 
 const recastai = require('recastai').default
