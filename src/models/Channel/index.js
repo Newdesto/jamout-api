@@ -42,6 +42,23 @@ const channelExistsByHash = async function channelExistsByHash({ userIdsHash }) 
   return false
 }
 
+export const getChannels = async function getChannels(userId) {
+  const { Items } = await ChannelModel
+    .scan()
+    .where('userIds').contains(userId)
+    .execAsync()
+  const channels = Items.map(c => c.attrs)
+  return channels
+}
+
+export const getChannelById = async function getChannelById({ channelId }) {
+  const { Items } = await ChannelModel
+    .scan()
+    .where('id').contains(channelId)
+    .execAsync()
+  return Items
+}
+
 /**
  * Creates subscriptions to a single channel for a set of users.
  */
