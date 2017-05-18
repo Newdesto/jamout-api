@@ -2,14 +2,13 @@
  * message.js
  * This file contains your bot code
  */
-/* eslint-disable */
 
-const recastai = require('recastai')
+const Recastai = require('recastai')
 
 // This function is the core of the bot behaviour
 const replyMessage = (message) => {
   // Instantiate Recast.AI SDK, just for request service
-  const request = new recastai.request(process.env.REQUEST_TOKEN, process.env.LANGUAGE)
+  const request = new Recastai.request(process.env.REQUEST_TOKEN, process.env.LANGUAGE)
   // Get text from message received
   const text = message.content
 
@@ -20,7 +19,7 @@ const replyMessage = (message) => {
 
   // Call Recast.AI SDK, through /converse route
   request.converseText(text, { conversationToken: senderId })
-  .then(result => {
+  .then((result) => {
     console.log(result)
     /*
     * YOUR OWN CODE
@@ -34,7 +33,7 @@ const replyMessage = (message) => {
     }
 
     // If there is not any message return by Recast.AI for this current conversation
-    if (!result.replies.length) {
+    if (result.replies.length === 0) {
       message.addReply({ type: 'text', content: 'I don\'t have the reply to this yet :)' })
     } else {
       // Add each reply received from API to replies stack
@@ -46,11 +45,11 @@ const replyMessage = (message) => {
     .then(() => {
       // Do some code after sending messages
     })
-    .catch(err => {
+    .catch((err) => {
       console.error('Error while sending message to channel', err)
     })
   })
-  .catch(err => {
+  .catch((err) => {
     console.error('Error while sending message to Recast.AI', err)
   })
 }

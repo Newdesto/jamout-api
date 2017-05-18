@@ -12,22 +12,23 @@
  * call your reply bot function (ie. replyMessage function)
  */
 
-const recastai = require('recastai').default
+const Recastai = require('recastai').default
 
 const replyMessage = require('./reply')
 
 // Instantiate Recast.AI SDK
-const client = new recastai(process.env.REQUEST_TOKEN)
+const client = new Recastai(process.env.REQUEST_TOKEN)
 
 /*
  * Main bot function
  * Parameters are:
  * - body: Request body
  * - response: Response of your server (can be a blank object if not needed: {})
- * - callback: Callback is a function called by Recast.AI hosting system when your code will be hosted
+ * - callback: Callback is a function called by
+ *  Recast.AI hosting system when your code will be hosted
  */
 export const bot = (body, response, callback) => {
-    console.log(body)
+  console.log(body)
   if (body.message) {
     /*
     * Call the Recast.AI SDK function to handle message from Bot Connector
@@ -51,7 +52,9 @@ export const bot = (body, response, callback) => {
     * ie curl -X "POST" "https://localhost:5000" -d '{"text": "YOUR_TEXT"}' -H "Content-Type: application/json; charset=utf-8"
     * It just sends it to Recast.AI and returns replies
     */
-    client.request.converseText(body.text, { conversationToken: process.env.CONVERSATION_TOKEN || null })
+    client.request.converseText(body.text, {
+      conversationToken: process.env.CONVERSATION_TOKEN || null
+    })
       .then((res) => {
         if (res.reply()) {
           /*
@@ -59,7 +62,7 @@ export const bot = (body, response, callback) => {
            */
           callback(null, {
             reply: res.reply(),
-            conversationToken: res.conversationToken,
+            conversationToken: res.conversationToken
           })
         } else {
           /*
@@ -67,7 +70,7 @@ export const bot = (body, response, callback) => {
            */
           callback(null, {
             reply: 'No reply :(',
-            conversationToken: res.conversationToken,
+            conversationToken: res.conversationToken
           })
         }
       })
