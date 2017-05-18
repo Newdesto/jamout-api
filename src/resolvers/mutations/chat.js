@@ -95,7 +95,10 @@ export default {
       return err
     }
   },
-  async dispatchMessageActions(root, { channelId, timestamp, actions }, context) {
+  async dispatchMessageActions(root, { channelId, timestamp, actions }, { viewer }) {
+    if (!viewer) {
+      throw new Error('Authentication failed.')
+    }
     // Save the actions
     const params = {
       UpdateExpression: 'SET #actions = list_append(if_not_exists(#actions, :emptyList), :newActions)',
