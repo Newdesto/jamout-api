@@ -4,7 +4,6 @@ import http from 'http'
 import rollbar from 'rollbar'
 import { app, logger } from './io'
 import { jwt, graphql, graphiql } from './middleware'
-import bot from './services/bot'
 
 const launch = async function launch() {
   logger.info('Starting Jamout API, woohoo!')
@@ -40,20 +39,6 @@ const launch = async function launch() {
   process.env.REQUEST_TOKEN = 'd47bdd673c76e84643111eea89483e49'
   process.env.LANGUAGE = 'en'
   process.env.PORT = '3000'
-
-  // Temporary platform watch webhook.
-  app.use('/recastai', (req, res) => {
-    console.log(req)
-    bot(req.body, res, (error, success) => {
-      if (error) {
-        console.log('Error in your bot:', error)
-        if (!res.headersSent) { res.sendStatus(400) }
-      } else if (success) {
-        console.log(success)
-        if (!res.headersSent) { res.status(200).json(success) }
-      }
-    })
-  })
 
   // jwt authentication
   logger.info('Mounting JWT authentication.')
