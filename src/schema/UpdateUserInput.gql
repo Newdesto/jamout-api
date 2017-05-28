@@ -3,4 +3,5 @@ input UpdateUserInput {
   displayName: String
   location: String
   avatarKey: String
+  scOauthToken: String
 }

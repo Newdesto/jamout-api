@@ -12,12 +12,14 @@ type Me {
   location: String
   avatarUrl: String
   connections: [Connection!]
-  assistantChannel: Channel
   roles: [String!]
   permissions: [String!]
   context: MeContext
   acl: String # *, null, private
   tracks: [Track!]
+  didBotWelcome: Boolean
+  didBotExplainTeamJamout: Boolean
+  didBotExplainJamoutCommunity: Boolean
 }
 
 type MeContext {

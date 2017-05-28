@@ -1,5 +1,3 @@
-// import JWT from 'jsonwebtoken'
-
 export const resolver = {
   messages(message) {
     return message

@@ -8,7 +8,7 @@ const convertTextMessage = function convertTextMessage(channelId, speech) {
     channelId,
     id: uuid(),
     senderId: 'bot',
-    initialState: { text: s },
+    messageState: { text: s },
     timestamp: microtime.nowDouble().toString()
   }))
 }
@@ -20,7 +20,7 @@ const convertImageMessage = function convertImageMessage(channelId, url) {
     senderId: 'bot',
     timestamp: microtime.nowDouble().toString(),
     type: 'Image',
-    intialState: {
+    messageState: {
       src: url
     }
   }

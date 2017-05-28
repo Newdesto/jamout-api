@@ -11,8 +11,10 @@ type Mutation {
   generateS3Signature(stringToSign: String!, datetime: String!): String!
   # Chat
   createChannel(input: ChannelInput!): Channel
-  dispatchMessageAction(input: MessageActionInput!): Message!
-  sendTextMessage(input: TextMessageInput): Message!
+  updateMessageState(channelId: ID!, timestamp: String!, messageState: JSON!, action: ReduxActionInput!): Message!
+    # messageState !== action.payload because the messageState represents the output of the reducer
+    # function. The action.payload can be anything - no neccessarily the new message state.
+  sendMessage(input: MessageInput!): Message!
 
   # Distribution
   createRelease(input: ReleaseInput!): Release

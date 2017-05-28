@@ -37,8 +37,7 @@ type Message {
   sender: User!
 	action: String # Typing, Read Receipt, Disable Input
 	type: String # Defaults to Text
-	initialState: JSON # Current message state
-	actions: [JSON!] # Playable actions
+	messageState: JSON # Current message state
 }
 
 input ChannelInput {
@@ -47,13 +46,15 @@ input ChannelInput {
   name: String
 }
 
-input MessageActionInput {
+input MessageInput {
+  id: ID!
   channelId: ID!
   type: String!
-  payload: JSON
+  messageState: JSON!
 }
 
-input TextMessageInput {
-  channelId: ID
-  text: String!
+input ReduxActionInput {
+  type: String!
+  payload: JSON
+  error: String # Error message?
 }
