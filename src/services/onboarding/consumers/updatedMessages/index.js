@@ -29,7 +29,7 @@ const app = Consumer.create({
             return done()
         }
 
-            const events = typeof nextEvent === 'array' ? nextEvent : [nextEvent]
+            const events = Array.isArray(nextEvent) ? nextEvent : [nextEvent]
             const multiMessages = await BPromise.map(events, async (event) => {
                 const { result } = await eventRequest({ name: event }, {
                     contexts: [
