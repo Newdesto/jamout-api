@@ -3,14 +3,14 @@ import AWS from 'aws-sdk'
 import shortid from 'shortid'
 import { createError } from 'apollo-errors'
 import { fromJS } from 'immutable'
+import { createCustomer } from 'utils/stripe'
+import { hashPassword, authenticate } from 'utils/auth'
 import userModel from './model'
 import {
   UserIdLoader,
   UserUsernameLoader,
   UserPermalinkLoader
 } from './loaders'
-import { createCustomer } from '../../utils/stripe'
-import { hashPassword, authenticate } from '../../utils/auth'
 
 const s3 = new AWS.S3()
 const secret = process.env.JWT_SECRET

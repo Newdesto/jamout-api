@@ -17,27 +17,27 @@ export default {
 
       // Onboarding trigger
       if (viewerId === channelId && messages.length === 0 && !viewer.didBotWelcome) {
-          const { result } = await eventRequest({ name: 'onboarding-welcome' }, {
-            contexts: [
+        const { result } = await eventRequest({ name: 'onboarding-welcome' }, {
+          contexts: [
                 { name: 'authenticated' }
-            ],
-            sessionId: viewerId
-          })
+          ],
+          sessionId: viewerId
+        })
 
           // Convert the messages to Jamout's format.
-          const dirtyMessages = fulfillmentToMessages(channelId, result.fulfillment)
-          const messages = cleanDeep(dirtyMessages)
+        const dirtyMessages = fulfillmentToMessages(channelId, result.fulfillment)
+        const messages = cleanDeep(dirtyMessages)
 
           // Save and publish.
-          const createdMessages = await Promise.all(messages.map(m => createMessage(m)))
+        const createdMessages = await Promise.all(messages.map(m => createMessage(m)))
 
-          const sortByTimestamp = sortBy(prop('timestamp'))
-          sortByTimestamp(createdMessages)
+        const sortByTimestamp = sortBy(prop('timestamp'))
+        sortByTimestamp(createdMessages)
             .map(m => pubsub.publish('messages', m))
 
-          return createdMessages
+        return createdMessages
       }
-    
+
       return messages
     } catch (err) {
       logger.error(err)

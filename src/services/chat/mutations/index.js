@@ -3,9 +3,9 @@ import sendMessage from './sendMessage'
 import updateMessageState from './updateMessageState'
 
 const mutations = {
-    createChannel,
-    sendMessage,
-    updateMessageState
+  createChannel,
+  sendMessage,
+  updateMessageState
 }
 
 export default mutations
