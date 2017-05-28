@@ -4,7 +4,7 @@
 import dynalite from 'dynalite' // eslint-disable-line import/no-extraneous-dependencies
 import vogels from 'io/vogels'
 
-import User from 'models/User/model'
+import User from 'services/iam/models/User/model'
 import Partner from 'models/Partner/model'
 import Track from 'models/Track/model'
 

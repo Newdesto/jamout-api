@@ -4,6 +4,9 @@ import http from 'http'
 import rollbar from 'rollbar'
 import { app, logger } from './io'
 import { jwt, graphql, graphiql } from './middleware'
+import 'services/bot/consumers'
+import 'services/iam/consumers'
+import 'services/onboarding/consumers'
 
 const launch = async function launch() {
   logger.info('Starting Jamout API, woohoo!')

@@ -20,7 +20,6 @@ const User = vogels.define('User', {
     didBotWelcome: Joi.boolean(),
     didBotExplainTeamJamout: Joi.boolean(),
     didBotExplainJamoutCommunity: Joi.boolean(),
-    scOauthToken: Joi.string(),
     permalink: Joi.string(),
     displayName: Joi.string(),
     location: Joi.string(),

@@ -8,6 +8,9 @@ import { createMessage, updateMessage } from 'models/Message'
 import botSideEffect from 'services/chat/botSideEffect'
 import { propEq, cond } from 'ramda'
 import uuid from 'uuid'
+import dynamoMerge from "dynamo-merge"
+import triggerSideEffect from 'services/chat/sideEffects'
+
 
 const channelTypeEnum = {
   TEAM_JAMOUT: 't',
@@ -46,9 +49,9 @@ export default {
       throw err
     }
   },
-  async sendTextMessage(
+  async sendMessage(
     root,
-    { input: { id, channelId: cid, text } }, { logger, viewer: { id: viewerId } }
+    { input: { id, channelId: cid, type, messageState } }, { logger, viewer: { id: viewerId } }
     ) {
     try {
       logger.debug('New text message received.')
@@ -72,22 +75,17 @@ export default {
 
       logger.debug('Creating item in DDB.')
       const message = await createMessage({
+        id,
         channelId,
-        id: uuid(),
         senderId: viewerId,
-        initialState: { text },
+        messageState,
         timestamp: microtime.nowDouble().toString()
       })
 
-      logger.debug('Publishing to PubSub.')
-      console.log(message)
-      pubsub.publish('messages', message)
+      logger.debug('Publishing to SNS topic.')
 
-      logger.debug('Triggering side effects.')
-      await cond([
-        [propEq('channelId', viewerId), botSideEffect],
-        [propEq('channelId', 't'), () => console.log('Send POST to Slack Thread.')]
-      ])(message)
+      logger.debug('Publishing to PubSub.')
+      pubsub.publish('messages', message)
 
       return message
     } catch (err) {
@@ -95,25 +93,17 @@ export default {
       return err
     }
   },
-  async dispatchMessageActions(root, { channelId, timestamp, actions }, { viewer }) {
+  async updateMessageState(root, { channelId, timestamp, messageState, action }, { viewer }) {
     if (!viewer) {
       throw new Error('Authentication failed.')
-    }
-    // Save the actions
-    const params = {
-      UpdateExpression: 'SET #actions = list_append(if_not_exists(#actions, :emptyList), :newActions)',
-      ExpressionAttributeNames: {
-        '#actions': 'actions'
-      },
-      ExpressionAttributeValues: {
-        ':emptyList': [],
-        ':newActions': actions
-      }
-    }
-    const message = await updateMessage({ channelId, timestamp }, params)
-    // Run side effects
-    // Save side effect actions
-    console.log(message)
-    return message
+    }1
+
+    // Update the message state in DDB.
+    const message = await updateMessage({ channelId, timestamp }, dynamoMerge({ messageState }))
+
+    // Run side effects based on action type.
+    const sideEffect = await triggerSideEffect(action)
+
+    return { message, sideEffect }
   }
 }
