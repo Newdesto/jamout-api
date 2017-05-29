@@ -4,7 +4,6 @@ import http from 'http'
 import rollbar from 'rollbar'
 import 'services/bot/consumers'
 import 'services/iam/consumers'
-import 'services/onboarding/consumers'
 import { app, logger } from './io'
 import { jwt, graphql, graphiql } from './middleware'
 
