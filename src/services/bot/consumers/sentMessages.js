@@ -16,9 +16,6 @@ const app = Consumer.create({
     try {
       const message = JSON.parse(Body)
       const { result } = await textRequest(message.messageState.text, {
-        contexts: [
-            { name: 'authenticated' }
-        ],
         sessionId: message.senderId
       })
 
