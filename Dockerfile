@@ -10,8 +10,7 @@ WORKDIR /api
 # for now always get the latest version of dependencies
 COPY package.json /api
 COPY build /api
-RUN npm install
-RUN npm install --dev
+RUN npm install -g
 
 # Install PM2
 RUN npm install -g pm2
