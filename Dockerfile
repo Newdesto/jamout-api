@@ -10,10 +10,10 @@ WORKDIR /api
 # for now always get the latest version of dependencies
 COPY package.json /api
 COPY build /api
-RUN npm install -g
+RUN yarn install --ignore-engines
 
 # Install PM2
-RUN npm install -g pm2
+RUN yarn global add pm2
 
 # Expose ports
 EXPOSE 3000
