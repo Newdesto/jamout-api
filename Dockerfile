@@ -11,6 +11,7 @@ WORKDIR /api
 COPY package.json /api
 COPY build /api
 RUN npm install
+RUN npm install --dev
 
 # Install PM2
 RUN npm install -g pm2
