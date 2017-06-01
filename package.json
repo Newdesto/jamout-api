@@ -142,6 +142,8 @@
     "date-fns": "^1.28.3",
     "dotenv": "^4.0.0",
     "dynamo-merge": "^1.0.0",
+    "dynamodb-niceupdate": "^0.0.5",
+    "dynamodb-update-expression": "^0.1.21",
     "eslint": "^3.19.0",
     "eslint-plugin-react": "^6.10.3",
     "express": "^4.14.1",
