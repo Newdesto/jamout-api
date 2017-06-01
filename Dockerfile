@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:boron
 
 ENV NODE_ENV=production
 
