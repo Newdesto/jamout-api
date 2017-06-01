@@ -11,6 +11,7 @@ WORKDIR /api
 COPY package.json /api
 COPY yarn.lock /api
 COPY build /api
+RUN yarn global add node-gyp
 RUN yarn install --ignore-engines
 
 # Install PM2
