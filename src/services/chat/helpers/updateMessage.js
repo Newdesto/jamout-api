@@ -6,7 +6,8 @@ const updateMessage = async function updateMessage(channelId, timestamp, updates
   const { attrs: original } = await Message.getAsync({ channelId, timestamp })
 
   console.log(getUpdateExpression(original, updates))
-  const { attrs } = await Message.updateAsync({ channelId, timestamp }, getUpdateExpression(original, updates))
+  const { attrs } =
+    await Message.updateAsync({ channelId, timestamp }, getUpdateExpression(original, updates))
   return attrs
 }
 

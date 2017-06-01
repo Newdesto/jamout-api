@@ -17,7 +17,7 @@ const app = Consumer.create({
   async handleMessage({ Body }, done) {
     try {
       const message = JSON.parse(Body)
-  
+
       // Get the context from the user object.
       const { botContexts = '[]' } = await getUserById(message.senderId)
 

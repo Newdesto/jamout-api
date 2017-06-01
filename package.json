@@ -31,6 +31,7 @@
     "rules": {
       "no-loop-func": "off",
       "no-shadow": "off",
+      "unicorn/no-abusive-eslint-disable": "off",
       "unicorn/filename-case": [
         "error",
         {
