@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:6.10.0-alpine
 
 ENV NODE_ENV=production
 
@@ -9,6 +9,7 @@ WORKDIR /api
 # we'll eventually want to ship the container with node_modules already there
 # for now always get the latest version of dependencies
 COPY package.json /api
+COPY yarn.lock /api
 COPY build /api
 RUN yarn install --ignore-engines
 
