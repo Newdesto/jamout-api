@@ -9,15 +9,26 @@ import eachSeries from 'async/eachSeries'
 import uuid from 'uuid'
 import microtime from 'microtime'
 import BPromise from 'bluebird'
+import updateUser from 'services/iam/updateUser'
+import getUserById from 'services/iam/helpers/getUserById'
 
 const app = Consumer.create({
   queueUrl: 'https://sqs.us-west-1.amazonaws.com/533183579694/bot-sentMessages',
   async handleMessage({ Body }, done) {
     try {
       const message = JSON.parse(Body)
+
+      // Get the context from the user object.
+      const { botContexts = '[]' } = await getUserById(message.senderId)
+
+      // Query API.ai
       const { result } = await textRequest(message.messageState.text, {
+        contexts: JSON.parse(botContexts),
         sessionId: message.senderId
       })
+
+      // Update the user obejct with the new context.
+      await updateUser(message.senderId, { botContexts: JSON.stringify(result.contexts) })
 
     // Convert the messages to Jamout's format.
       const dirtyMessages = fulfillmentToMessages(message.channelId, result.fulfillment)
