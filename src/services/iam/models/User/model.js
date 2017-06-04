@@ -4,7 +4,7 @@ import Joi from 'joi'
 // @TODO move table name to env var
 const User = vogels.define('User', {
   hashKey: 'id',
-  tableName: 'user',
+  tableName: 'user.identity',
   timestamps: true,
   schema: {
     id: vogels.types.uuid(),
