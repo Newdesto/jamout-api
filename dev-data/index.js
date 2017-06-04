@@ -3,8 +3,8 @@ import dynamodbTables from './dynamodb-tables'
 
 const main  = async function main() {
     try {
-            console.log('Waiting 10 seconds to allow fake-aws to initialize.')
-    await new Promise(resolve => setTimeout(resolve, 10000))
+            console.log('Waiting 30 seconds to allow fake-aws to initialize.')
+    await new Promise(resolve => setTimeout(resolve, 30000))
 
     // fake-aws doesn't support ssl.. duh.
     AWS.config.update({

@@ -6,7 +6,7 @@ const app = Consumer.create({
   async handleMessage({ Body }, done) {
     try {
       const body = JSON.parse(Body)
-      const { message, action } = body.sqs ? body.sqs : body
+      const { message, action } = body.sqs ? JSON.parse(body.sqs) : body
       const actionHandler = actionHandlers[action.type]
 
       if (actionHandler) {

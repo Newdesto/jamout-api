@@ -19,7 +19,6 @@ const app = Consumer.create({
     try {
       const body = JSON.parse(Body)
       const message = body.sqs ? JSON.parse(body.sqs) : body
-      console.log(message)
           
       // Get the context from the user object.
       const { botContexts = '[]' } = await getUserById(message.senderId)

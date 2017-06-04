@@ -22,6 +22,9 @@ services:
       - DYNAMODB_ENDPOINT=http://dynamodb.us-west-1.amazonaws.com:8000
       # dynamodb-admin var
       - DYNAMO_ENDPOINT=http://dynamodb.us-west-1.amazonaws.com:8000
+    volumes:
+      - ./dev-data:/dev-data
+      - /dev-data/node_modules
   jamout-api:
     build:
       context: .
@@ -30,6 +33,7 @@ services:
       - jamout-dev-data
     volumes:
       - ./src:/api/src
+      - /api/node_modules
     ports:
       - "3000:3000"
       - "9229:9229"
