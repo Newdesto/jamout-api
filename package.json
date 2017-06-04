@@ -26,6 +26,7 @@
     "envs": [
       "node"
     ],
+    "ignores": ["dev-data/**"],
     "parser": "babel-eslint",
     "extends": "airbnb",
     "rules": {

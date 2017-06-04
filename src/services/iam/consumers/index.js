@@ -1,1 +1,1 @@
-import updatedMessages from  './updatedMessages'
+import './updatedMessages'

@@ -2,11 +2,12 @@ import 'app-module-path/register'
 import { startSubscriptionServer } from 'io/subscription'
 import http from 'http'
 import rollbar from 'rollbar'
+import AWS from 'aws-sdk'
 import 'services/bot/consumers'
 import 'services/iam/consumers'
+
 import { app, logger } from './io'
 import { jwt, graphql, graphiql } from './middleware'
-import AWS from 'aws-sdk'
 
 const launch = async function launch() {
   try {

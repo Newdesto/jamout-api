@@ -1,1 +1,1 @@
-import sendMessages from './sentMessages'
+import './sentMessages'
