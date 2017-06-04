@@ -2,7 +2,8 @@ import AWS from 'aws-sdk'
 import dynamodbTables from './dynamodb-tables'
 
 const main  = async function main() {
-    console.log('Waiting 10 seconds to allow fake-aws to initialize.')
+    try {
+            console.log('Waiting 10 seconds to allow fake-aws to initialize.')
     await new Promise(resolve => setTimeout(resolve, 10000))
 
     // fake-aws doesn't support ssl.. duh.
@@ -129,6 +130,10 @@ const main  = async function main() {
 
     // Start the dynamodb-admin dashboard.
     require('dynamodb-admin')
+    } catch (err) {
+        console.error(err.message)
+        console.error(err.stack)
+    }
 }
 
 main()
