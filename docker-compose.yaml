@@ -1,0 +1,83 @@
+version: '3'
+
+services:
+  jamout-dev-data:
+    build:
+      context: ./dev-data
+      dockerfile: Dockerfile
+    ports:
+      - "3005:8001"
+    links:
+      - fake-s3:s3.amazonaws.com
+      - fake-sns-sqs:sns.us-west-1.amazonaws.com
+      - fake-sns-sqs:sqs.us-west-1.amazonaws.com
+      - fake-dynamodb:dynamodb.us-west-1.amazonaws.com
+    environment:
+      - AWS_REGION=us-west-1
+      - AWS_ACCESS_KEY_ID=FAKE
+      - AWS_SECRET_ACCESS_KEY=FAKE
+      - S3_ENDPOINT=http://s3.amazonaws.com:8000
+      - SNS_ENDPOINT=http://sns.us-west-1.amazonaws.com:4100
+      - SQS_ENDPOINT=http://sqs.us-west-1.amazonaws.com:4100
+      - DYNAMODB_ENDPOINT=http://dynamodb.us-west-1.amazonaws.com:8000
+      # dynamodb-admin var
+      - DYNAMO_ENDPOINT=http://dynamodb.us-west-1.amazonaws.com:8000
+    volumes:
+      - ./dev-data:/dev-data
+      - /dev-data/node_modules
+  jamout-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    depends_on:
+      - jamout-dev-data
+    volumes:
+      - ./src:/api/src
+      - /api/node_modules
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    links:
+      - fake-s3:s3-us-west-1.amazonaws.com
+      - fake-sns-sqs:sns.us-west-1.amazonaws.com
+      - fake-sns-sqs:sqs.us-west-1.amazonaws.com
+      - fake-dynamodb:dynamodb.us-west-1.amazonaws.com
+    environment:
+      - JWT_SECRET=b5c0b187fe309af-d1sn3yl4ndf0rever-0f4d35982fd961d7e
+      - JWT_AUDIENCE=localhost
+      - JWT_ISSUER=localhost
+      - STRIPE_SECRET=sk_test_0dvX8vB29k0aCRfzC33jvkOU
+      - AWS_REGION=us-west-1
+      - AWS_ACCESS_KEY_ID=FAKE
+      - AWS_SECRET_ACCESS_KEY=FAKE
+      - S3_ENDPOINT=http://s3.amazonaws.com:8000
+      - DYNAMODB_ENDPOINT=http://dynamodb.us-west-1.amazonaws.com:8000
+      - SNS_ENDPOINT=http://sns.us-west-1.amazonaws.com:4100
+      - SQS_ENDPOINT=http://sqs.us-west-1.amazonaws.com:4100
+
+      - TOPIC_SENT_MESSAGES=arn:aws:sns:local:000000000000:chat-sentMessages
+      - TOPIC_UPDATED_MESSAGES=arn:aws:sns:local:000000000000:chat-updatedMessages
+      - QUEUE_BOT_SENT_MESSAGES=http://sqs.us-west-1.amazonaws.com:4100/queue/bot-sentMessages
+      - QUEUE_IAM_UPDATED_MESSAGES=http://sqs.us-west-1.amazonaws.com:4100/queue/iam-updatedMessages
+
+  fake-s3:
+    image: scality/s3server
+    volumes:
+      - s3-data:/usr/src/app/localData
+      - s3-metadata:/usr/src/app/localMetadata
+    ports:
+      - "3001:8000"
+  fake-dynamodb:
+    image: cnadiminti/dynamodb-local
+    volumes:
+      - dynamodb-data:/dynamodb_local_db
+    ports:
+      - "3002:8000"
+  fake-sns-sqs:
+    image: pafortin/goaws
+    ports:
+      - "3003:4100"
+volumes:
+  s3-data:
+  s3-metadata:
+  dynamodb-data:

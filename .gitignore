@@ -5,3 +5,4 @@ npm-debug.log
 coverage
 .jamout-db/
 .DS_Store
+dev-data/node_modules

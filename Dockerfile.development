@@ -1,0 +1,24 @@
+FROM node:6.10.0
+
+ENV NODE_ENV=development
+
+RUN mkdir -p /api
+WORKDIR /api
+
+# install dependencies, npm is preinstalled from image
+# we'll eventually want to ship the container with node_modules already there
+# for now always get the latest version of dependencies
+COPY package.json /api
+COPY yarn.lock /api
+COPY src /api/src
+RUN yarn global add node-gyp
+RUN yarn install --ignore-engines
+
+# Install PM2
+RUN yarn global add nodemon
+
+# Expose ports
+EXPOSE 3000
+
+# init service
+CMD [ "yarn", "run", "dev"]
