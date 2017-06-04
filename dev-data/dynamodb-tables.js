@@ -53,7 +53,7 @@ export default [{
     WriteCapacityUnits: 5
   }
 }, {
-  TableName: 'user',
+  TableName: 'user.identity',
   AttributeDefinitions: [{
     AttributeName: 'id',
     AttributeType: 'S'
