@@ -48,12 +48,12 @@ const sendMessage =
         logger.debug('Publishing bot/team-jamout/jamout-community message to SNS topic.')
             // @NOTE We have to override the endpoint set by DDB.
         const sns = new SNS({
-          endpoint: 'sns.us-west-1.amazonaws.com'
+          endpoint: process.env.SNS_ENDPOINT
         })
 
             // We have to stringify both the SQS message and the SNS message.
         const snsMessage = {
-          TopicArn: 'arn:aws:sns:us-west-1:533183579694:chat-sentMessages',
+          TopicArn: process.env.TOPIC_SENT_MESSAGES,
           MessageStructure: 'json',
           Message: JSON.stringify({
             default: message.id,

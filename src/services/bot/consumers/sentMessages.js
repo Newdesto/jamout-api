@@ -11,13 +11,16 @@ import microtime from 'microtime'
 import BPromise from 'bluebird'
 import updateUser from 'services/iam/updateUser'
 import getUserById from 'services/iam/helpers/getUserById'
+import logger from 'io/logger'
 
 const app = Consumer.create({
-  queueUrl: 'https://sqs.us-west-1.amazonaws.com/533183579694/bot-sentMessages',
+  queueUrl: process.env.QUEUE_BOT_SENT_MESSAGES,
   async handleMessage({ Body }, done) {
     try {
-      const message = JSON.parse(Body)
-
+      const body = JSON.parse(Body)
+      const message = body.sqs ? JSON.parse(body.sqs) : body
+      console.log(message)
+          
       // Get the context from the user object.
       const { botContexts = '[]' } = await getUserById(message.senderId)
 
@@ -26,7 +29,7 @@ const app = Consumer.create({
         contexts: JSON.parse(botContexts),
         sessionId: message.senderId
       })
-
+      logger.info(result)
       // Update the user obejct with the new context.
       await updateUser(message.senderId, { botContexts: JSON.stringify(result.contexts) })
 
@@ -83,6 +86,7 @@ const app = Consumer.create({
 
       done()
     } catch (err) {
+      logger.error(err)
       done(err)
     }
   }

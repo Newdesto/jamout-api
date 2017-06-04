@@ -16,12 +16,18 @@ const resolvers = {
       throw err
     }
   },
-  signUp(root, args, { user: authedUser, User }) {
-    if (authedUser) {
-      throw new Error('Unauthorized.')
-    }
+  signUp(root, args, { user: authedUser, User, logger }) {
+    console.log(args)
+    try {
+      if (authedUser) {
+        throw new Error('Unauthorized.')
+      }
 
-    return User.create(args)
+      return User.create(args)
+    } catch (err) {
+      logger.error(err)
+      throw err
+    }
   },
   async verifyToken(root, { token }) {
     try {

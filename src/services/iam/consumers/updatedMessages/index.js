@@ -2,10 +2,11 @@ import Consumer from 'sqs-consumer'
 import actionHandlers from './actionHandlers'
 
 const app = Consumer.create({
-  queueUrl: 'https://sqs.us-west-1.amazonaws.com/533183579694/iam-updatedMessages',
+  queueUrl: process.env.QUEUE_IAM_UPDATED_MESSAGES,
   async handleMessage({ Body }, done) {
     try {
-      const { message, action } = JSON.parse(Body)
+      const body = JSON.parse(Body)
+      const { message, action } = body.sqs ? body.sqs : body
       const actionHandler = actionHandlers[action.type]
 
       if (actionHandler) {
