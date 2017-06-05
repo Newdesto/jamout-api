@@ -1,14 +1,13 @@
 import R from 'ramda'
-import { getCustomer } from 'utils/stripe'
+import { getSubscriptions } from 'utils/stripe'
 import userResolvers from './user'
 
 const resolvers = {
   ...R.omit(['connected'], userResolvers),
-  async stripeCustomer({ stripeCustomerId }) {
+  async stripeSubscriptions({ stripeCustomerId }) {
     if (stripeCustomerId) {
-      // @TODO Omit some customer attributes.
-      const stripeCustomer = await getCustomer(stripeCustomerId)
-      return stripeCustomer
+      const subscriptions = await getSubscriptions(stripeCustomerId)
+      return subscriptions
     }
 
     return null
