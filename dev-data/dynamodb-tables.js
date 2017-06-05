@@ -136,7 +136,7 @@ export default [{
     WriteCapacityUnits: 5
   }
 }, {
-  TableName: 'track',
+  TableName: 'music.track',
   AttributeDefinitions: [{
     AttributeName: 'id',
     AttributeType: 'S'
