@@ -9,6 +9,7 @@ type Mutation {
   verifyToken(token: String!): Boolean!
   updateMe(input: MeInput!): Me!
   generateS3Signature(stringToSign: String!, datetime: String!): String!
+  upgradeToPremium(token: String!): Me!
   # Chat
   createChannel(input: ChannelInput!): Channel
   updateMessageState(channelId: ID!, timestamp: String!, messageState: JSON!, action: ReduxActionInput!): Message!

@@ -69,12 +69,13 @@ export function setCard(customerId, stripeToken) {
   })
 }
 
-export function createSubscription(customerId, plan) {
+export function createSubscription({ customerId, plan, token }) {
   return new Promise((resolve, reject) => {
-    stripe.customers.createSubscription(
+    stripe.subscriptions.create({
       customerId,
-      { plan },
-      (error, subscription) => {
+      plan,
+      token
+    }, (error, subscription) => {
         if (error) { return reject(error) }
         return resolve(subscription)
       }

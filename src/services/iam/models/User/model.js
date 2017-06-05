@@ -13,10 +13,7 @@ const User = vogels.define('User', {
     password: Joi.string(),
     // roles: Joi.array()
     // .items(Joi.string().valid('partner', 'manager')).meta({ dynamoType: 'SS' }),
-    stripe: {
-      customerId: Joi.string(),
-      accountId: Joi.string()
-    },
+    stripeCustomerId: Joi.string(),
     didBotWelcome: Joi.boolean(),
     didBotExplainTeamJamout: Joi.boolean(),
     didBotExplainJamoutCommunity: Joi.boolean(),

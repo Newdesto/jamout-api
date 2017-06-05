@@ -20,6 +20,7 @@ type Me {
   didBotWelcome: Boolean
   didBotExplainTeamJamout: Boolean
   didBotExplainJamoutCommunity: Boolean
+  stripeCustomer: JSON
 }
 
 type MeContext {

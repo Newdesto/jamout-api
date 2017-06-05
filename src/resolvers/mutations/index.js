@@ -1,5 +1,6 @@
 import merge from 'lodash/merge'
 import chat from 'services/chat/mutations'
+import iam from 'services/iam/mutations'
 import authentication from './authentication'
 import generateS3Signature from './generateS3Signature'
 import release from './release'
@@ -12,6 +13,7 @@ import connection from './connection'
 
 const resolvers = {
   Mutation: merge(
+    iam,
     connection,
     authentication,
     generateS3Signature,

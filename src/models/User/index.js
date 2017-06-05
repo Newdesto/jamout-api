@@ -9,7 +9,6 @@ import {
   UserUsernameLoader,
   UserPermalinkLoader
 } from './loaders'
-import { createCustomer } from '../../utils/stripe'
 import { hashPassword, authenticate } from '../../utils/auth'
 
 const s3 = new AWS.S3()

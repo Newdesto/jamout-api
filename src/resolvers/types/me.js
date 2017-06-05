@@ -1,8 +1,16 @@
 import R from 'ramda'
+import { getCustomer } from 'utils/stripe'
 import userResolvers from './user'
 
 const resolvers = {
   ...R.omit(['connected'], userResolvers),
+  async stripeCustomer({ stripeCustomerId }) {
+    if (stripeCustomerId) {
+      // @TODO Omit some customer attributes.
+      const stripeCustomer = await getCustomer(stripeCustomerId)
+      return stripeCustomer
+    }
+  },
   jwt(root, args, { jwt, user }) {
     if (!user) {
       throw new Error('Authentication failed.')
