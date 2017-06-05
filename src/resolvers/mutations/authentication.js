@@ -17,7 +17,6 @@ const resolvers = {
     }
   },
   signUp(root, args, { user: authedUser, User, logger }) {
-    console.log(args)
     try {
       if (authedUser) {
         throw new Error('Unauthorized.')

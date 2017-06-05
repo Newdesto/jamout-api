@@ -107,7 +107,7 @@ export default class User {
 
     // Creates a Stripe customer for the new user.
     // @TODO queue a job.
-    const stripeCustomer = await createCustomer({
+    /*const stripeCustomer = await createCustomer({
       description: user.id // @TODO figure out if this is good lol
     })
 
@@ -116,10 +116,10 @@ export default class User {
       stripe: {
         customerId: stripeCustomer.id
       }
-    })
+    })*/
 
-    delete userStripe.password
-    const accessToken = jwt.sign(userStripe, secret, {
+    delete user.password
+    const accessToken = jwt.sign(user, secret, {
       subject: user.id,
       audience: process.env.JWT_AUDIENCE,
       issuer: process.env.JWT_ISSUER
