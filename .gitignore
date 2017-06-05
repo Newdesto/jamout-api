@@ -6,3 +6,4 @@ coverage
 .jamout-db/
 .DS_Store
 dev-data/node_modules
+.vscode
