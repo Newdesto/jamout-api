@@ -102,9 +102,9 @@ export function getSubscriptions(customer) {
     stripe.subscriptions.list({
       customer
     }, (error, subscriptions) => {
-          if (error) { return reject(error) }
-          return resolve(subscriptions.data)
-        }
+      if (error) { return reject(error) }
+      return resolve(subscriptions.data)
+    }
       )
   })
 }
