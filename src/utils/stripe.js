@@ -76,9 +76,9 @@ export function createSubscription({ customerId, plan, token }) {
       plan,
       token
     }, (error, subscription) => {
-        if (error) { return reject(error) }
-        return resolve(subscription)
-      }
+      if (error) { return reject(error) }
+      return resolve(subscription)
+    }
     )
   })
 }

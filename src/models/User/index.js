@@ -106,7 +106,7 @@ export default class User {
 
     // Creates a Stripe customer for the new user.
     // @TODO queue a job.
-    /*const stripeCustomer = await createCustomer({
+    /* const stripeCustomer = await createCustomer({
       description: user.id // @TODO figure out if this is good lol
     })
 

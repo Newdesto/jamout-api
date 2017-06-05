@@ -10,6 +10,8 @@ const resolvers = {
       const stripeCustomer = await getCustomer(stripeCustomerId)
       return stripeCustomer
     }
+
+    return null
   },
   jwt(root, args, { jwt, user }) {
     if (!user) {
