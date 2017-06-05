@@ -24,7 +24,7 @@ const upgradeToPremium = async function upgradeToPremium(root, { token }, contex
     // a default card.
   await createSubscription({
     token,
-    customer: viewer.id,
+    customer: viewer.stripeCustomerId,
     plan: 'artist-premium'
   })
 
