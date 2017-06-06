@@ -23,7 +23,7 @@ const app = Consumer.create({
 
       // Get the context from the user object.
       const { botContexts = '[]', stripeCustomerId } = await getUserById(message.senderId)
-      
+
       // Get premium status
       const hasPremium = {
         name: 'hasPremium',
@@ -40,7 +40,7 @@ const app = Consumer.create({
         }
       }
 
-      // Query API.ai 
+      // Query API.ai
       const { result } = await textRequest(message.messageState.text, {
         contexts: [
           ...JSON.parse(botContexts),
