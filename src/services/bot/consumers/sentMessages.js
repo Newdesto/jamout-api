@@ -12,6 +12,7 @@ import BPromise from 'bluebird'
 import updateUser from 'services/iam/updateUser'
 import getUserById from 'services/iam/helpers/getUserById'
 import logger from 'io/logger'
+import { getSubscriptions } from 'utils/stripe'
 
 const app = Consumer.create({
   queueUrl: process.env.QUEUE_BOT_SENT_MESSAGES,
@@ -21,11 +22,30 @@ const app = Consumer.create({
       const message = body.sqs ? JSON.parse(body.sqs) : body
 
       // Get the context from the user object.
-      const { botContexts = '[]' } = await getUserById(message.senderId)
+      const { botContexts = '[]', stripeCustomerId } = await getUserById(message.senderId)
+      
+      // Get premium status
+      const hasPremium = {
+        name: 'hasPremium',
+        lifespan: 0 // 0 == no, bro.
+      }
 
-      // Query API.ai
+      if (stripeCustomerId) {
+        const stripeSubscriptions = await getSubscriptions(stripeCustomerId)
+        const artistPremiumPlan = stripeSubscriptions
+          .filter(s => s.plan.id === 'artist-premium')
+
+        if (artistPremiumPlan.length !== 0) {
+          hasPremium.lifespan = 1
+        }
+      }
+
+      // Query API.ai 
       const { result } = await textRequest(message.messageState.text, {
-        contexts: JSON.parse(botContexts),
+        contexts: [
+          ...JSON.parse(botContexts),
+          hasPremium
+        ],
         sessionId: message.senderId
       })
       logger.info(result)
