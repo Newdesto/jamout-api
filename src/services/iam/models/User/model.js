@@ -20,7 +20,7 @@ const User = vogels.define('User', {
       accountId: Joi.string()
     },
     scOauthToken: Joi.string(),
-    avatarKey: Joi.string(),
+    avatarKey: Joi.string()
   },
   indexes: [
     { hashKey: 'email', name: 'email-index', type: 'global' },

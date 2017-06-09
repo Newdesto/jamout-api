@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken'
 import AWS from 'aws-sdk'
-import shortid from 'shortid'
 import { createError } from 'apollo-errors'
 import { fromJS } from 'immutable'
 import { createCustomer } from 'utils/stripe'
@@ -176,7 +175,7 @@ export default class User {
     // This is an EXTREMELY bad performance issue - we query for the user
     // object, convert the user object and the input to immutable objects,
     // and deepMerge them.
-        console.log(input)
+    console.log(input)
 
     const oldUserItem = await userModel.getAsync({ id })
     console.log(oldUserItem)

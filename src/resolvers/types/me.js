@@ -18,7 +18,7 @@ const resolvers = {
     }
 
     return jwt
-  },
+  }
 }
 
 export default resolvers
