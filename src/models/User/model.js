@@ -8,39 +8,23 @@ const User = vogels.define('User', {
   timestamps: true,
   schema: {
     id: vogels.types.uuid(),
+    displayName: Joi.string(),
+    city: Joi.string(),
+    country: Joi.string(),
+    blurb: Joi.string(),
     email: Joi.string().email(),
-    username: Joi.string(),
+    phoneNumber: Joi.string(),
     password: Joi.string(),
-    // roles: Joi.array()
-    // .items(Joi.string().valid('partner', 'manager')).meta({ dynamoType: 'SS' }),
     stripe: {
       customerId: Joi.string(),
       accountId: Joi.string()
     },
-    didBotWelcome: Joi.boolean(),
-    didBotExplainTeamJamout: Joi.boolean(),
-    didBotExplainJamoutCommunity: Joi.boolean(),
     scOauthToken: Joi.string(),
-    permalink: Joi.string(),
-    displayName: Joi.string(),
-    location: Joi.string(),
     avatarKey: Joi.string(),
-    // Context is context for the website UI, assistant, etc.
-    context: Joi.object().keys({
-      assistant: Joi.array(), // Literally a copy of API.ai's context.
-      web: Joi.object().keys({
-        role: Joi.string().valid('partner', 'artist')
-      })
-    }),
-    // User roles. (e.g.; artist, partner:jd2Dw)
-    roles: Joi.array().items(Joi.string()),
-    // @TODO Permissions?
-    acl: Joi.string()
   },
   indexes: [
     { hashKey: 'email', name: 'email-index', type: 'global' },
-    { hashKey: 'username', name: 'username-index', type: 'global' },
-    { hashKey: 'permalink', name: 'permalink-index', type: 'global' }
+    { hashKey: 'username', name: 'username-index', type: 'global' }
   ]
 })
 

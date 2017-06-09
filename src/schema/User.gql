@@ -2,15 +2,12 @@ type User {
   createdAt: String!
   updatedAt: String
   id: ID!
-  username: String!
-  permalink: String!
-  displayName: String!
-  location: String
-  avatarKey: String
+  displayName: String
+  city: String
+  country: String
+  blurb: String
+  email: String
+  phoneNumber: String
   avatarUrl: String
-  connections: [Connection!]
-  # Defines whether or not the current user is connected to this user.
-  connected: ConnectionStatus,
-  acl: String,
-  tracks: [Track!]
+  scOauthToken: String
 }

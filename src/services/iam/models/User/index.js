@@ -97,11 +97,9 @@ export default class User {
     const hashedPassword = await hashPassword(password)
     const { attrs: user } = await userModel.createAsync({
       email,
-      username,
       displayName: username,
       // Generate permalink so we can be sure that it's not taken. Conflicting
       // permalinks are the devil.
-      permalink: shortid.generate(),
       password: hashedPassword
     })
 
@@ -178,7 +176,11 @@ export default class User {
     // This is an EXTREMELY bad performance issue - we query for the user
     // object, convert the user object and the input to immutable objects,
     // and deepMerge them.
+        console.log(input)
+
     const oldUserItem = await userModel.getAsync({ id })
+    console.log(oldUserItem)
+    console.log(input)
     const oldUser = fromJS(oldUserItem.attrs)
 
     const newUser = fromJS(input)
