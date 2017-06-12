@@ -1,7 +1,9 @@
 import upgradeToPremium from './upgradeToPremium'
+import updatePremium from './updatePremium'
 
 const mutations = {
-  upgradeToPremium
+  upgradeToPremium,
+  updatePremium
 }
 
 export default mutations

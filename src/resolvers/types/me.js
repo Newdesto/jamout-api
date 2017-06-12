@@ -1,5 +1,5 @@
 import R from 'ramda'
-import { getSubscriptions } from 'utils/stripe'
+import { getSubscriptions, getCustomer } from 'utils/stripe'
 import userResolvers from './user'
 
 const resolvers = {
@@ -8,6 +8,14 @@ const resolvers = {
     if (stripeCustomerId) {
       const subscriptions = await getSubscriptions(stripeCustomerId)
       return subscriptions
+    }
+
+    return null
+  },
+  async stripeCustomer({ stripeCustomerId }) {
+    if (stripeCustomerId) {
+        const customer = await getCustomer(stripeCustomerId)
+        return customer
     }
 
     return null

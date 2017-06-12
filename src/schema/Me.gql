@@ -13,6 +13,7 @@ type Me {
   phoneNumber: String
   avatarUrl: String
   stripeCustomerId: String
+  stripeCustomer: JSON!
   stripeSubscriptions: [JSON!]
 }
 
