@@ -1,7 +1,10 @@
 input UpdateUserInput {
-  permalink: String
   displayName: String
-  location: String
-  avatarKey: String
+  city: String
+  country: String
+  blurb: String
+  email: String
+  phoneNumber: String
+  password: String
   scOauthToken: String
 }

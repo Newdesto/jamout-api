@@ -5,22 +5,15 @@ type Me {
   createdAt: String!
   updatedAt: String
   id: ID!
-  username: String!
   email: String!
-  permalink: String!
   displayName: String!
-  location: String
+  city: String
+  country: String
+  blurb: String
+  phoneNumber: String
   avatarUrl: String
-  connections: [Connection!]
-  roles: [String!]
-  permissions: [String!]
-  context: MeContext
-  acl: String # *, null, private
-  tracks: [Track!]
-  didBotWelcome: Boolean
-  didBotExplainTeamJamout: Boolean
-  didBotExplainJamoutCommunity: Boolean
   stripeCustomerId: String
+  stripeCustomer: JSON!
   stripeSubscriptions: [JSON!]
 }
 
@@ -36,9 +29,7 @@ type MeWebContext {
 input MeInput {
   id: ID!
   username: String
-  permalink: String
   displayName: String
-  location: String
   avatarKey: String
   context: MeContextInput
   acl: String
