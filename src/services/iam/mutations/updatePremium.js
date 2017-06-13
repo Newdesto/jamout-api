@@ -11,7 +11,11 @@ const updatePremium = async function updatePremium(root, {
     await setCard(viewer.stripeCustomerId, token)
   }
   if (autopay !== null) {
-    await updateSubscription(viewer.stripeCustomerId, subscriptionId, { cancel_at_period_end: autopay })
+    await updateSubscription(
+      viewer.stripeCustomerId,
+      subscriptionId,
+      { cancel_at_period_end: autopay }
+    )
   }
   return viewer
 }
