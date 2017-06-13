@@ -1,12 +1,11 @@
 import { deleteSubscription } from 'utils/stripe'
-import User from '../models/User/model'
 
 const cancelPremium = async function cancelPremium(root, { subscriptionId }, context) {
-  let viewer = context.viewer
+  const viewer = context.viewer
   if (!viewer.stripeCustomerId || !subscriptionId) {
     return viewer
   }
-  const stripeCustomer = await deleteSubscription(subscriptionId)
+  await deleteSubscription(subscriptionId)
 
   return viewer
 }

@@ -14,8 +14,8 @@ const resolvers = {
   },
   async stripeCustomer({ stripeCustomerId }) {
     if (stripeCustomerId) {
-        const customer = await getCustomer(stripeCustomerId)
-        return customer
+      const customer = await getCustomer(stripeCustomerId)
+      return customer
     }
 
     return null
