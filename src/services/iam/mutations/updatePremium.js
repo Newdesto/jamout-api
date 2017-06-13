@@ -3,9 +3,6 @@ import User from '../models/User/model'
 
 const updatePremium = async function updatePremium(root, { token, autopay, subscriptionId }, context) {
   let viewer = context.viewer
-  console.log(subscriptionId)
-  console.log(token)
-  console.log(autopay)
   if (!viewer.stripeCustomerId) {
     return viewer
   }

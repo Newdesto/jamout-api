@@ -11,6 +11,7 @@ type Mutation {
   generateS3Signature(stringToSign: String!, datetime: String!): String!
   upgradeToPremium(token: String!): Me!
   updatePremium(token: String, autopay: Boolean, subscriptionId: String!): Me!
+  cancelPremium(subscriptionId: String!): Me!
   # Chat
   createChannel(input: ChannelInput!): Channel
   updateMessageState(channelId: ID!, timestamp: String!, messageState: JSON!, action: ReduxActionInput!): Message!

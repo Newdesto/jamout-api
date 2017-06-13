@@ -109,5 +109,18 @@ export function getSubscriptions(customer) {
   })
 }
 
+export function deleteSubscription(subscriptionId) {
+    return new Promise((resolve, reject) => {
+      stripe.subscriptions.del(
+        subscriptionId,
+        { at_period_end: true },
+        (error, subscription) => {
+          if (error) { return reject(error) }
+          return resolve(subscription)
+        }
+      )
+  })
+}
+
 
 export default stripe
