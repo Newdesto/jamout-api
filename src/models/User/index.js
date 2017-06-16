@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken'
 import AWS from 'aws-sdk'
-import shortid from 'shortid'
 import { createError } from 'apollo-errors'
 import { fromJS } from 'immutable'
 import userModel from './model'
