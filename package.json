@@ -9,7 +9,6 @@
     "build": "babel -d ./build ./src",
     "prod": "NODE_ENV=production pm2-docker ./index.js",
     "lint": "xo",
-    // "test": "NODE_ENV=test nyc xo && ava -v",
     "test": "echo 0",
     "watch:test": "NODE_ENV=test ava -w -v"
   },
