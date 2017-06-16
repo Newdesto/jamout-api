@@ -29,7 +29,6 @@ const typeDefs = [
   ...musicSchema
 ]
 
-
 export default makeExecutableSchema({
   typeDefs,
   resolvers: {

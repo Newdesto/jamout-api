@@ -30,7 +30,7 @@ enum TrackPrivacySetting {
     OWNER_ONLY
 }
 
-enum TrackStatus: {
+enum TrackStatus {
   LIVE
   PROCESSING
   ISSUE
