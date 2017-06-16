@@ -6,6 +6,7 @@ import typeResolvers from 'resolvers/types'
 import scalarResolvers from 'resolvers/scalar'
 import iamSchema from 'services/iam/schema'
 import distributionSchema from 'services/distribution/schema'
+import musicSchema from 'services/music/schema'
 import schema from './schema.gql'
 import scalar from './scalar.gql'
 import NodeInterface from './NodeInterface.gql'
@@ -13,9 +14,6 @@ import EventInterface from './EventInterface.gql'
 import Mutation from './Mutation.gql'
 import Query from './Query.gql'
 import Subscription from './Subscription.gql'
-import Track from './Track.gql'
-import Album from './Album.gql'
-import Playlist from './Playlist.gql'
 
 // @TODO combine schemas by module (e.g.; combine all release defs)
 const typeDefs = [
@@ -28,9 +26,7 @@ const typeDefs = [
   // Subscription,
   ...iamSchema,
   ...distributionSchema,
-  Track,
-  Album,
-  Playlist
+  ...musicSchema
 ]
 
 
