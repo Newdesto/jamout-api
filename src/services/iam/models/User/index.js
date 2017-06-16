@@ -1,15 +1,15 @@
 import jwt from 'jsonwebtoken'
 import AWS from 'aws-sdk'
-import shortid from 'shortid'
 import { createError } from 'apollo-errors'
 import { fromJS } from 'immutable'
+import { createCustomer } from 'utils/stripe'
+import { hashPassword, authenticate } from 'utils/auth'
 import userModel from './model'
 import {
   UserIdLoader,
   UserUsernameLoader,
   UserPermalinkLoader
 } from './loaders'
-import { hashPassword, authenticate } from '../../utils/auth'
 
 const s3 = new AWS.S3()
 const secret = process.env.JWT_SECRET
@@ -104,7 +104,7 @@ export default class User {
 
     // Creates a Stripe customer for the new user.
     // @TODO queue a job.
-    /* const stripeCustomer = await createCustomer({
+    const stripeCustomer = await createCustomer({
       description: user.id // @TODO figure out if this is good lol
     })
 
@@ -113,10 +113,10 @@ export default class User {
       stripe: {
         customerId: stripeCustomer.id
       }
-    })*/
+    })
 
-    delete user.password
-    const accessToken = jwt.sign(user, secret, {
+    delete userStripe.password
+    const accessToken = jwt.sign(userStripe, secret, {
       subject: user.id,
       audience: process.env.JWT_AUDIENCE,
       issuer: process.env.JWT_ISSUER
@@ -175,19 +175,14 @@ export default class User {
     // This is an EXTREMELY bad performance issue - we query for the user
     // object, convert the user object and the input to immutable objects,
     // and deepMerge them.
-
-    const data = input
-
-    if (data.password) {
-      data.password = await hashPassword(data.password)
-    } else {
-      delete data.password
-    }
+    console.log(input)
 
     const oldUserItem = await userModel.getAsync({ id })
+    console.log(oldUserItem)
+    console.log(input)
     const oldUser = fromJS(oldUserItem.attrs)
-    console.log(data)
-    const newUser = fromJS(data)
+
+    const newUser = fromJS(input)
 
     const updatedUser = oldUser.mergeDeep(newUser)
     const { attrs } = await userModel.updateAsync(updatedUser.toJS())

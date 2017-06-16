@@ -1,0 +1,44 @@
+# Me is a User object on steroids. Me typed objects can only be queried
+# by the owner.
+type Me {
+  jwt: String
+  createdAt: String!
+  updatedAt: String
+  id: ID!
+  email: String!
+  displayName: String!
+  city: String
+  country: String
+  blurb: String
+  phoneNumber: String
+  avatarUrl: String
+  stripeCustomerId: String
+  stripeCustomer: JSON
+  stripeSubscriptions: [JSON!]
+}
+
+type MeContext {
+  assistant: [JSON!]
+  web: MeWebContext
+}
+
+type MeWebContext {
+  role: String
+}
+
+input MeInput {
+  id: ID!
+  username: String
+  displayName: String
+  avatarKey: String
+  context: MeContextInput
+  acl: String
+}
+
+input MeContextInput {
+  web: MeWebContextInput
+}
+
+input MeWebContextInput {
+  role: String!
+}

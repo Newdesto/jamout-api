@@ -1,10 +1,13 @@
-input UpdateUserInput {
+type User {
+  createdAt: String!
+  updatedAt: String
+  id: ID!
   displayName: String
   city: String
   country: String
   blurb: String
   email: String
   phoneNumber: String
-  password: String
+  avatarUrl: String
   scOauthToken: String
 }

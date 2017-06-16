@@ -5,7 +5,19 @@ type Mutation {
   verifyToken(token: String!): Boolean!
   updateUser(input: UserInput!): User!
   generateS3Signature(stringToSign: String!, datetime: String!): String!
+<<<<<<< HEAD
   upgradeToPremium(token: String!): User!
+=======
+  upgradeToPremium(token: String!): Me!
+  updatePremium(token: String, autopay: Boolean, subscriptionId: String!): Me!
+  cancelPremium(subscriptionId: String!): Me!
+  # Chat
+  createChannel(input: ChannelInput!): Channel
+  updateMessageState(channelId: ID!, timestamp: String!, messageState: JSON!, action: ReduxActionInput!): Message!
+    # messageState !== action.payload because the messageState represents the output of the reducer
+    # function. The action.payload can be anything - no neccessarily the new message state.
+  sendMessage(input: MessageInput!): Message!
+>>>>>>> 1ddca92453edaf5ac23a156a2e8988e8991d4100
 
   # Distribution
   updateRelease(contentId: ID!, input: ReleaseInput!): Release!

@@ -1,0 +1,5 @@
+type Playlist implements Node {
+    id: ID!
+    createdAt: String!
+    updatedAt: String
+}

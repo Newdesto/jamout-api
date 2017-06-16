@@ -3,7 +3,6 @@ import User from '../models/User'
 
 const upgradeToPremium = async function upgradeToPremium(root, { token }, context) {
   let viewer = context.viewer
-
     // Create a Stripe customer account if they do not have one yet.
   if (!viewer.stripeCustomerId) {
     const stripeCustomer = await createCustomer({
