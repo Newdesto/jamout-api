@@ -4,7 +4,7 @@
   "description": "The API for Jamout - Built using GraphQL, DataLoader, Dgraph, DynamoDB, etc",
   "main": "src/index.js",
   "scripts": {
-    "dev": "BABEL_DISABLE_CACHE=1 && echo 'Waiting 45 seconds to let fake-aws start up.' && sleep 45 && nodemon --inspect ./src/index.babel.js",
+    "dev": "BABEL_DISABLE_CACHE=1 && echo 'Waiting 45 seconds to let fake-aws start up.' && sleep 45 && nodemon --inspect=9229 ./src/index.babel.js",
     "clean": "rm -rf build && mkdir build",
     "build": "babel -d ./build ./src",
     "prod": "NODE_ENV=production pm2-docker ./index.js",
@@ -26,7 +26,9 @@
     "envs": [
       "node"
     ],
-    "ignores": ["dev-data/**"],
+    "ignores": [
+      "dev-data/**"
+    ],
     "parser": "babel-eslint",
     "extends": "airbnb",
     "rules": {
@@ -112,7 +114,6 @@
     "babel-preset-stage-0": "^6.16.0",
     "babel-runtime": "^6.22.0",
     "dynalite": "^1.2.0",
-    "dynamodb-admin": "^1.10.0",
     "eslint": "^3.14.1",
     "eslint-config-airbnb": "^14.0.0",
     "eslint-plugin-import": "^2.2.0",
@@ -170,7 +171,9 @@
     "redis": "^2.6.3",
     "redux": "^3.6.0",
     "request": "^2.79.0",
+    "request-promise": "^4.2.1",
     "rollbar": "^0.6.5",
+    "s3-upload-stream": "^1.0.7",
     "sharp": "^0.17.3",
     "shortid": "^2.2.6",
     "sqs-consumer": "^3.6.0",

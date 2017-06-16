@@ -1,36 +1,12 @@
 type Mutation {
-  # Connection
-  addConnection(friendId: ID!): [Connection!]!
-  deleteConnection(friendId: ID!): [Connection!]
-  acceptConnection(friendId: ID!): [Connection!]!
   # Authentication + Utils
-  login(email: String!, password: String!): String!
-  signUp(email: String!, username: String!, password: String!): String!
+  login(email: String, password: String, scAccessToken: String): String!
+  # signUp(email: String!, username: String!, password: String!): String!
   verifyToken(token: String!): Boolean!
-  updateMe(input: MeInput!): Me!
+  updateUser(input: UserInput!): User!
   generateS3Signature(stringToSign: String!, datetime: String!): String!
-  upgradeToPremium(token: String!): Me!
-  # Chat
-  createChannel(input: ChannelInput!): Channel
-  updateMessageState(channelId: ID!, timestamp: String!, messageState: JSON!, action: ReduxActionInput!): Message!
-    # messageState !== action.payload because the messageState represents the output of the reducer
-    # function. The action.payload can be anything - no neccessarily the new message state.
-  sendMessage(input: MessageInput!): Message!
+  upgradeToPremium(token: String!): User!
 
   # Distribution
-  createRelease(input: ReleaseInput!): Release
-  createStudioEvent(type: String, nextEvent: StudioEventInput): StudioEvent
-  updateRelease(id: ID!, input: ReleaseInput!): Release
-  deleteRelease(id: ID!): ID!
-  payForRelease(id: ID!, stripeToken: String!, saveSource: Boolean!): Release
-  addReleaseTrack(releaseId: ID!, input: ReleaseTrackInput): ReleaseTrack!
-  updateReleaseTrack(releaseId: ID!, trackId: ID!, input: ReleaseTrackInput): ReleaseTrack!
-  deleteReleaseTrack(releaseId: ID!, trackId: ID!): ReleaseTrack
-  createMusicEvent(eventData: MusicEventInput): MusicEvent!
-  createEventArtist(artistData: EventArtistInput): EventArtist!
-  updateEventArtist(eventArtist: UpdateEventArtistInput!, response: String!): EventArtist!
-  updateTrack(id: ID!, input: TrackInput!): Track!
-  createTrack(title: String!, privacySetting: Int!, audioKeyExtension: String!): Track!
-  deleteTrack(trackId: ID!): String!
-  updateUser(updatedUser: UpdateUserInput!): User!
+  updateRelease(contentId: ID!, input: ReleaseInput!): Release!
 }

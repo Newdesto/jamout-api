@@ -1,5 +1,0 @@
-enum ReleaseType {
-  SINGLE,
-  EP,
-  ALBUM
-}

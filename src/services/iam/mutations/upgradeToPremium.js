@@ -1,5 +1,5 @@
 import { createCustomer, createSubscription } from 'utils/stripe'
-import User from '../models/User/model'
+import User from '../models/User'
 
 const upgradeToPremium = async function upgradeToPremium(root, { token }, context) {
   let viewer = context.viewer

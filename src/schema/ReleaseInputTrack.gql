@@ -1,9 +1,0 @@
-input ReleaseInputTrack {
-  primaryArtists: [String!],
-  featuredArtists: [String!],
-  position: Int,
-  title: String,
-  explicit: Boolean,
-  s3Key: String,
-  price: Int
-}

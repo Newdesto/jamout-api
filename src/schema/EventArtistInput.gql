@@ -1,5 +1,0 @@
-input EventArtistInput {
-    userId: ID!
-    eventId: ID!
-    partnerId: ID!
-  }
