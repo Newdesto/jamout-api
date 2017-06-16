@@ -8,40 +8,7 @@ const s3 = new AWS.S3()
 // @TODO Create Enum for status, type, lang, genre, prices?
 // @NOTE we allow most nulls bc of the draft system
 const resolvers = {
-  artworkUrl(release) {
-    if (!release.artworkS3Key) { return null }
-    const params = { Bucket: 'jamout-distribution', Key: release.artworkS3Key }
-    const url = s3.getSignedUrl('getObject', params)
-    return url
-  },
-  status(release) {
-    return {
-      d: 'DRAFT',
-      pp: 'PAID_PENDING',
-      p: 'PROCESSING',
-      ps: 'PROCESSED_SUBMITTED',
-      r: 'RELEASED'
-    }[release.status]
-  },
-  type(release) {
-    return {
-      s: 'SINGLE',
-      e: 'EP',
-      a: 'ALBUM'
-    }[release.type]
-  },
-  readableType(release) {
-    return {
-      s: 'single',
-      e: 'EP',
-      a: 'album'
-    }[release.type]
-  },
-  async tracklist(release, args, { Release }) {
-    // Get the tracks using the release.id
-    const tracks = await Release.getTracks(release.id)
-    return tracks
-  }
+
 }
 
 export default resolvers

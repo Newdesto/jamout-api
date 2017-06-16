@@ -1,0 +1,5 @@
+interface Node {
+    id: ID! # UUID
+    createdAt: String! # ISO date string
+    updatedAt: String # ISO date string
+}

@@ -1,0 +1,30 @@
+# Settings that can be changes by the user.
+
+input ReleaseInput {
+    defaultMetadata: ReleaseMetadataInput
+    rightsHolder: ReleaseRightsHolderInput
+}
+
+input ReleaseMetadataInput {
+    title: String
+    artist: String
+    recordLabel: String
+    language: String
+    primaryGenre: String
+    secondaryGenre: String
+    releaseDate: String
+    price: Int
+
+    artworkS3Key: String
+}
+
+input ReleaseRightsHolderInput {
+    firstName: String
+    lastName: String
+    address: String
+    city: String
+    state: String
+    zipCode: String
+    phoneNumber: String
+    didAgree: Boolean
+}

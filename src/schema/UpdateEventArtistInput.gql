@@ -1,9 +1,0 @@
-input UpdateEventArtistInput {
-  createdAt: String
-  id: ID!
-  username: String
-  eventId: ID!
-  partnerId: ID
-  userId: ID
-  status: String
-  }

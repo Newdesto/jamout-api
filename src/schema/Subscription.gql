@@ -1,11 +1,3 @@
 type Subscription {
-  # Subscribes current user to a chat channel
-  # Publishes everything but new messages, with the exception of the latest message.
-  # This is used for notifications when the user doesn't have the channel open.
-  channel(channelId: ID!): Channel!
-
-  # Subscribes the current user to messages within a certain chat channel
-  # Publishes messages in a RTE wrapper
-  # This is used for a channel that is open and the assistant.
-  messages(channelId: ID!): Message!
+  viewer: User!
 }

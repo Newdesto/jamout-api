@@ -1,4 +1,4 @@
-import User from '../models/User/model'
+import User from '../models/User'
 
 const getUserById = async function getUserById(id) {
   const { attrs } = await User.getAsync(id)

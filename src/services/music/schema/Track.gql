@@ -1,0 +1,37 @@
+type Track implements Node {
+    id: ID!
+    createdAt: String!
+    updatedAt: String
+    soundCloudId: Int
+    userId: String!
+    privacySetting: TrackPrivacySetting!
+
+    title: String!
+    artist: String!
+
+    artworkS3Key: String
+    artworkUrl: String
+
+    primaryGenre: String
+    secondaryGenre: String
+
+    description: String
+    status: TrackStatus
+
+    duration: Int
+    fileFormat: String
+    fileSize: Int
+
+    isrc: String
+}
+
+enum TrackPrivacySetting {
+    ANYONE
+    OWNER_ONLY
+}
+
+enum TrackStatus {
+  LIVE
+  PROCESSING
+  ISSUE
+}

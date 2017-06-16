@@ -1,14 +1,7 @@
 type Query {
-  me: Me
-  assistantChannel: Channel
-  channels(excludeAssistant: Boolean, messageLimit: Int, channelId: ID): [Channel!]!
-  messages(channelId: ID!): [Message!]!
-  release(id: ID!): Release
-  releases: [Release!]!
-  user(id: ID, permalink: String, username: String): User
-  users: [User!]
-  studioEvent: [[StudioEvent]]
-  musicEvents: [MusicEvent]
-  eventArtist(eventId: ID): [EventArtist]
-  track(id: ID!): Track
+  viewer: User # Null = Guest
+  node(id: ID!): Node
+
+  tracks: [Track!]!
+  playlists: [Playlist!]!
 }

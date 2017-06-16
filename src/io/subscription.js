@@ -4,13 +4,8 @@ import schema from 'schema'
 import { setupFunctions } from 'resolvers/subscriptions'
 import jwt from 'jsonwebtoken'
 import Release from 'models/Release'
-import Connection from 'models/Connection'
 import User, { UserIdLoader, UserUsernameLoader, UserPermalinkLoader } from 'models/User'
-import Partner from 'models/Partner/model'
-import StudioEvent from 'models/StudioEvent'
-import MusicEvent from 'models/MusicEvent'
 import Track from 'models/Track'
-import EventArtist from 'models/EventArtist'
 import { logger } from 'io'
 
 // Create a GQL subscription manager using an EventEmitter as the pubsub
@@ -49,15 +44,11 @@ export const startSubscriptionServer = function startSubscriptionServer(httpServ
         user,
         logger,
         pubsub,
-        Connection,
         Partner,
         Release,
         currentUser: user,
         viewer: user,
         User: userConnector,
-        StudioEvent: new StudioEvent(),
-        MusicEvent: new MusicEvent(),
-        EventArtist: new EventArtist(),
         Track: new Track()
       }
     }
