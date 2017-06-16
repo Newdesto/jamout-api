@@ -1,5 +1,5 @@
 const viewer = function viewer(root, args, { viewer }) {
-    return viewer
+  return viewer
 }
 
 export default viewer

@@ -15,25 +15,24 @@ const app = Consumer.create({
       logger.debug(message.payload)
 
       // Route to the right consumer...
-      switch(message.type) {
+      switch (message.type) {
           // Import all the track data when an new user signs up.
-          case 'IAM_SIGNED_UP':
-            await importAllTracks(message.payload)
-            break
+        case 'IAM_SIGNED_UP':
+          await importAllTracks(message.payload)
+          break
           // Import the playlist when all their track data imported.
-         case 'SOUNDCLOUD_IMPORTER_IMPORTED_ALL_TRACKS':
-            await importAllPlaylists(message.payload)
-            break
-         case 'SOUNDCLOUD_IMPORTER_IMPORTED_TRACK_DATA':
-            await importTrackFiles(message.payload)
+        case 'SOUNDCLOUD_IMPORTER_IMPORTED_ALL_TRACKS':
+          await importAllPlaylists(message.payload)
+          break
+        case 'SOUNDCLOUD_IMPORTER_IMPORTED_TRACK_DATA':
+          await importTrackFiles(message.payload)
          // Import the track files when a user submits a release.
-         case 'DISTRIBUTION_SUBMITTED_RELEASE':
-            //await importTrackFilesForRelease(message.payload)
-            break
+        case 'DISTRIBUTION_SUBMITTED_RELEASE':
+            // await importTrackFilesForRelease(message.payload)
+          break
       }
 
       done()
-
     } catch (err) {
       logger.error(err)
       done(err)

@@ -1,7 +1,7 @@
 import updateRelease from './updateRelease'
 
 const mutations = {
-    updateRelease,
+  updateRelease
 }
 
 export default mutations

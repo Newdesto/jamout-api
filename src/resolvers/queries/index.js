@@ -4,7 +4,7 @@ import node from './node'
 const resolvers = {
   Query: {
     ...node,
-    ...iam,
+    ...iam
   }
 }
 

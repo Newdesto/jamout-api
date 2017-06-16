@@ -7,7 +7,7 @@
 #   3. Delete an existing track/album from a specific channel. E.g.; deleting the 
 #      content from Spotify.
 
-union ReleaseContent = Track | Album | Playlist
+union ReleaseContent = Tracks
 type Release implements Node {
   id: ID!
   createdAt: String!

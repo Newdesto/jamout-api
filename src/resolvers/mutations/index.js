@@ -8,7 +8,7 @@ const resolvers = {
   Mutation: {
     ...iam,
     ...distribution,
-    ...generateS3Signature,
+    ...generateS3Signature
   }
 }
 

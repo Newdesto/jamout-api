@@ -1,7 +1,7 @@
 import viewer from './viewer'
 
 const queries = {
-    viewer
+  viewer
 }
 
 export default queries

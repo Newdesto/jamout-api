@@ -9,22 +9,22 @@ import getReleaseByContentId from 'services/distribution/helpers/getReleaseByCon
  * helper for example.
  */
 const resolver = {
-    async node(root, { id }, { viewer }) {
-        const idPrefixToGetHelper = {
-            IU: getUserById,
-            DR: id => getReleaseByContentId({ contentId: id, userId: viewer.id })
-        }
-
-        const idPrefix = id.split('-')[0]
-        const getHelper = idPrefixToGetHelper[idPrefix]
-
-        if (!getHelper) {
-            throw new Error('Invalid Node ID.')
-        } 
-
-        const node = await getHelper(id)
-        return node
+  async node(root, { id }, { viewer }) {
+    const idPrefixToGetHelper = {
+      IU: getUserById,
+      DR: id => getReleaseByContentId({ contentId: id, userId: viewer.id })
     }
+
+    const idPrefix = id.split('-')[0]
+    const getHelper = idPrefixToGetHelper[idPrefix]
+
+    if (!getHelper) {
+      throw new Error('Invalid Node ID.')
+    }
+
+    const node = await getHelper(id)
+    return node
+  }
 }
 
 export default resolver

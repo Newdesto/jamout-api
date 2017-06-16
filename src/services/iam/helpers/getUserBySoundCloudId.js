@@ -6,8 +6,8 @@ const getUserBySoundCloudId = async function getUserBySoundCloudId(id) {
     .usingIndex('soundCloudUserId-index')
     .execAsync()
 
-  if (existingUsers.Count !== 0) { 
-    return existingUsers.Items[0].attrs 
+  if (existingUsers.Count !== 0) {
+    return existingUsers.Items[0].attrs
   }
 
   return false

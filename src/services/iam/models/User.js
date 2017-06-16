@@ -21,7 +21,7 @@ const User = vogels.define('User', {
     displayName: Joi.string(),
     city: Joi.string(),
     country: Joi.string(),
-    blurb: Joi.string(),
+    blurb: Joi.string()
   },
   indexes: [
     { hashKey: 'email', name: 'email-index', type: 'global' },

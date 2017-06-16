@@ -24,30 +24,30 @@ const Release = vogels.define('Release', {
     // Metadata used for traditional channels:
     // Spotify, Apple Music, etc.
     defaultMetadata: Joi.object().keys({
-        title: Joi.string(),
-        artist: Joi.string(),
-        recordLabel: Joi.string(),
-        language: Joi.string(),
-        primaryGenre: Joi.string(),
-        secondaryGenre: Joi.string(),
-        releaseDate: Joi.string(), // ISO date string
-        price: Joi.number(),
+      title: Joi.string(),
+      artist: Joi.string(),
+      recordLabel: Joi.string(),
+      language: Joi.string(),
+      primaryGenre: Joi.string(),
+      secondaryGenre: Joi.string(),
+      releaseDate: Joi.string(), // ISO date string
+      price: Joi.number(),
 
         // Version of audio file to use.
         // Managed by S3.
-        artworkVersionId: Joi.string()
+      artworkVersionId: Joi.string()
     }),
 
     // Rights holder of the content.
     rightsHolder: Joi.object().keys({
-        firstName: Joi.string(),
-        lastName: Joi.string(),
-        address: Joi.string(),
-        city: Joi.string(),
-        state: Joi.string(),
-        zipCode: Joi.string(),
-        phoneNumber: Joi.string(),
-        didAgree: Joi.boolean()
+      firstName: Joi.string(),
+      lastName: Joi.string(),
+      address: Joi.string(),
+      city: Joi.string(),
+      state: Joi.string(),
+      zipCode: Joi.string(),
+      phoneNumber: Joi.string(),
+      didAgree: Joi.boolean()
     }),
 
     tracklist: Joi.array().items(Joi.object().keys({

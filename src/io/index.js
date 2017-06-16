@@ -10,5 +10,5 @@ export {
   vogels,
   app,
   logger,
-  pubsub,
+  pubsub
 }

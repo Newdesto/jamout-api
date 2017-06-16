@@ -27,7 +27,7 @@ const resolvers = {
     if (viewer.id !== user.id || !user.stripeCustomerId) {
       return null
     }
-    
+
     const customer = await getCustomer(user.stripeCustomerId)
 
     return customer
