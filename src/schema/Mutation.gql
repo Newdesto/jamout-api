@@ -11,4 +11,6 @@ type Mutation {
 
   # Distribution
   updateRelease(contentId: ID!, input: ReleaseInput!): Release!
+  
+  updateTrack(id: ID!, input: TrackInput!): Track!
 }

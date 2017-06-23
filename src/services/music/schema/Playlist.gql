@@ -20,6 +20,8 @@ type Playlist implements Node {
     duration: Int
     upc: String
 
+    tracks: [Track!]
+    release: Release
 }
 
 enum PlaylistType {

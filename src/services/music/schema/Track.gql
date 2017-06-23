@@ -23,6 +23,10 @@ type Track implements Node {
     fileSize: Int
 
     isrc: String
+
+    price: Int
+    explicitContent: Boolean
+    language: LanguageEnum
 }
 
 enum TrackPrivacySetting {
