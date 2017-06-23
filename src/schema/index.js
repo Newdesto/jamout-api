@@ -14,6 +14,7 @@ import EventInterface from './EventInterface.gql'
 import Mutation from './Mutation.gql'
 import Query from './Query.gql'
 import Subscription from './Subscription.gql'
+import LanguageEnum from './LanguageEnum.gql'
 
 // @TODO combine schemas by module (e.g.; combine all release defs)
 const typeDefs = [
@@ -23,6 +24,7 @@ const typeDefs = [
   EventInterface,
   Mutation,
   Query,
+  LanguageEnum,
   // Subscription,
   ...iamSchema,
   ...distributionSchema,

@@ -12,7 +12,7 @@ COPY package.json /api
 COPY yarn.lock /api
 COPY src /api/src
 RUN yarn global add node-gyp
-RUN yarn install --ignore-engines
+RUN yarn install
 
 # Install PM2
 RUN yarn global add nodemon
