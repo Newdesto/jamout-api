@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  api:
+    build:
+      context: ./
+      dockerfile: Dockerfile-development
+    volumes:
+      - ./src:/api/src
+      - /api/node_modules
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    environment:
+      - JWT_SECRET=b5c0b187fe309af-d1sn3yl4ndf0rever-0f4d35982fd961d7e
+      - JWT_AUDIENCE=localhost
+      - JWT_ISSUER=localhost
+      - STRIPE_SECRET=sk_test_0dvX8vB29k0aCRfzC33jvkOU
+      - AWS_REGION=us-west-1
+      - AWS_ACCESS_KEY_ID=FAKE
+      - AWS_SECRET_ACCESS_KEY=FAKE
+      - S3_ENDPOINT=http://198.199.114.223:3001
+      - DYNAMODB_ENDPOINT=http://198.199.114.223:3002
+      - SNS_ENDPOINT=http://198.199.114.223:3003
+      - SQS_ENDPOINT=http://198.199.114.223:3003
+
+      - TOPIC_IAM_SIGNED_UP=arn:aws:sns:local:000000000000:IAM_SIGNED_UP
+      - TOPIC_DISTRIBUTION_UPDATED_RELEASE=arn:aws:sns:local:000000000000:DISTRIBUTION_UPDATED_RELEASE
+      - TOPIC_SOUNDCLOUD_IMPORTER_IMPORTED_PLAYLIST_DATA=arn:aws:sns:local:000000000000:SOUNDCLOUD_IMPORTER_IMPORTED_PLAYLIST_DATA
+      - TOPIC_SOUNDCLOUD_IMPORTER_IMPORTED_TRACK_DATA=arn:aws:sns:local:000000000000:SOUNDCLOUD_IMPORTER_IMPORTED_TRACK_DATA
+      - TOPIC_SOUNDCLOUD_IMPORTER_IMPORTED_ALL_TRACKS=arn:aws:sns:local:000000000000:SOUNDCLOUD_IMPORTER_IMPORTED_ALL_TRACKS
+      - QUEUE_SOUNDCLOUD_IMPORTER=http://198.199.114.223:3003/queue/soundcloud-importer
+      - QUEUE_NOTIFIER=http://198.199.114.223:3003/queue/notifier

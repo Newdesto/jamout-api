@@ -1,8 +1,8 @@
 import Crypto from 'crypto-js'
 
 export default {
-  generateS3Signature(root, args, { user }) {
-    if (!user) {
+  generateS3Signature(root, args, { viewer }) {
+    if (!viewer) {
       throw new Error('Authentication failed.')
     }
 

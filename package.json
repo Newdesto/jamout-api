@@ -4,7 +4,7 @@
   "description": "The API for Jamout - Built using GraphQL, DataLoader, Dgraph, DynamoDB, etc",
   "main": "src/index.js",
   "scripts": {
-    "dev": "BABEL_DISABLE_CACHE=1 && echo 'Waiting 45 seconds to let fake-aws start up.' && sleep 45 && nodemon --inspect=9229 ./src/index.babel.js",
+    "dev": "BABEL_DISABLE_CACHE=1 nodemon --inspect=9229 ./src/index.babel.js",
     "clean": "rm -rf build && mkdir build",
     "build": "babel -d ./build ./src",
     "prod": "NODE_ENV=production pm2-docker ./index.js",
@@ -154,6 +154,7 @@
     "graphql": "^0.9.6",
     "graphql-redis-subscriptions": "^1.1.6",
     "graphql-server-express": "^0.7.2",
+    "graphql-server-lambda": "^0.9.0",
     "graphql-subscriptions": "^0.3.1",
     "graphql-tools": "^0.11.0",
     "graphql-type-json": "^0.1.4",

@@ -2,6 +2,6 @@ type Query {
   viewer: User # Null = Guest
   node(id: ID!): Node
 
-  tracks: [Track!]!
-  playlists: [Playlist!]!
+  tracks: [Track!]
+  playlists: [Playlist!]
 }

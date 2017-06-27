@@ -2983,6 +2983,12 @@ graphql-server-core@^0.7.0:
   optionalDependencies:
     "@types/graphql" "^0.9.0"
 
+graphql-server-core@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/graphql-server-core/-/graphql-server-core-0.9.0.tgz#34dac2d90e0b9c5f2c4c666f08dab74c15b8a327"
+  optionalDependencies:
+    "@types/graphql" "^0.9.0"
+
 graphql-server-express@^0.7.2:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/graphql-server-express/-/graphql-server-express-0.7.2.tgz#d71f22509f38b2e364349d90e7cafd03b52e02cd"
@@ -2993,9 +2999,20 @@ graphql-server-express@^0.7.2:
     "@types/express" "^4.0.35"
     "@types/graphql" "^0.9.0"
 
+graphql-server-lambda@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/graphql-server-lambda/-/graphql-server-lambda-0.9.0.tgz#435a95d0b27cc61622423e31abdb043a399f58a5"
+  dependencies:
+    graphql-server-core "^0.9.0"
+    graphql-server-module-graphiql "^0.9.0"
+
 graphql-server-module-graphiql@^0.7.2:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/graphql-server-module-graphiql/-/graphql-server-module-graphiql-0.7.2.tgz#aa1f2a26eadbf7127c1b077e633d5086da52b330"
+
+graphql-server-module-graphiql@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/graphql-server-module-graphiql/-/graphql-server-module-graphiql-0.9.0.tgz#dfe877066052f94a3ff57ff4790b3023e9ef2b4a"
 
 graphql-subscriptions@^0.3.1:
   version "0.3.1"
@@ -4401,11 +4418,7 @@ node-status-codes@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/node-status-codes/-/node-status-codes-1.0.0.tgz#5ae5541d024645d32a58fcddc9ceecea7ae3ac2f"
 
-node-uuid@1.4.x:
-  version "1.4.7"
-  resolved "https://registry.yarnpkg.com/node-uuid/-/node-uuid-1.4.7.tgz#6da5a17668c4b3dd59623bda11cf7fa4c1f60a6f"
-
-node-uuid@^1.4.8:
+node-uuid@1.4.x, node-uuid@^1.4.8:
   version "1.4.8"
   resolved "https://registry.yarnpkg.com/node-uuid/-/node-uuid-1.4.8.tgz#b040eb0923968afabf8d32fb1f17f1167fdab907"
 
