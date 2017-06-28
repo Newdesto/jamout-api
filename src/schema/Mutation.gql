@@ -6,9 +6,8 @@ type Mutation {
   updateUser(input: UserInput!): User!
   generateS3Signature(stringToSign: String!, datetime: String!): String!
   subscribeToPlan(token: String!, planId: StripePlans!): User!
-  upgradeToPremium(token: String!): User!
-  updatePremium(token: String, autopay: Boolean, subscriptionId: String!): User!
-  cancelPremium(subscriptionId: String!): User!
+  updateSubscription(token: String!, subscriptionId: String!): User!
+  cancelSubscription(atPeriodEnd: Boolean, subscriptionId: String!): User!
 
   # Distribution
   updateRelease(contentId: ID!, input: ReleaseInput!): Release!

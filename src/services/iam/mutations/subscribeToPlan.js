@@ -1,4 +1,5 @@
-import { createCustomer, createSubscription } from 'utils/stripe'
+import _ from 'lodash'
+import { createCustomer, createSubscription, getSubscriptions } from 'utils/stripe'
 import User from '../models/User'
 
 const planEnum = {
@@ -22,14 +23,22 @@ const subscribeToPlan = async function subscribeToPlan(root, { token, planId }, 
     viewer = attrs
   }
 
-    // Create the subscription.
-    // If !token we assume the user is upgrading with
-    // a default card.
-  await createSubscription({
-    source: token,
-    customer: viewer.stripeCustomerId,
-    plan: planEnum[planId]
-  })
+  // Get the existing subscriptions. If they have an existing subscription
+  // ignore this. To alter an existing plan in any way we should use the updateSubscription
+  // mutation
+  const existingSubs = await getSubscriptions(viewer.stripeCustomerId)
+  const existingSub = _.find(existingSubs, sub => sub.plan.id === planEnum[planId])
+
+  if(!existingSub) {
+      // Create the subscription.
+      // If !token we assume the user is upgrading with
+      // a default card.
+    await createSubscription({
+      source: token,
+      customer: viewer.stripeCustomerId,
+      plan: planEnum[planId]
+    })
+  }
 
   return viewer
 }

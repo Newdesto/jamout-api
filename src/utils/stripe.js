@@ -109,11 +109,11 @@ export function getSubscriptions(customer) {
   })
 }
 
-export function deleteSubscription(subscriptionId) {
+export function cancelSubscription({ subscriptionId, atPeriodEnd }) {
   return new Promise((resolve, reject) => {
     stripe.subscriptions.del(
         subscriptionId,
-        { at_period_end: true },
+        { at_period_end: atPeriodEnd },
         (error, subscription) => {
           if (error) { return reject(error) }
           return resolve(subscription)

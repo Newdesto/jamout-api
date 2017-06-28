@@ -1,10 +1,9 @@
 import login from './login'
 import signUp from './signUp'
 import updateUser from './updateUser'
-import upgradeToPremium from './upgradeToPremium'
 import verifyToken from './verifyToken'
-import updatePremium from './updatePremium'
-import cancelPremium from './cancelPremium'
+import updateSubscription from './updateSubscription'
+import cancelSubscription from './cancelSubscription'
 import subscribeToPlan from './subscribeToPlan'
 
 const mutations = {
@@ -12,9 +11,8 @@ const mutations = {
   login,
   verifyToken,
   subscribeToPlan,
-  upgradeToPremium,
-  updatePremium,
-  cancelPremium
+  updateSubscription,
+  cancelSubscription
 }
 
 export default mutations
