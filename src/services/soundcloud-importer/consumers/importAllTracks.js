@@ -1,6 +1,6 @@
 import uuid from 'node-uuid'
 import { getTracks } from 'utils/soundcloud'
-import createTrack from 'services/music/helpers/createTrack'
+import createMusicContent from 'services/music/helpers/createMusicContent'
 import SNS from 'aws-sdk/clients/sns'
 import { zipObj } from 'ramda'
 
@@ -17,9 +17,10 @@ const importAllTracks = async function importAllTracks({ user: { id: userId, sou
     //      - Costs money to store it
   const tracks = await Promise.all(scTracks.map(async (scTrack) => {
         // Save to DB.
-    const track = await createTrack({
+    const track = await createMusicContent({
       userId,
-      id: ['MT', uuid()].join('-'),
+      id: uuid(),
+      type: 'TRACK',
       soundCloudId: scTrack.id,
       privacySetting: 'OWNER_ONLY',
       title: scTrack.title,

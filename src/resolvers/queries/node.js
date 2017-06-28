@@ -1,5 +1,12 @@
 import getUserById from 'services/iam/helpers/getUserById'
 import getReleaseByContentId from 'services/distribution/helpers/getReleaseByContentId'
+import getMusicContentById from 'services/music/helpers/getMusicContentById'
+
+const enumToGetHelper = {
+  USER: ({ id, userId }) => getUserById(id),
+  MUSIC_CONTENT: ({ id, userId }) => getMusicContentById({ id, userId }),
+  RELEASE: ({ id, userId }) => getReleaseByContentId({ userId, contentId: id })
+}
 
 /**
  * @NOTE NOTE NOTE
@@ -9,20 +16,14 @@ import getReleaseByContentId from 'services/distribution/helpers/getReleaseByCon
  * helper for example.
  */
 const resolver = {
-  async node(root, { id }, { viewer }) {
-    const idPrefixToGetHelper = {
-      IU: getUserById,
-      DR: id => getReleaseByContentId({ contentId: id, userId: viewer.id })
-    }
-
-    const idPrefix = id.split('-')[0]
-    const getHelper = idPrefixToGetHelper[idPrefix]
+  async node(root, { type, id }, { viewer }) {
+    const getHelper = enumToHelper[type]
 
     if (!getHelper) {
       throw new Error('Invalid Node ID.')
     }
 
-    const node = await getHelper(id)
+    const node = await getHelper({ id, userId: viewer.id })
     return node
   }
 }

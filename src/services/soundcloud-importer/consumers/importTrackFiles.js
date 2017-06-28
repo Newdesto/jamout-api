@@ -1,7 +1,7 @@
 import uuid from 'node-uuid'
 import { getTrack, updateTrack } from 'utils/soundcloud'
-import getTrackById from 'services/music/helpers/getTrackById'
-import updateTrackById from 'services/music/helpers/updateTrackById'
+import getMusicContentById from 'services/music/helpers/getMusicContentById'
+import updateMusicContentById from 'services/music/helpers/updateMusicContentById'
 import getUserById from 'services/iam/helpers/getUserById'
 import S3 from 'aws-sdk/clients/s3'
 import { zipObj } from 'ramda'
@@ -140,7 +140,7 @@ const importTrackFiles = async function importTrackFiles({ track }) {
 
     // Done!
     // Let's set this tracks status to LIVE.
-  const updatedTrack = await updateTrackById({
+  const updatedTrack = await updateMusicContentById({
     id: track.id,
     userId: track.userId,
     updates: {

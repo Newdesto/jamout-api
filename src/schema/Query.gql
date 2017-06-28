@@ -1,7 +1,5 @@
 type Query {
   viewer: User # Null = Guest
-  node(id: ID!): Node
-
-  tracks: [Track!]
-  playlists: [Playlist!]
+  node(type: TypeEnum!, id: ID!): Node
+  musicContent: [MusicContent!]
 }

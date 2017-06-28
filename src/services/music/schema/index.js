@@ -1,11 +1,9 @@
-import Track from './Track.gql'
-import TrackInput from './TrackInput.gql'
-import Playlist from './Playlist.gql'
+import MusicContent from './MusicContent.gql'
+import MusicContentInput from './MusicContentInput.gql'
 
 const schema = [
-  Track,
-  Playlist,
-  TrackInput
+  MusicContent,
+  MusicContentInput
 ]
 
 export default schema

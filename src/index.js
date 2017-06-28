@@ -1,5 +1,4 @@
 import 'app-module-path/register'
-import { startSubscriptionServer } from 'io/subscription'
 import http from 'http'
 import rollbar from 'rollbar'
 import AWS from 'aws-sdk'
@@ -39,10 +38,6 @@ const launch = async function launch() {
       logger.info('Mounting GraphiQL endpoint to /graphiql.')
       app.use('/graphiql', graphiql)
     }
-
-    // setup the ws subscription server
-    logger.info('Binding web socket server to http server.')
-    startSubscriptionServer(httpServer)
 
     logger.info('Binding express app to http server.')
     httpServer.on('request', app)

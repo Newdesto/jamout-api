@@ -80,6 +80,7 @@
     "instrument": false
   },
   "babel": {
+    "sourceMaps": true,
     "presets": [
       "es2015",
       "stage-0"

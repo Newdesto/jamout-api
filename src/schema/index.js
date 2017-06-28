@@ -1,7 +1,6 @@
 import { makeExecutableSchema } from 'graphql-tools'
 import queryResolvers from 'resolvers/queries'
 import mutationResolvers from 'resolvers/mutations'
-import { resolvers as subscriptionsResolvers } from 'resolvers/subscriptions'
 import typeResolvers from 'resolvers/types'
 import scalarResolvers from 'resolvers/scalar'
 import iamSchema from 'services/iam/schema'
@@ -13,8 +12,8 @@ import NodeInterface from './NodeInterface.gql'
 import EventInterface from './EventInterface.gql'
 import Mutation from './Mutation.gql'
 import Query from './Query.gql'
-import Subscription from './Subscription.gql'
 import LanguageEnum from './LanguageEnum.gql'
+import TypeEnum from './TypeEnum.gql'
 
 // @TODO combine schemas by module (e.g.; combine all release defs)
 const typeDefs = [
@@ -25,6 +24,7 @@ const typeDefs = [
   Mutation,
   Query,
   LanguageEnum,
+  TypeEnum,
   // Subscription,
   ...iamSchema,
   ...distributionSchema,
@@ -36,7 +36,6 @@ export default makeExecutableSchema({
   resolvers: {
     ...queryResolvers,
     ...mutationResolvers,
-    // ...subscriptionsResolvers,
     ...typeResolvers,
     ...scalarResolvers
   }

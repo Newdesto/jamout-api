@@ -7,7 +7,6 @@
 #   3. Delete an existing track/album from a specific channel. E.g.; deleting the 
 #      content from Spotify.
 
-union ReleaseContent = Track
 type Release implements Node {
   id: ID!
   createdAt: String!
@@ -19,7 +18,7 @@ type Release implements Node {
   # Which content piece did the user init
   # the release from.
   contentId: ID
-  content: ReleaseContent!
+  content: MusicContent!
 
   # Processing. Is there a consumer putting
   # in some work right now?

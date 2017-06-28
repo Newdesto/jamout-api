@@ -24,13 +24,13 @@ const login = async function login(root, { email, password, scAccessToken }, con
   if (scAccessToken) {
         // SoundCloud login
     const scUser = await getMe(scAccessToken)
-
+    console.log(scUser)
     user = await getUserBySoundCloudId(scUser.id)
 
     if (!user) {
             // @TODO Publish import avatar event
       user = await createUser({
-        id: ['IU', uuid()].join('-'),
+        id: uuid(),
         displayName: scUser.username,
         city: scUser.city,
         country: scUser.country,

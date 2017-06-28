@@ -1,7 +1,7 @@
 import uuid from 'node-uuid'
 import SNS from 'aws-sdk/clients/sns'
 import { getPlaylists } from 'utils/soundcloud'
-import createPlaylist from 'services/music/helpers/createPlaylist'
+import createMusicContent from 'services/music/helpers/createMusicContent'
 
 const importAllTracks = async function importAllTracks({ userId, soundCloudAccessToken, trackIdMap }) {
   if (!soundCloudAccessToken || !userId || !trackIdMap) {
@@ -12,9 +12,10 @@ const importAllTracks = async function importAllTracks({ userId, soundCloudAcces
 
   const playlists = await Promise.all(scPlaylists.map(async (scPlaylist) => {
         // Save in DB.
-    const playlist = await createPlaylist({
+    const playlist = await createMusicContent({
       userId,
       id: uuid(),
+      type: 'ALBUM',
       soundCloudId: scPlaylist.id,
       soundCloudType: scPlaylist.type,
       privacySetting: 'OWNER_ONLY',
