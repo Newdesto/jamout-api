@@ -4,7 +4,7 @@ type User implements Node {
   updatedAt: String
 
   # Account
-  email: String!
+  email: String
   phoneNumber: String
   # stripeCustomerId: String
   stripeCustomer: JSON
@@ -22,7 +22,7 @@ type User implements Node {
 
 input UserInput {
   # Account
-  email: String!
+  email: String
   phoneNumber: String
 
   # Profile
