@@ -1,12 +1,12 @@
 import updateUserHelper from '../helpers/updateUser'
 
-const updateUser = async function updateUser(root, { id, input: updates }, { viewer }) {
-  if (viewer.id !== id) {
-    throw new Error('Authorization failed.')
+const updateUser = async function updateUser(root, { input: updates }, { viewer }) {
+  if (!viewer.id) {
+    throw new Error('Authentication failed.')
   }
 
   const user = await updateUserHelper({
-    id,
+    id: viewer.id,
     updates
   })
 
