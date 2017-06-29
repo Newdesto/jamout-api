@@ -1,7 +1,7 @@
 import updateUserHelper from '../helpers/updateUser'
 
 const updateUser = async function updateUser(root, { input: updates }, { viewer }) {
-  if (!viewer.id) {
+  if (!viewer) {
     throw new Error('Authentication failed.')
   }
 
