@@ -1,4 +1,3 @@
-import uuid from 'node-uuid'
 import createMusicContentHelper from '../helpers/createMusicContent'
 
 const createMusicContent = async function createMusicContent(root, { input }, { viewer }) {
@@ -6,9 +5,12 @@ const createMusicContent = async function createMusicContent(root, { input }, { 
     throw new Error('Authentication failed.')
   }
 
+  if (!input.id && !input.type) {
+    throw new Error('Missing ID or Type field.')
+  }
+
   const musicContent = await createMusicContentHelper({
     ...input,
-    id: uuid(),
     userId: viewer.id
   })
 

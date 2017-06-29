@@ -1,4 +1,5 @@
 input MusicContentInput {
+    id: ID
     privacySetting: MusicContentPrivacySetting
 
     type: MusicContentType
