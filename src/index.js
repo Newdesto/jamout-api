@@ -34,7 +34,7 @@ const launch = async function launch() {
     app.use('/graphql', graphql)
 
     // graphiql
-    if (1 === 1//process.env.NODE_ENV !== 'production') {
+    if (1 === 1) { //process.env.NODE_ENV !== 'production'
       logger.info('Mounting GraphiQL endpoint to /graphiql.')
       app.use('/graphiql', graphiql)
     }

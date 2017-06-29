@@ -6,11 +6,11 @@ const updateMusicContent = async function updateMusicContent(root, { id, input }
   }
 
   const musicContent = await updateMusicContentById({
-      id,
-      userId: viewer.id,
-      updates: input
+    id,
+    userId: viewer.id,
+    updates: input
   })
-  
+
   return musicContent
 }
 

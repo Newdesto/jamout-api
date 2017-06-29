@@ -7,7 +7,7 @@ const updateSubscription = async function updateSubscription(root, { token, subs
 
 
   await setCard(viewer.stripeCustomerId, token)
-  
+
   return viewer
 }
 

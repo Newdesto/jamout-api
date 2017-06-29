@@ -5,5 +5,5 @@ import Release from './release'
 export default {
   Node,
   User,
-  Release,
+  Release
 }

@@ -3,7 +3,7 @@ import { createCustomer, createSubscription, getSubscriptions } from 'utils/stri
 import User from '../models/User'
 
 const planEnum = {
-    DISTRIBUTION_PREMIUM: 'distribution-premium'
+  DISTRIBUTION_PREMIUM: 'distribution-premium'
 }
 
 const subscribeToPlan = async function subscribeToPlan(root, { token, planId }, context) {
@@ -29,7 +29,7 @@ const subscribeToPlan = async function subscribeToPlan(root, { token, planId }, 
   const existingSubs = await getSubscriptions(viewer.stripeCustomerId)
   const existingSub = _.find(existingSubs, sub => sub.plan.id === planEnum[planId])
 
-  if(!existingSub) {
+  if (!existingSub) {
       // Create the subscription.
       // If !token we assume the user is upgrading with
       // a default card.
