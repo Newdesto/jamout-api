@@ -1,12 +1,3 @@
-# We store ReleaseEvents instead of Releases to have an audit log and to
-# be able to replay or undo events. Some events include:
-#   1. Release a track/album several times, each time with different properties - such
-#      such as channels, metadata, etc.
-#   2. Update an existing track/album only on a specific channel. E.g.; updating
-#      the description for a track on SoundCloud.
-#   3. Delete an existing track/album from a specific channel. E.g.; deleting the 
-#      content from Spotify.
-
 type Release implements Node {
   id: ID!
   createdAt: String!
