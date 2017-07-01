@@ -16,8 +16,6 @@ const createRelease = async function createRelease(root, { contentId, input }, {
 
   // Publish updateRelease event for listeners like
   // notifier and soundcloud-importer.
-  debugger
-  return release
   const sns = new SNS({
     endpoint: process.env.SNS_ENDPOINT
   })
