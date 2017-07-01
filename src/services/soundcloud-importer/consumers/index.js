@@ -11,9 +11,6 @@ const app = Consumer.create({
       const body = JSON.parse(Body)
       const message = body.sqs ? JSON.parse(body.sqs) : body
 
-      logger.debug(message.type)
-      logger.debug(message.payload)
-
       // Route to the right consumer...
       switch (message.type) {
           // Import all the track data when an new user signs up.

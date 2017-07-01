@@ -246,6 +246,14 @@ auto-bind@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/auto-bind/-/auto-bind-0.1.0.tgz#7a29efc8c2388d3d578e02fc2df531c81ffc1ee1"
 
+av@^0.4.9:
+  version "0.4.9"
+  resolved "https://registry.yarnpkg.com/av/-/av-0.4.9.tgz#8c7165f739580a541ec95071423492b3ffdc6e20"
+  dependencies:
+    coffeeify "^0.6.0"
+  optionalDependencies:
+    speaker "^0.3.0"
+
 ava-files@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/ava-files/-/ava-files-0.2.0.tgz#c7b8b6e2e0cea63b57a6e27e0db145c7c19cfe20"
@@ -1207,7 +1215,7 @@ binary-extensions@^1.0.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.8.0.tgz#48ec8d16df4377eae5fa5884682480af4d95c774"
 
-bindings@1.2.x:
+bindings@1.2.x, bindings@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.2.1.tgz#14ad6113812d2d37d72e67b4cacb4bb726505f11"
 
@@ -1517,6 +1525,20 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
+coffee-script@~1.7.0:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/coffee-script/-/coffee-script-1.7.1.tgz#62996a861780c75e6d5069d13822723b73404bfc"
+  dependencies:
+    mkdirp "~0.3.5"
+
+coffeeify@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/coffeeify/-/coffeeify-0.6.0.tgz#75caba9b2e92c7836c92465c883b6acc9d894652"
+  dependencies:
+    coffee-script "~1.7.0"
+    convert-source-map "~0.3.3"
+    through "~2.3.4"
+
 color-convert@^1.8.2:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.0.tgz#1accf97dd739b983bf994d56fec8f95853641b7a"
@@ -1645,6 +1667,10 @@ content-type@~1.0.2:
 convert-source-map@^1.1.0, convert-source-map@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.4.0.tgz#e3dad195bf61bfe13a7a3c73e9876ec14a0268f3"
+
+convert-source-map@~0.3.3:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-0.3.5.tgz#f1d802950af7dd2631a1febe0596550c86ab3190"
 
 cookie-signature@1.0.6:
   version "1.0.6"
@@ -3706,6 +3732,10 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
+mkdirp@~0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.3.5.tgz#de3e5f8961c88c787ee1368df849ac4413eca8d7"
+
 moment@2.x.x:
   version "2.17.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.17.1.tgz#fed9506063f36b10f066c8b59a144d7faebe1d82"
@@ -3743,7 +3773,7 @@ mv@~2:
     ncp "~2.0.0"
     rimraf "~2.4.0"
 
-nan@2.6.x, nan@^2.0.8, nan@^2.3.0, nan@^2.5.1:
+nan@2.6.x, nan@^2.0.8, nan@^2.2.0, nan@^2.3.0, nan@^2.5.1:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.6.2.tgz#e4ff34e6c95fdfb5aecc08de6596f43605a7db45"
 
@@ -4930,6 +4960,15 @@ spdx-license-ids@^1.0.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-1.2.2.tgz#c9df7a3424594ade6bd11900d596696dc06bac57"
 
+speaker@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/speaker/-/speaker-0.3.0.tgz#36e0ee37e74fb88f7ead9ac9b1f1517b9b82d253"
+  dependencies:
+    bindings "^1.2.1"
+    debug "^2.2.0"
+    nan "^2.2.0"
+    readable-stream "^2.0.5"
+
 split@0.3:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/split/-/split-0.3.3.tgz#cd0eea5e63a211dfff7eb0f091c4133e2d0dd28f"
@@ -5167,7 +5206,7 @@ through2@^2.0.0:
     readable-stream "^2.1.5"
     xtend "~4.0.1"
 
-through@2, through@^2.3.6, through@~2.3, through@~2.3.1:
+through@2, through@^2.3.6, through@~2.3, through@~2.3.1, through@~2.3.4:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
 

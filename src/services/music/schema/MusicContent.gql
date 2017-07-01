@@ -51,6 +51,7 @@ type MusicContentFileVersion {
     lastModified: String!
     versionId: String
     isLatest: Boolean!
+    metadata: JSON
 }
 
 enum MusicContentType {

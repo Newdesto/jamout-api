@@ -5,6 +5,7 @@ import AWS from 'aws-sdk'
 import { app, logger } from 'io'
 import { jwt, graphql, graphiql } from 'middleware'
 import 'services/soundcloud-importer/consumers'
+import 'services/music/consumers'
 
 const launch = async function launch() {
   try {

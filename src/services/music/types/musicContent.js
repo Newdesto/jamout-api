@@ -18,19 +18,43 @@ const resolvers = {
       })
     })
 
-    return versions.map(v => ({
-      size: v.Size,
-      eTag: v.ETag,
-      lastModified: v.LastModified,
-      isLatest: v.IsLatest,
-      versionId: v.VersionId
+    const ret = await Promise.all(versions.map(async (v) => {
+      // Get metadata for this version.
+      const metadata = await new Promise((resolve, reject) => {
+        s3.headObject({
+          Bucket: 'jamout-music',
+          Key: `${viewer.id}/${musicContent.id}/artwork`,
+          VersionId: v.VersionId
+        }, (err, data) => {
+          if (err) {
+            console.error(err)
+            return resolve(null)
+          }
+          console.log(typeof data)
+          if (data === null) {
+            resolve(null)
+          }
+          resolve(data.Metadata)
+        })
+      })
+
+      return {
+        metadata,
+        size: v.Size,
+        eTag: v.ETag,
+        lastModified: v.LastModified,
+        isLatest: v.IsLatest,
+        versionId: v.VersionId
+      }
     }))
+
+    return ret
   },
   async audioVersions(musicContent, args, { viewer }) {
     const versions = await new Promise((resolve, reject) => {
       s3.listObjectVersions({
         Bucket: 'jamout-music',
-        Prefix: `${viewer.id}/${musicContent.id}/track`
+        Prefix: `${viewer.id}/${musicContent.id}/audio`
       }, (err, data) => {
         if (err) {
           console.error(err)
@@ -41,13 +65,40 @@ const resolvers = {
       })
     })
 
-    return versions.map(v => ({
-      size: v.Size,
-      eTag: v.ETag,
-      lastModified: v.LastModified,
-      isLatest: v.IsLatest,
-      versionId: v.VersionId
+    console.log(versions)
+
+
+    const ret = await Promise.all(versions.map(async (v) => {
+      // Get metadata for this version.
+      const metadata = await new Promise((resolve, reject) => {
+        s3.headObject({
+          Bucket: 'jamout-music',
+          Key: `${viewer.id}/${musicContent.id}/audio`,
+          VersionId: v.VersionId
+        }, (err, data) => {
+          if (err) {
+            console.error(err)
+            return resolve(null)
+          }
+          console.log(typeof data)
+          if (data === null) {
+            resolve(null)
+          }
+          resolve(data.Metadata)
+        })
+      })
+
+      return {
+        metadata,
+        size: v.Size,
+        eTag: v.ETag,
+        lastModified: v.LastModified,
+        isLatest: v.IsLatest,
+        versionId: v.VersionId
+      }
     }))
+
+    return ret
   }
 }
 
