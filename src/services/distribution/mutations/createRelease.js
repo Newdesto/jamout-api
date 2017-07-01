@@ -8,6 +8,8 @@ const createRelease = async function createRelease(root, { contentId, input }, {
   }
 
   const { attrs: release } = await Release.createAsync({
+    defaultMetadata: {},
+    rightsHolder: {},
     ...input,
     contentId,
     id: uuid(),

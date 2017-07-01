@@ -3,6 +3,9 @@
 input ReleaseInput {
     defaultMetadata: ReleaseDefaultMetadataInput
     rightsHolder: ReleaseRightsHolderInput
+
+    # Must be a whitelisted user.
+    status: ReleaseStatusEnum!
 }
 
 input ReleaseDefaultMetadataInput {
