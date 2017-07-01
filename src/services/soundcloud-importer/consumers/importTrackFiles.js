@@ -15,7 +15,7 @@ const importTrackFiles = async function importTrackFiles({ track }) {
   }
 
     // Notice the lack of file extension.
-  const audioS3Key = `${track.userId}/${track.id}/track`
+  const audioS3Key = `${track.userId}/${track.id}/audio`
   const artworkS3Key = `${track.userId}/${track.id}/artwork`
 
     // Assumes preset track.status === PROCESSING
@@ -46,7 +46,7 @@ const importTrackFiles = async function importTrackFiles({ track }) {
     endpoint: process.env.S3_ENDPOINT,
     sslEnabled: false,
     s3ForcePathStyle: true,
-    region: 'us-east-1'
+    region: 'us-west-1'
   }))
 
   const audioStreamer = streamer.upload({
