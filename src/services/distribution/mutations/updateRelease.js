@@ -3,6 +3,8 @@ import SNS from 'aws-sdk/clients/sns'
 import updateReleaseHelper from '../helpers/updateRelease'
 
 const updateRelease = async function updateRelease(root, { contentId, input }, { viewer }) {
+  throw new Error('Partner use only.')
+
     // Save to DB
   const release = await updateReleaseHelper({
     contentId,
