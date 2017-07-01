@@ -12,6 +12,7 @@ machine:
     TOPIC_SOUNDCLOUD_IMPORTER_IMPORTED_ALL_TRACKS: arn:aws:sns:local:000000000000:SOUNDCLOUD_IMPORTER_IMPORTED_ALL_TRACKS
     QUEUE_SOUNDCLOUD_IMPORTER: http://sqs.us-west-1.amazonaws.com:4100/queue/soundcloud-importer
     QUEUE_NOTIFIER: http://sqs.us-west-1.amazonaws.com:4100/queue/notifier
+    QUEUE_MUSIC: http://sqs.us-west-1.amazonaws.com:4100/queue/music
   node:
     version: 6.10.3
   services:
