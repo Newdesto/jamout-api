@@ -4,7 +4,7 @@ import rollbar from 'rollbar'
 import AWS from 'aws-sdk'
 import { app, logger } from 'io'
 import { jwt, graphql, graphiql } from 'middleware'
-import soundcloudImporterConsumers from 'services/soundcloud-importer/consumers'
+import 'services/soundcloud-importer/consumers'
 
 const launch = async function launch() {
   try {
@@ -34,10 +34,10 @@ const launch = async function launch() {
     app.use('/graphql', graphql)
 
     // graphiql
-    if (1 === 1) { //process.env.NODE_ENV !== 'production'
-      logger.info('Mounting GraphiQL endpoint to /graphiql.')
-      app.use('/graphiql', graphiql)
-    }
+    // if (1 === 1) { // process.env.NODE_ENV !== 'production'
+    logger.info('Mounting GraphiQL endpoint to /graphiql.')
+    app.use('/graphiql', graphiql)
+    // }
 
     logger.info('Binding express app to http server.')
     httpServer.on('request', app)

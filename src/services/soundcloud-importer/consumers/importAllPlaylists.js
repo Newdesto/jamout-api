@@ -17,7 +17,7 @@ const importAllTracks = async function importAllTracks({ userId, soundCloudAcces
       id: uuid(),
       type: 'ALBUM',
       soundCloudId: scPlaylist.id,
-      //soundCloudType: scPlaylist.type,
+      // soundCloudType: scPlaylist.type,
       privacySetting: 'OWNER_ONLY',
       title: scPlaylist.title,
       artist: scPlaylist.user.username,
@@ -25,7 +25,7 @@ const importAllTracks = async function importAllTracks({ userId, soundCloudAcces
       description: scPlaylist.description,
       duration: scPlaylist.duration,
       ean: scPlaylist.ean,
-      tracks: scPlaylist.tracks.map(t => trackIdMap[t.id])
+      trackIds: scPlaylist.tracks.map(t => trackIdMap[t.id])
     })
 
         // Publish to SNS.

@@ -1,4 +1,5 @@
 import cleanDeep from 'clean-deep'
+import merge from 'utils/dynamo-merge'
 import uuid from 'uuid'
 import Release from '../models/Release'
 
@@ -7,20 +8,44 @@ const updateRelease = async function updateRelease({ userId, contentId, updates 
     throw new Error('Missing required arguments to update Release object.')
   }
 
-  const cleanUpdates = cleanDeep(updates)
+  // Clean deep removed to account for null values.
+  // const cleanUpdates = cleanDeep(updates)
 
-  const { attrs: release } = await Release.updateAsync({
-    ...cleanUpdates,
-    contentId,
-    userId
-  }, {
-    UpdateExpression: 'SET id = if_not_exists(id, :id)',
-    ExpressionAttributeValues: {
-      ':id': ['DR', uuid()].join('-')
+  // First we have to prime the item with empty objects.
+  const computedPrimer = merge({
+    presets: [
+      'rightsHolder = if_not_exists(rightsHolder, {})',
+      'defaultMetadata = if_not_exists(defaultMetadata, {})',
+      'id = if_not_exists(id, :id)'
+    ],
+    preparams: {
+      ':id': uuid()
     }
   })
 
-  return release
+  await Release.updateAsync({
+    contentId,
+    userId
+  }, {
+    ...computedUpdates,
+    ReturnValues: 'ALL_OLD'
+  })
+
+  const computedUpdates = merge({
+    updates
+  })
+
+  console.log(computedUpdates)
+
+  const item = await Release.updateAsync({
+    contentId,
+    userId
+  }, {
+    ...computedUpdates,
+    ReturnValues: 'ALL_OLD'
+  })
+
+  return item
 }
 
 export default updateRelease

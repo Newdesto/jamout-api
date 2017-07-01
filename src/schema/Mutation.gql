@@ -10,6 +10,7 @@ type Mutation {
   cancelSubscription(atPeriodEnd: Boolean, subscriptionId: String!): User!
 
   # Distribution
+  createRelease(contentId: ID!, input: ReleaseInput!): Release!
   updateRelease(contentId: ID!, input: ReleaseInput!): Release!
   
   createMusicContent(input: MusicContentInput!): MusicContent!

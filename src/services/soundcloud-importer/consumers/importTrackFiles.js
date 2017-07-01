@@ -41,8 +41,8 @@ const importTrackFiles = async function importTrackFiles({ track }) {
 
     // Prep the s3 streamer
   const streamer = S3Stream(new S3({
-    accessKeyId: 'accessKey1',
-    secretAccessKey: 'verySecretKey1',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     endpoint: process.env.S3_ENDPOINT,
     sslEnabled: false,
     s3ForcePathStyle: true,

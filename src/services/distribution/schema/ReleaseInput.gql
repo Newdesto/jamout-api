@@ -1,11 +1,11 @@
 # Settings that can be changes by the user.
 
 input ReleaseInput {
-    defaultMetadata: ReleaseMetadataInput
+    defaultMetadata: ReleaseDefaultMetadataInput
     rightsHolder: ReleaseRightsHolderInput
 }
 
-input ReleaseMetadataInput {
+input ReleaseDefaultMetadataInput {
     title: String
     artist: String
     recordLabel: String
