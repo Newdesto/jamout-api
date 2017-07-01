@@ -13,11 +13,11 @@ type MusicContent implements Node {
 
     artworkS3Key: String
     artworkUrl: String
-    artworkVersions: [JSON!]
+    artworkVersions: [MusicContentFileVersion!]
 
     audioS3Key: String
     audioS3Url: String
-    audioVersions: [JSON!]
+    audioVersions: [MusicContentFileVersion!]
 
     primaryGenre: String
     secondaryGenre: String
@@ -43,6 +43,14 @@ type MusicContent implements Node {
     release: Release
 
 
+}
+
+type MusicContentFileVersion {
+    size: Int!
+    eTag: String!
+    lastModified: String!
+    versionId: String
+    isLatest: Boolean!
 }
 
 enum MusicContentType {

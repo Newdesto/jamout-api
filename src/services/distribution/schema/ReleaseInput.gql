@@ -5,7 +5,7 @@ input ReleaseInput {
     rightsHolder: ReleaseRightsHolderInput
 
     # Must be a whitelisted user.
-    status: ReleaseStatusEnum!
+    status: ReleaseStatusEnum
 }
 
 input ReleaseDefaultMetadataInput {

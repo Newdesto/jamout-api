@@ -6,7 +6,7 @@ const musicContent = async function musicContent(root, args, { viewer }) {
   }
 
   const musicContent = await getMusicContentByUserId(viewer.id)
-
+  console.log(musicContent)
   return musicContent
 }
 
