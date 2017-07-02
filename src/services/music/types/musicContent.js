@@ -18,6 +18,7 @@ const resolvers = {
       })
     })
 
+
     const ret = await Promise.all(versions.map(async (v) => {
       // Get metadata for this version.
       const metadata = await new Promise((resolve, reject) => {
@@ -38,13 +39,15 @@ const resolvers = {
         })
       })
 
+      // If this is the latest version generate a signed url.
       return {
         metadata,
         size: v.Size,
         eTag: v.ETag,
         lastModified: v.LastModified,
         isLatest: v.IsLatest,
-        versionId: v.VersionId
+        versionId: v.VersionId,
+        url: s3.getSignedUrl('getObject', { Bucket: 'jamout-music', Key: `${viewer.id}/${musicContent.id}/artwork`, VersionId: v.VersionId })
       }
     }))
 
@@ -94,7 +97,8 @@ const resolvers = {
         eTag: v.ETag,
         lastModified: v.LastModified,
         isLatest: v.IsLatest,
-        versionId: v.VersionId
+        versionId: v.VersionId,
+        url: s3.getSignedUrl('getObject', { Bucket: 'jamout-music', Key: `${viewer.id}/${musicContent.id}/artwork`, VersionId: v.VersionId })
       }
     }))
 
