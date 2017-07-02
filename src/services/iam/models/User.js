@@ -24,7 +24,8 @@ const User = vogels.define('User', {
     blurb: Joi.string()
   },
   indexes: [
-    { hashKey: 'soundCloudUserId', name: 'soundCloudUserId-index', type: 'global' }
+    { hashKey: 'soundCloudUserId', name: 'soundCloudUserId-index', type: 'global' },
+    { hashKey: 'email', name: 'email-index', type: 'global' }
   ]
 })
 
