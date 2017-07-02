@@ -41,6 +41,14 @@ const resolvers = {
     const params = { Bucket: 'jamout-iam', Key: `${user.id}/avatar.png` }
     const url = s3.getSignedUrl('getObject', params)
     return url
+  },
+  isPartner(user) {
+    const whitelistedUsers = ['5192223b-4454-498f-86fd-c712e70798af']
+    if (whitelistedUsers.include(user.id)) {
+      return true
+    }
+
+    return false
   }
 }
 
