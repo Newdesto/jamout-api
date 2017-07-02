@@ -38,7 +38,8 @@ type ReleaseDefaultMetadata {
   price: Int
 
   # Square artwork
-  artworkS3Key: String
+  audioVersionId: String
+  artworkVersionId: String
 }
 
 type ReleaseRightsHolder {

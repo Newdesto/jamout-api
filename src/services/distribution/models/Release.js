@@ -35,7 +35,8 @@ const Release = vogels.define('Release', {
 
         // Version of audio file to use.
         // Managed by S3.
-      artworkVersionId: Joi.string()
+      artworkVersionId: Joi.string(),
+      audioVersionId: Joi.string()
     }),
 
     // Rights holder of the content.
