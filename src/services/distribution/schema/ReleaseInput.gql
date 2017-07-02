@@ -18,7 +18,8 @@ input ReleaseDefaultMetadataInput {
     releaseDate: String
     price: Int
 
-    artworkS3Key: String
+    artworkVersionId: String
+    audioVersionId: String
 }
 
 input ReleaseRightsHolderInput {
