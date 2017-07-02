@@ -3,4 +3,5 @@ type Query {
   node(type: TypeEnum!, id: ID!): Node
   musicContent: [MusicContent!]
   newRelease: NewRelease!
+  releases: [Release!]
 }

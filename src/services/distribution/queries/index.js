@@ -1,7 +1,9 @@
 import newRelease from './newRelease'
+import releases from './releases'
 
 const queries = {
-  newRelease
+  newRelease,
+  releases
 }
 
 export default queries
