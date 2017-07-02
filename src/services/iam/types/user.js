@@ -44,7 +44,7 @@ const resolvers = {
   },
   isPartner(user) {
     const whitelistedUsers = ['5192223b-4454-498f-86fd-c712e70798af']
-    if (whitelistedUsers.include(user.id)) {
+    if (whitelistedUsers.includes(user.id)) {
       return true
     }
 
