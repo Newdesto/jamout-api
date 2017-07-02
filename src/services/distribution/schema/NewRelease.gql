@@ -1,0 +1,9 @@
+type NewRelease {
+    languageOptions: [Option!]!
+    genreOptions: [Option!]!   
+}
+
+type Option {
+    text: String!
+    value: String!
+}
