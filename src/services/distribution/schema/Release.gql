@@ -26,7 +26,7 @@ type Release implements Node {
 
   status: ReleaseStatusEnum!
 
-  downloadUrl: String!
+  downloadUrl: String
 }
 
 type ReleaseDefaultMetadata {
