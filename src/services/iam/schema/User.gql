@@ -10,6 +10,7 @@ type User implements Node {
   stripeCustomer: JSON
   soundCloudUserId: String
   soundCloudAccessToken: String
+  isPartner: Boolean
 
   # Profile
   avatarKey: String
