@@ -80,9 +80,9 @@ const releaseReadyCheck = async function releaseReadyCheck(key) {
         VersionId: latestVersion.VersionId
       }, (err, data) => {
         if (err) {
-            console.error(err)
-            reject(err)
-          }
+          console.error(err)
+          reject(err)
+        }
 
         resolve(data.Metadata)
       })
@@ -91,7 +91,7 @@ const releaseReadyCheck = async function releaseReadyCheck(key) {
     console.log(latestMetadata)
 
     // NOTE Camel casing isn't maintained.
-    if (latestMetadata.releaseready) {
+    if (latestMetadata['release-ready']) {
       return true
     }
 
@@ -103,7 +103,7 @@ const releaseReadyCheck = async function releaseReadyCheck(key) {
         CopySource: `/jamout-music/${key}`,
         MetadataDirective: 'REPLACE',
         Metadata: {
-          releaseReady: 'true'
+          'release-ready': 'true'
         }
       }, (err, data) => {
         if (err) console.log(err, err.stack) // an error occurred
@@ -117,8 +117,8 @@ const releaseReadyCheck = async function releaseReadyCheck(key) {
         CopySource: `/jamout-music/${key}`,
         MetadataDirective: 'REPLACE',
         Metadata: {
-          releaseReady: 'false',
-          releaseReadyReason: err.message
+          'release-ready': 'false',
+          'release-ready-reason': err.message
         }
       }, (err, data) => {
         if (err) console.log(err, err.stack) // an error occurred
