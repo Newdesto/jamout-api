@@ -1,7 +1,7 @@
 import { graphqlExpress } from 'graphql-server-express'
 import schema from 'schema'
 import { formatError } from 'apollo-errors'
-import { logger, pubsub } from 'io'
+import logger from 'io/logger'
 import getUserById from 'services/iam/helpers/getUserById'
 
 export default graphqlExpress(async (req) => {
@@ -16,8 +16,7 @@ export default graphqlExpress(async (req) => {
     schema,
     context: {
       viewer,
-      logger,
-      pubsub
+      logger
     },
     formatError: (err) => {
       console.trace(err)
