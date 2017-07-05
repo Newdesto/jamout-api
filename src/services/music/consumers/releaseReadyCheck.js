@@ -51,8 +51,8 @@ const releaseReadyCheck = async function releaseReadyCheck(key) {
   console.log(type)
   if (type === 'audio') {
     const s3 = new S3()
-    const getUrl = s3.getSignedUrl('getObject', { Bucket: 'jamout-music', Key: key })
-    console.log(getUrl)
+    let getUrl = s3.getSignedUrl('getObject', { Bucket: 'jamout-music', Key: key })
+    getUrl = getUrl.replace('https', 'http')
     // Get latest version of audio.
     const versions = await new Promise((resolve, reject) => {
       s3.listObjectVersions({
