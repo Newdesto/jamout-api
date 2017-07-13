@@ -15,6 +15,7 @@ const User = dynogels.define('User', {
     stripeCustomerId: Joi.string(),
     soundCloudUserId: Joi.number(),
     soundCloudAccessToken: Joi.string(),
+    didOnboard: Joi.boolean(),
 
     // Profile
     avatarKey: Joi.string(),
