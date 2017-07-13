@@ -19,6 +19,8 @@ type User implements Node {
   city: String
   country: String
   blurb: String
+
+  soundcloudTracks: [JSON!]
 }
 
 input UserInput {

@@ -1,5 +1,6 @@
 import S3 from 'aws-sdk/clients/s3'
 import { getCustomer } from 'gql/utils/stripe'
+import { getTracks } from 'gql/utils/soundcloud'
 
 const s3 = new S3()
 
@@ -49,6 +50,10 @@ const resolvers = {
     }
 
     return false
+  },
+  async soundcloudTracks(user) {
+    const tracks = await getTracks(user.soundCloudAccessToken)
+    return tracks
   }
 }
 
