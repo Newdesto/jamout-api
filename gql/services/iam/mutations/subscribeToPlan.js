@@ -1,13 +1,12 @@
 import _ from 'lodash'
 import { createCustomer, createSubscription, getSubscriptions } from 'gql/utils/stripe'
-import User from '../models/User'
 
 const planEnum = {
   DISTRIBUTION_PREMIUM: 'distribution-premium'
 }
 
-const subscribeToPlan = async function subscribeToPlan(root, { token, planId }, context) {
-  let viewer = context.viewer
+const subscribeToPlan = async function subscribeToPlan(root, { token, planId }, { viewer, UserDef }) {
+  const User = UserDef()
     // Create a Stripe customer account if they do not have one yet.
   if (!viewer.stripeCustomerId) {
     const stripeCustomer = await createCustomer({

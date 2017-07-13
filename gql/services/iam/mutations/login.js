@@ -18,17 +18,19 @@ const InvalidLoginError = createError('InvalidLoginError', {
  * Logs a user in using their email & password or the SoundCloud
  * oauth authorization code.
  */
-const login = async function login(root, { email, password, scAccessToken }, context) {
+const login = async function login(root, { email, password, scAccessToken }, { UserDef }) {
+  // Init any models we need.
+  const User = UserDef()
   let user
 
   if (scAccessToken) {
         // SoundCloud login
     const scUser = await getMe(scAccessToken)
-    user = await getUserBySoundCloudId(scUser.id)
+    user = await getUserBySoundCloudId(User)(scUser.id)
 
     if (!user) {
-            // @TODO Publish import avatar event
-      user = await createUser({
+      // @TODO Publish import avatar event
+      user = await createUser(User)({
         id: uuid(),
         displayName: scUser.username,
         city: scUser.city,
@@ -37,14 +39,14 @@ const login = async function login(root, { email, password, scAccessToken }, con
         soundcloudAccessToken: scAccessToken
       })
     } else {
-      user = await updateUser({
+      user = await updateUser(User)({
         id: user.id,
         soundcloudAccessToken: scAccessToken
       })
     }
   } else {
         // Email + Password login
-    user = await getUserByEmail(email)
+    user = await getUserByEmail(User)(email)
   }
 
     // Invalid something

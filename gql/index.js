@@ -2,6 +2,8 @@ import { graphql } from 'graphql'
 import { formatError } from 'apollo-errors'
 import jwt from 'jsonwebtoken'
 import UserDef from 'gql/services/iam/models/User'
+import MusicContentDef from 'gql/services/music/models/MusicContent'
+import ReleaseContentDef from 'gql/services/distribution/models/Release'
 import getUserById from 'gql/services/iam/helpers/getUserById'
 import schema from './schema'
 import 'request' // Peer dep for request-promise
@@ -20,7 +22,6 @@ const createResponse = (statusCode, body) => (
 
 module.exports.handler = async function handler(event, context, callback) {
   try {
-    console.log(process.env)
       const devMode = event.queryStringParameters && !!event.queryStringParameters.devMode
 
       // Get relevant parameters from stringified body.
@@ -57,12 +58,14 @@ module.exports.handler = async function handler(event, context, callback) {
         viewer,
         devMode,
         // User is a special use case beause we need it before hand.
-        User: () => User || UserDef(devMode)
+        UserDef: () => User || UserDef(devMode),
+        MusicContentDef: () => MusicContentDef(devMode),
+        ReleaseDef: () => ReleaseDef(devMode)
       }, variables, operationName)
 
       callback(null, createResponse(200, response))
   } catch (err) {
-    console.error(err)
+    console.error('GQL Error: ', err, err.stack)
     callback(null, createResponse(err.responseStatusCode || 500, { message: err.message || 'Internal server error' }))
   }
 }

@@ -1,7 +1,6 @@
 import { cancelSubscription as cancelSubscriptionUtil } from 'gql/utils/stripe'
 
-const cancelSubscription = async function cancelSubscription(root, { atPeriodEnd, subscriptionId }, context) {
-  const viewer = context.viewer
+const cancelSubscription = async function cancelSubscription(root, { atPeriodEnd, subscriptionId }, { viewer }) {
   if (!viewer.stripeCustomerId || !subscriptionId) {
     return viewer
   }

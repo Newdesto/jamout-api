@@ -1,10 +1,10 @@
 import dynogels from 'gql/io/dynogels'
 import Joi from 'joi'
 
-const MusicContent = dynogels.define('MusicContent', {
+const MusicContent = devMode => dynogels.define('MusicContent', {
   hashKey: 'userId',
   rangeKey: 'id',
-  tableName: 'music.MusicContent',
+  tableName: devMode ? 'MusicContent.development' : 'MusicContent.production',
   timestamps: true,
   schema: {
     id: Joi.string(),
@@ -47,9 +47,7 @@ const MusicContent = dynogels.define('MusicContent', {
     position: Joi.number(),
 
     trackIds: Joi.array().items(Joi.string()),
-    releaseId: Joi.string(),
-
-    testMode: Joi.boolean().default(process.env.NODE_ENV !== 'production' ? true : undefined)
+    releaseId: Joi.string()
   }
 })
 

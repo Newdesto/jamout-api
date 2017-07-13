@@ -1,6 +1,4 @@
-import User from '../models/User'
-
-const getUserBySoundCloudId = async function getUserBySoundCloudId(id) {
+const getUserBySoundCloudId = User => async function getUserBySoundCloudId(id) {
   const existingUsers = await User
     .query(id)
     .usingIndex('soundcloudUserId-index')

@@ -3,7 +3,7 @@ import Joi from 'joi'
 
 const User = devMode => dynogels.define('User', {
   hashKey: 'id',
-  tableName: devMode ? 'User.production' : 'User.development',
+  tableName: devMode ? 'User.development' : 'User.production',
   timestamps: true,
   schema: {
     id: Joi.string(),
@@ -35,9 +35,7 @@ const User = devMode => dynogels.define('User', {
         phoneNumber: Joi.string(),
         didAgree: Joi.boolean()
       })
-    }),
-
-    testMode: Joi.boolean().default(process.env.NODE_ENV !== 'production' ? true : undefined)
+    })
   },
   indexes: [
     { hashKey: 'soundcloudUserId', name: 'soundcloudUserId-index', type: 'global' },

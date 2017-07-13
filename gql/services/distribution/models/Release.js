@@ -2,10 +2,10 @@ import dynogels from 'gql/io/dynogels'
 import Joi from 'joi'
 import uuid from 'node-uuid'
 
-const Release = dynogels.define('Release', {
+const Release = devMode => dynogels.define('Release', {
   hashKey: 'userId',
   rangeKey: 'contentId',
-  tableName: 'distribution.release',
+  tableName: devMode ? 'Release.development' : 'Release.production',
   timestamps: true,
   schema: {
     id: Joi.string(),
@@ -65,9 +65,7 @@ const Release = dynogels.define('Release', {
       audioVersionId: Joi.string().default('latest')
     })),
 
-    status: Joi.string().valid(['LIVE', 'PROCESSING', 'ISSUE']),
-
-    testMode: Joi.boolean().default(process.env.NODE_ENV !== 'production' ? true : undefined)
+    status: Joi.string().valid(['LIVE', 'PROCESSING', 'ISSUE'])
   }
 })
 
