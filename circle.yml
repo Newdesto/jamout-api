@@ -2,17 +2,7 @@ machine:
   environment:
     YARN_VERSION: 0.18.1
     PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
-    JWT_SECRET: FAKE
-    JWT_AUDIENCE: FAKE
-    JWT_ISSUER: FAKE
-    TOPIC_IAM_SIGNED_UP: arn:aws:sns:local:000000000000:IAM_SIGNED_UP
-    TOPIC_DISTRIBUTION_UPDATED_RELEASE: arn:aws:sns:local:000000000000:DISTRIBUTION_UPDATED_RELEASE
-    TOPIC_SOUNDCLOUD_IMPORTER_IMPORTED_PLAYLIST_DATA: arn:aws:sns:local:000000000000:SOUNDCLOUD_IMPORTER_IMPORTED_PLAYLIST_DATA
-    TOPIC_SOUNDCLOUD_IMPORTER_IMPORTED_TRACK_DATA: arn:aws:sns:local:000000000000:SOUNDCLOUD_IMPORTER_IMPORTED_TRACK_DATA
-    TOPIC_SOUNDCLOUD_IMPORTER_IMPORTED_ALL_TRACKS: arn:aws:sns:local:000000000000:SOUNDCLOUD_IMPORTER_IMPORTED_ALL_TRACKS
-    QUEUE_SOUNDCLOUD_IMPORTER: http://sqs.us-west-1.amazonaws.com:4100/queue/soundcloud-importer
-    QUEUE_NOTIFIER: http://sqs.us-west-1.amazonaws.com:4100/queue/notifier
-    QUEUE_MUSIC: http://sqs.us-west-1.amazonaws.com:4100/queue/music
+  
   node:
     version: 6.10.3
   services:
@@ -23,18 +13,7 @@ dependencies:
   cache_directories:
     - ~/.cache/yarn
   override:
-    - yarn install --ignore-engines
-    - yarn global add pm2
-    - yarn run build
-
-# @TODO also test the container itself
-# It's difficult to test the actual container because of env vars
-# For now, we'll test the app locally
-test:
-  override:
-    - yarn test
-    - NODE_ENV=production pm2 start ./build/index.js
-    - curl --retry 10 --retry-delay 5 -v http://localhost:3000/check
+    - yarn install
 
 # we will always overwrite the production tag with the latest image build
 # it saves space in the registry and costs less
@@ -44,8 +23,4 @@ deployment:
   production:
     branch: master
     commands:
-      - docker build --rm=false -t jamout/api .
-      - chmod +x ./ecr-push
-      - chmod +x ./ecs-deploy
-      - ./ecr-push
-      - ./ecs-deploy -c production -n api -i jamout/api:latest
+      - yarn deploy:production

@@ -1,0 +1,149 @@
+# NOTES
+# StateMachine Execution ARN's are stored in the user object so
+# the state of long running tasks can be polled by the client side.
+# E.G.; Onboarding can show a status component for the soundcloud import.
+
+service: jamout-api
+
+plugins:
+  - serverless-webpack
+  - serverless-step-functions
+  - serverless-external-s3-event
+
+custom:
+  webpackIncludeModules: true
+  awsAccountId: 533183579694
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: us-west-2
+  memorySize: 128
+  profile: jamout # Used on Gabe's machine
+  # Env vars are set in the console, bro.
+  #environment:
+  #  AWS_REGION: us-west-2
+  #  AWS_ACCESS_KEY_ID: AKIAJXDWZC46PC343Y3A
+  #  AWS_SECRET_ACCESS_KEY: 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
+
+functions:
+  gql:
+    handler: gql/index.handler
+    events:
+    - http:
+        path: gql
+        method: post
+        cors: true
+        integration: lambda-proxy
+    environment:
+      JWT_SECRET: b5c0b187fe309af-d1sn3yl4ndf0rever-0f4d35982fd961d7e
+      soundcloudImporterStateMachineArn: ${self:resources.Outputs.SoundCloudImporter.Value}
+  soundcloudTrackMetadata:
+    handler: soundcloud/trackMetadata.default
+  soundcloudTrackFiles:
+    handler: soundcloud/trackFiles.default
+  music-triggerReleaseReadinessChecker:
+    handler: music/triggerReleaseReadinessChecker.default
+    events:
+      - existingS3:
+          bucket: jamout.music
+          events: 
+            - s3:ObjectCreated:*
+          rules:
+            - suffix: "/audio"
+    environment:
+      musicReleaseReadinessCheckerArn: ${self:resources.Outputs.ReleaseReadinessChecker.Value}
+  music-metadataCheck:
+    handler: music/metadataCheck.default
+  music-objectCheck:
+    handler: music/objectCheck.default
+  music-objectCopy:
+    handler: music/objectCopy.default
+
+stepFunctions:
+  stateMachines:
+    SoundCloudImporter:
+      name: SoundCloudImporter
+      definition:
+        Comment: "Imports a track's metdata and files from SoundCloud."
+        StartAt: Metadata
+        States:
+          Metadata:
+            Type: Task
+            Resource: arn:aws:lambda:${self:provider.region}:${self:custom.awsAccountId}:function:${self:service}-${opt:stage}-soundcloudTrackMetadata
+            Next: Files
+            Catch:
+              - ErrorEquals:
+                - States.ALL
+                Next: Panic
+          Files:
+            Type: Task
+            Resource: arn:aws:lambda:${self:provider.region}:${self:custom.awsAccountId}:function:${self:service}-${opt:stage}-soundcloudTrackFiles
+            End: true
+            Catch:
+              - ErrorEquals:
+                - States.ALL
+                Next: Panic
+          Panic:
+            Type: Pass
+            Result: "Panic, Panic, Panic!."
+            End: true
+    ReleaseReadinessChecker:
+      name: ReleaseReadinessChecker
+      definition:
+        Comment: "Checks if the audio is release ready when a new audio object is created."
+        StartAt: MetadataCheck
+        States:
+          MetadataCheck:
+            Type: Task
+            Resource: arn:aws:lambda:${self:provider.region}:${self:custom.awsAccountId}:function:${self:service}-${opt:stage}-music-metadataCheck
+            ResultPath: "$.latest"
+            Next: DidReleaseReady
+            Catch:
+              - ErrorEquals:
+                - States.ALL
+                Next: Panic
+          DidReleaseReady:
+            Type: Choice
+            Choices:
+            - Variable: "$.latest.didReleaseReadyCheck"
+              BooleanEquals: true
+              Next: Success
+            - Variable: "$.latest.didReleaseReadyCheck"
+              BooleanEquals: false
+              Next: ObjectCheck
+            Default: Panic
+          ObjectCheck:
+            Type: Task
+            Resource: arn:aws:lambda:${self:provider.region}:${self:custom.awsAccountId}:function:${self:service}-${opt:stage}-music-objectCheck
+            ResultPath: "$.releaseReadyCheck"
+            Next: ObjectCopy
+            Catch:
+              - ErrorEquals:
+                - States.ALL
+                Next: Panic
+          ObjectCopy:
+            Type: Task
+            Resource: arn:aws:lambda:${self:provider.region}:${self:custom.awsAccountId}:function:${self:service}-${opt:stage}-music-objectCopy
+            End: true
+            Catch:
+              - ErrorEquals:
+                - States.ALL
+                Next: Panic
+          Success:
+            Type: Succeed
+          Panic:
+            Type: Pass
+            Result: "Panic, Panic, Panic!."
+            End: true
+
+resources:
+  Outputs:
+    SoundCloudImporter:
+      Description: The ARN of the Soundcloud Importer state machine
+      Value:
+        Ref: SoundCloudImporter
+    ReleaseReadinessChecker:
+      Description: The ARN of the Release Readiness Checker state machine
+      Value:
+        Ref: ReleaseReadinessChecker

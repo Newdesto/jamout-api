@@ -1,0 +1,3 @@
+{
+    "body": "{\r\n  \"query\": \"query Viewer {\\n  viewer {\\n    id\\n    displayName\\n  }\\n}\\n\\n\",\r\n  \"variables\": null,\r\n  \"operationName\": \"Viewer\"\r\n}"
+}

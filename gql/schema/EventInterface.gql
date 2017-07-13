@@ -1,0 +1,7 @@
+interface Event {
+    # Implementations have their own type enums, so
+    # String! causes an error.
+    # type: String!
+    payload: JSON
+    error: String
+}
