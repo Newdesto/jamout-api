@@ -4,12 +4,12 @@ import createMusicContent from 'gql/services/music/helpers/createMusicContent'
 import SNS from 'aws-sdk/clients/sns'
 import { zipObj } from 'ramda'
 
-const importAllTracks = async function importAllTracks({ user: { id: userId, soundCloudAccessToken } }) {
-  if (!soundCloudAccessToken) {
+const importAllTracks = async function importAllTracks({ user: { id: userId, soundcloudAccessToken } }) {
+  if (!soundcloudAccessToken) {
     throw new Error('Missing SoundCloud Access Token. Cannot import tracks.')
   }
 
-  const scTracks = await getTracks(soundCloudAccessToken)
+  const scTracks = await getTracks(soundcloudAccessToken)
 
     // For each track, save to our DB.
     // We don't store anythgin for future use because:
@@ -86,7 +86,7 @@ const importAllTracks = async function importAllTracks({ user: { id: userId, sou
         type: 'SOUNDCLOUD_IMPORTER_IMPORTED_ALL_TRACKS',
         payload: {
           userId,
-          soundCloudAccessToken,
+          soundcloudAccessToken,
           trackIdMap: zipObj(tracks.map(t => t.soundCloudId), tracks.map(t => t.id))
         }
       })

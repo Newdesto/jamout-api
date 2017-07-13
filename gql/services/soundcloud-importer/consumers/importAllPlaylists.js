@@ -3,12 +3,12 @@ import SNS from 'aws-sdk/clients/sns'
 import { getPlaylists } from 'gql/utils/soundcloud'
 import createMusicContent from 'gql/services/music/helpers/createMusicContent'
 
-const importAllTracks = async function importAllTracks({ userId, soundCloudAccessToken, trackIdMap }) {
-  if (!soundCloudAccessToken || !userId || !trackIdMap) {
+const importAllTracks = async function importAllTracks({ userId, soundcloudAccessToken, trackIdMap }) {
+  if (!soundcloudAccessToken || !userId || !trackIdMap) {
     throw new Error('Missing key arguments. Cannot import tracks.')
   }
 
-  const scPlaylists = await getPlaylists(soundCloudAccessToken)
+  const scPlaylists = await getPlaylists(soundcloudAccessToken)
 
   const playlists = await Promise.all(scPlaylists.map(async (scPlaylist) => {
         // Save in DB.

@@ -52,7 +52,7 @@ const resolvers = {
     return false
   },
   async soundcloudTracks(user) {
-    const tracks = await getTracks(user.soundCloudAccessToken)
+    const tracks = await getTracks(user.soundcloudAccessToken)
     return tracks
   }
 }

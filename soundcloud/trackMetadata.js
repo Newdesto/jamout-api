@@ -17,7 +17,7 @@ export default async function trackMetadata(event, context, callback) {
     console.log(user)
     console.log(soundcloudTrackId)
     // Get the track object from SoundCloud
-    const soundcloudTrack = await getTrack(soundcloudTrackId, user.soundCloudAccessToken)
+    const soundcloudTrack = await getTrack(soundcloudTrackId, user.soundcloudAccessToken)
 
     // Map the track and save!
     const jamoutTrack = await createMusicContent({

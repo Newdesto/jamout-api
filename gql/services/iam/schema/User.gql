@@ -9,7 +9,7 @@ type User implements Node {
   # stripeCustomerId: String
   stripeCustomer: JSON
   soundcloudUserId: String
-  soundCloudAccessToken: String
+  soundcloudAccessToken: String
   isPartner: Boolean
 
   # Profile

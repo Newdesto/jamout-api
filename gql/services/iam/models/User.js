@@ -14,7 +14,7 @@ const User = devMode => dynogels.define('User', {
     phoneNumber: Joi.string(),
     stripeCustomerId: Joi.string(),
     soundcloudUserId: Joi.number(),
-    soundCloudAccessToken: Joi.string(),
+    soundcloudAccessToken: Joi.string(),
     didOnboard: Joi.boolean(),
 
     // Profile

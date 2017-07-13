@@ -25,14 +25,14 @@ export default async function trackFiles(event, context, callback) {
     const user = await getUserById(track.userId)
 
     // Get the current downloadable setting.
-    let scTrack = await getTrack(track.soundCloudId, user.soundCloudAccessToken)
+    let scTrack = await getTrack(track.soundCloudId, user.soundcloudAccessToken)
     const originalDownloadableSetting = scTrack.downloadable
 
     // If the track isn't set to downloadable change that.
     if (originalDownloadableSetting) {
       scTrack = await updateTrack({
         id: track.soundCloudId,
-        token: user.soundCloudAccessToken,
+        token: user.soundcloudAccessToken,
         updates: {
           downloadable: true
         }
@@ -62,7 +62,7 @@ export default async function trackFiles(event, context, callback) {
     request({
       uri: scTrack.download_url,
       qs: {
-        oauth_token: user.soundCloudAccessToken,
+        oauth_token: user.soundcloudAccessToken,
         client_id: 'c1e16bd8c1d45d02868f65a5cecf9d62' // Move to env.
       }
     }).pipe(audioStreamer)
@@ -83,7 +83,7 @@ export default async function trackFiles(event, context, callback) {
     if (!originalDownloadableSetting) {
       scTrack = await updateTrack({
         id: track.soundCloudId,
-        token: user.soundCloudAccessToken,
+        token: user.soundcloudAccessToken,
         updates: {
           downloadable: false
         }
@@ -115,7 +115,7 @@ export default async function trackFiles(event, context, callback) {
       request({
         uri: scTrack.artwork_url,
         qs: {
-          oauth_token: user.soundCloudAccessToken,
+          oauth_token: user.soundcloudAccessToken,
           client_id: 'c1e16bd8c1d45d02868f65a5cecf9d62'
         }
       }).pipe(artworkStreamer)

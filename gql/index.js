@@ -57,13 +57,7 @@ module.exports.handler = async function handler(event, context, callback) {
         viewer,
         devMode,
         // User is a special use case beause we need it before hand.
-        User: () => {
-          if (User) {
-            return User
-          }
-
-          return UserDef(devMode)
-        }
+        User: () => User || UserDef(devMode)
       }, variables, operationName)
 
       callback(null, createResponse(200, response))

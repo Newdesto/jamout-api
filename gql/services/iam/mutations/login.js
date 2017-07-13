@@ -33,13 +33,13 @@ const login = async function login(root, { email, password, scAccessToken }, con
         displayName: scUser.username,
         city: scUser.city,
         country: scUser.country,
-        soundCloudUserId: scUser.id,
-        soundCloudAccessToken: scAccessToken
+        soundcloudUserId: scUser.id,
+        soundcloudAccessToken: scAccessToken
       })
     } else {
       user = await updateUser({
         id: user.id,
-        soundCloudAccessToken: scAccessToken
+        soundcloudAccessToken: scAccessToken
       })
     }
   } else {
