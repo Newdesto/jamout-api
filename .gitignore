@@ -1,9 +1,7 @@
 node_modules/
 .env
 npm-debug.log
-.nyc_output
-coverage
-.jamout-db/
 .DS_Store
-dev-data/node_modules
 .vscode
+.webpack
+.serverless

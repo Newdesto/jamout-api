@@ -1,0 +1,31 @@
+{
+     "bucket": {
+      "name": "jamout.music",
+      "ownerIdentity": {
+        "principalId": "A2H4YNJMS62VBP"
+      },
+      "arn": "arn:aws:s3:::jamout.music"
+    },
+    "object": {
+      "key": "gabe/track1/audio",
+      "size": 9847741,
+      "eTag": "9a7aa65f917ed38e14ca0a7455bd7d52-2",
+      "versionId": "eTaOcJeu1.h8YUCiWJLtZlHUvTAchpZk",
+      "sequencer": "00596681BEB659FA97"
+    },
+    "latestVersion": {
+      "ETag": "\"9a7aa65f917ed38e14ca0a7455bd7d52-2\"",
+      "Size": 9847741,
+      "StorageClass": "STANDARD",
+      "Key": "gabe/track1/audio",
+      "VersionId": "eTaOcJeu1.h8YUCiWJLtZlHUvTAchpZk",
+      "IsLatest": true,
+      "LastModified": "2017-07-12T20:08:31.000Z",
+      "Owner": {
+        "DisplayName": "gabriel",
+        "ID": "8fd994fca823422b22161969955235bbbea4579b7f4098d88a0a0b8beb52d1c2"
+      }
+    },
+    "latestMetadata": {},
+    "didReleaseReadyCheck": false
+}

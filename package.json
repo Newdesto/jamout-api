@@ -10,7 +10,8 @@
     "prod": "NODE_ENV=production pm2-docker ./index.js",
     "lint": "./node_modules/.bin/eslint .",
     "test": "echo 0",
-    "watch:test": "NODE_ENV=test ava -w -v"
+    "watch:test": "NODE_ENV=test ava -w -v",
+    "deploy:production": "node_modules/serverless/bin/serverless deploy --stage=production deploy"
   },
   "author": "gabriel p samson",
   "private": true,
@@ -59,16 +60,25 @@
     "sourceMaps": true,
     "retainLines": true,
     "presets": [
-      "es2015",
-      "stage-0"
+      "es2015"
     ],
     "plugins": [
-      "babel-plugin-transform-runtime",
+      "transform-runtime",
+      "transform-async-to-generator",
+      "transform-object-rest-spread",
       [
-        "babel-plugin-inline-import",
+        "inline-import",
         {
           "extensions": [
             ".gql"
+          ]
+        }
+      ],
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./"
           ]
         }
       ]
@@ -77,68 +87,62 @@
   "devDependencies": {
     "ava": "^0.17.0",
     "babel-cli": "^6.24.1",
-    "babel-eslint": "^7.1.1",
+    "babel-core": "^6.25.0",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.1.1",
     "babel-plugin-inline-import": "^2.0.5",
-    "babel-plugin-transform-runtime": "^6.15.0",
-    "babel-preset-es2015": "^6.16.0",
-    "babel-preset-stage-0": "^6.16.0",
-    "babel-runtime": "^6.22.0",
+    "babel-plugin-module-resolver": "^2.7.1",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.24.1",
     "eslint": "^3.14.1",
-    "eslint-config-airbnb": "^14.0.0",
-    "eslint-plugin-import": "^2.2.0",
-    "sinon": "^1.17.7"
+    "serverless": "^1.17.0",
+    "serverless-external-s3-event": "git://github.com/matt-filion/serverless-external-s3-event.git",
+    "serverless-step-functions": "^1.0.4",
+    "serverless-webpack": "^2.0.0",
+    "sinon": "^1.17.7",
+    "source-map-support": "^0.4.15",
+    "webpack": "^3.0.0",
+    "webpack-node-externals": "^1.6.0"
   },
   "dependencies": {
     "apollo-errors": "^1.3.0",
     "app-module-path": "^2.1.0",
-    "async": "^2.3.0",
     "av": "^0.4.9",
     "aws-sdk": "^2.42.0",
+    "babel-runtime": "^6.23.0",
     "bcryptjs": "^2.3.0",
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
     "clean-deep": "^3.0.0",
     "cors": "^2.8.3",
     "crypto-js": "^3.1.9-1",
-    "dataloader": "^1.2.0",
     "date-fns": "^1.28.3",
     "dotenv": "^4.0.0",
     "dynamo-merge": "^1.0.0",
-    "dynamodb-niceupdate": "^0.0.5",
-    "dynamodb-update-expression": "^0.1.21",
+    "dynogels": "^8.0.1",
     "express": "^4.14.1",
     "express-jwt": "^5.3.0",
     "graphql": "^0.9.6",
-    "graphql-redis-subscriptions": "^1.1.6",
     "graphql-server-express": "^0.7.2",
-    "graphql-server-lambda": "^0.9.0",
-    "graphql-subscriptions": "^0.3.1",
     "graphql-tools": "^0.11.0",
     "graphql-type-json": "^0.1.4",
     "helmet": "^3.0.0",
-    "immutable": "^3.8.1",
-    "jimp": "^0.2.27",
-    "joi": "^10.4.1",
+    "joi": "^10.6.0",
     "jsonwebtoken": "^7.2.1",
-    "kue": "^0.11.5",
     "lodash": "^4.17.2",
-    "microtime": "^2.1.3",
     "node-uuid": "^1.4.8",
-    "nodemon": "^1.11.0",
     "ramda": "^0.23.0",
-    "redis": "^2.6.3",
-    "redux": "^3.6.0",
     "request": "^2.79.0",
     "request-promise": "^4.2.1",
     "rollbar": "^0.6.5",
     "s3-upload-stream": "^1.0.7",
-    "sharp": "^0.17.3",
-    "shortid": "^2.2.6",
     "sqs-consumer": "^3.6.0",
     "stripe": "^4.18.0",
-    "subscriptions-transport-ws": "^0.6.0",
     "uuid": "^3.0.1",
-    "vogels": "^2.2.0",
     "winston": "^2.3.0"
   }
 }

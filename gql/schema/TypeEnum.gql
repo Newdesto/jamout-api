@@ -1,0 +1,5 @@
+enum TypeEnum {
+    USER
+    MUSIC_CONTENT
+    RELEASE
+}

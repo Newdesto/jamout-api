@@ -1,0 +1,43 @@
+{
+    
+    "body": "{\r\n  \"query\": \"query Viewer {\\n  viewer {\\n    id\\n    displayName\\n  }\\n}\\n\\n\",\r\n  \"variables\": null,\r\n  \"operationName\": \"Viewer\"\r\n}",
+    "method": "POST",
+    "principalId": "",
+    "stage": "production",
+    "headers": {
+        "Accept": "*/*",
+        "Accept-Encoding": "deflate, gzip",
+        "CloudFront-Forwarded-Proto": "https",
+        "CloudFront-Is-Desktop-Viewer": "true",
+        "CloudFront-Is-Mobile-Viewer": "false",
+        "CloudFront-Is-SmartTV-Viewer": "false",
+        "CloudFront-Is-Tablet-Viewer": "false",
+        "CloudFront-Viewer-Country": "US",
+        "Content-Type": "application/json",
+        "Host": "x67lwqsbpi.execute-api.us-east-1.amazonaws.com",
+        "Via": "1.1 8008015354a3ca72f56c382a1d1cfe9f.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "FKBOMZbtIHDy_Yp-yJtMDuWzh9iNcphOCqpl2LxKaPeqUn7Fp5f7Ow==",
+        "X-Forwarded-For": "173.252.123.135, 54.239.134.113",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Proto": "https",
+        "X-Hub-Signature": "sha1=c8b01e165219ffe6be68a75cd50bd406c381e04b",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE1NmRkMmU5LTdmMjItNGJiNi04MWExLTExMmFlZDNkYWJiNyIsImNyZWF0ZWRBdCI6IjIwMTctMDctMDhUMjA6NTM6MjkuOTM4WiIsInVwZGF0ZWRBdCI6IjIwMTctMDctMDhUMjA6NTU6MjguMTc3WiIsImRpc3BsYXlOYW1lIjoiSmFtb3V0IiwiaWF0IjoxNDk5NTQ3MzI4LCJzdWIiOiIxNTZkZDJlOS03ZjIyLTRiYjYtODFhMS0xMTJhZWQzZGFiYjcifQ.JYb1ssRPXPb4qQRtNt7TZZL7eICeyWXtKEZGscMh1y8"
+    },
+    "query": {},
+    "path": {},
+    "identity": {
+        "cognitoIdentityPoolId": "",
+        "accountId": "",
+        "cognitoIdentityId": "",
+        "caller": "",
+        "apiKey": "",
+        "sourceIp": "173.252.123.135",
+        "accessKey": "",
+        "cognitoAuthenticationType": "",
+        "cognitoAuthenticationProvider": "",
+        "userArn": "",
+        "userAgent": "",
+        "user": ""
+    },
+    "stageVariables": {}
+}
