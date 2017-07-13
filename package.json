@@ -11,7 +11,8 @@
     "lint": "./node_modules/.bin/eslint .",
     "test": "echo 0",
     "watch:test": "NODE_ENV=test ava -w -v",
-    "deploy:production": "node_modules/serverless/bin/serverless deploy --stage=production"
+    "deploy:production": "node_modules/serverless/bin/serverless deploy --stage=production",
+    "start:offline": "serverless offline start --location .webpack"
   },
   "author": "gabriel p samson",
   "private": true,
@@ -101,6 +102,7 @@
     "eslint": "^3.14.1",
     "serverless": "^1.17.0",
     "serverless-external-s3-event": "git://github.com/matt-filion/serverless-external-s3-event.git",
+    "serverless-offline": "^3.15.0",
     "serverless-step-functions": "^1.0.4",
     "serverless-webpack": "^2.0.0",
     "sinon": "^1.17.7",
