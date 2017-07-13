@@ -18,7 +18,6 @@ const createResponse = (statusCode, body) => (
 )
 
 module.exports.handler = async function handler(event, context, callback) {
-  console.log(process.env)
   try {
       const { query, variables, operationName } = (typeof event.body === 'string') ? JSON.parse(event.body) : event.body
 
