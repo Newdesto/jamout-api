@@ -11,7 +11,7 @@
     "lint": "./node_modules/.bin/eslint .",
     "test": "echo 0",
     "watch:test": "NODE_ENV=test ava -w -v",
-    "deploy:production": "node_modules/serverless/bin/serverless deploy --stage=production deploy"
+    "deploy:production": "node_modules/serverless/bin/serverless deploy --stage=production"
   },
   "author": "gabriel p samson",
   "private": true,
