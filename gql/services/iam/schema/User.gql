@@ -22,6 +22,23 @@ type User implements Node {
 
   soundcloudTracks: [JSON!]
   didOnboard: Boolean
+
+  channels: UserChannels
+}
+
+type UserChannels {
+  paidPlatforms: UserChannelPaidPlatforms
+}
+
+type UserChannelPaidPlatforms {
+  firstName: String
+  lastName: String
+  address: String
+  city: String # @TODO City Enum
+  state: String # @TODO State Enum
+  zipCode: String
+  phoneNumber: String
+  didAgree: Boolean
 }
 
 input UserInput {
@@ -35,4 +52,21 @@ input UserInput {
   city: String
   country: String
   blurb: String
+  
+  channels: UserChannelsInput
+}
+
+input UserChannelsInput {
+  paidPlatforms: UserChannelPaidPlatformsInput
+}
+
+input UserChannelPaidPlatformsInput {
+  firstName: String
+  lastName: String
+  address: String
+  city: String # @TODO City Enum
+  state: String # @TODO State Enum
+  zipCode: String
+  phoneNumber: String
+  didAgree: Boolean
 }
