@@ -5,6 +5,7 @@ const stepFunctions = new StepFunctions()
 /**
  * Takes an array of SoundCloud track IDs and start a
  * SoundcloudImporter State Machine.
+ * @TODO Check that the tracks belong to the viewer.
  */
 export default async function importSoundcloudTracks(root, args, { viewer }) {
   if (!viewer) {
