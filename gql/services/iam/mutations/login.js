@@ -24,7 +24,6 @@ const login = async function login(root, { email, password, scAccessToken }, con
   if (scAccessToken) {
         // SoundCloud login
     const scUser = await getMe(scAccessToken)
-    console.log(scUser)
     user = await getUserBySoundCloudId(scUser.id)
 
     if (!user) {
