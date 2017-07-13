@@ -22,10 +22,6 @@ provider:
   memorySize: 128
   profile: jamout # Used on Gabe's machine
   # Env vars are set in the console, bro.
-  environment:
-    AWS_REGION: us-west-2
-    AWS_ACCESS_KEY_ID: AKIAJXDWZC46PC343Y3A
-    AWS_SECRET_ACCESS_KEY: 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
 
 functions:
   gql:
