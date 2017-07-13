@@ -19,7 +19,7 @@ export default async function objectCheck(event, context, callback) {
       Metadata: {
         ...metadata,
         'release-ready': releaseReadyCheck.success.toString(),
-        'release-ready-reason': !releaseReadyCheck.success ? releaseReadyCheck.reason : udefined
+        'release-ready-reason': !releaseReadyCheck.success ? releaseReadyCheck.reason : undefined
       }
     }, (err, data) => {
       if (err) {
