@@ -8,7 +8,7 @@ type User implements Node {
   phoneNumber: String
   # stripeCustomerId: String
   stripeCustomer: JSON
-  soundCloudUserId: String
+  soundcloudUserId: String
   soundCloudAccessToken: String
   isPartner: Boolean
 

@@ -1,6 +1,7 @@
 import { graphql } from 'graphql'
 import { formatError } from 'apollo-errors'
 import jwt from 'jsonwebtoken'
+import UserDef from 'gql/services/iam/models/User'
 import getUserById from 'gql/services/iam/helpers/getUserById'
 import schema from './schema'
 import 'request' // Peer dep for request-promise
@@ -19,6 +20,10 @@ const createResponse = (statusCode, body) => (
 
 module.exports.handler = async function handler(event, context, callback) {
   try {
+    console.log(process.env)
+      const devMode = event.queryStringParameters && !!event.queryStringParameters.devMode
+
+      // Get relevant parameters from stringified body.
       const { query, variables, operationName } = (typeof event.body === 'string') ? JSON.parse(event.body) : event.body
 
       let token
@@ -40,14 +45,25 @@ module.exports.handler = async function handler(event, context, callback) {
 
       // Verify the token
       let viewer = token && jwt.verify(token, process.env.JWT_SECRET)
+      let User
 
       // Fetch the user object from DB if the JWT is verified.
       if (viewer) {
-        viewer = await getUserById(viewer.id)
+        User = UserDef(devMode) // Init the User model def.
+        viewer = await getUserById(User)(viewer.id, devMode)
       }
 
       const response = await graphql(schema, query, null, {
-        viewer
+        viewer,
+        devMode,
+        // User is a special use case beause we need it before hand.
+        User: () => {
+          if (User) {
+            return User
+          }
+
+          return UserDef(devMode)
+        }
       }, variables, operationName)
 
       callback(null, createResponse(200, response))

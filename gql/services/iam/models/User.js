@@ -1,9 +1,9 @@
 import dynogels from 'gql/io/dynogels'
 import Joi from 'joi'
 
-const User = dynogels.define('User', {
+const User = devMode => dynogels.define('User', {
   hashKey: 'id',
-  tableName: 'user.identity',
+  tableName: devMode ? 'User.production' : 'User.development',
   timestamps: true,
   schema: {
     id: Joi.string(),
@@ -13,7 +13,7 @@ const User = dynogels.define('User', {
     password: Joi.string(),
     phoneNumber: Joi.string(),
     stripeCustomerId: Joi.string(),
-    soundCloudUserId: Joi.number(),
+    soundcloudUserId: Joi.number(),
     soundCloudAccessToken: Joi.string(),
     didOnboard: Joi.boolean(),
 
@@ -40,7 +40,7 @@ const User = dynogels.define('User', {
     testMode: Joi.boolean().default(process.env.NODE_ENV !== 'production' ? true : undefined)
   },
   indexes: [
-    { hashKey: 'soundCloudUserId', name: 'soundCloudUserId-index', type: 'global' },
+    { hashKey: 'soundcloudUserId', name: 'soundcloudUserId-index', type: 'global' },
     { hashKey: 'email', name: 'email-index', type: 'global' }
   ]
 })
