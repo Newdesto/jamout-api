@@ -12,6 +12,7 @@ module.exports = {
     '/music/objectCheck': './music/objectCheck',
     '/music/objectCopy': './music/objectCopy',
   },
+  devtool: "source-map",
   target: 'node',
   externals: [nodeExternals()],
   module: {
