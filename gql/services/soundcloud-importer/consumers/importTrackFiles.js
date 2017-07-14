@@ -50,7 +50,7 @@ const importTrackFiles = async function importTrackFiles({ track }) {
   }))
 
   const audioStreamer = streamer.upload({
-    Bucket: 'jamout-music',
+    Bucket: 'jamout.music',
     Key: audioS3Key,
     ContentType: `audgql/io/${scTrack.original_format}`,
     ACL: 'private',
@@ -103,7 +103,7 @@ const importTrackFiles = async function importTrackFiles({ track }) {
     // but let's just stick with the large format for now.
   if (scTrack.artwork_url) {
     const artworkStreamer = streamer.upload({
-      Bucket: 'jamout-music',
+      Bucket: 'jamout.music',
       Key: artworkS3Key,
       ContentType: 'image/jpeg',
       ACL: 'private',
