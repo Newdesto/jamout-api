@@ -14,7 +14,7 @@ const InvalidLoginError = createError('InvalidLoginError', {
  * Logs a user in using their email & password or the SoundCloud
  * oauth authorization code.
  */
-const login = async function login(root, { email, password, scAccessToken }, { User }) {
+const login = async function login(root, { email, password, scAccessToken }, { devMode, User }) {
   let user
 
   if (scAccessToken) {
@@ -62,6 +62,7 @@ const login = async function login(root, { email, password, scAccessToken }, { U
     // or localhost for dev. We do this so JWTs don't get mixed up, and for
     // better security.
   const accessToken = jwt.sign({
+    devMode,
     id: user.id,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,

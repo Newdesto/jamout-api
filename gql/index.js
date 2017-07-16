@@ -46,6 +46,13 @@ module.exports.handler = async function handler(event, context, callback) {
 
       // Verify the token
       let viewer = token && jwt.verify(token, process.env.JWT_SECRET)
+
+      // Make sure that devMode matches in the params and the token.
+      if (viewer && devMode && !viewer.devMode) {
+        throw new Error('Development mode must be the same in the query parameters and the authentication token.')
+      } 
+
+      // Got scope?
       let user
 
       // Fetch the user object from DB if the JWT is verified.
