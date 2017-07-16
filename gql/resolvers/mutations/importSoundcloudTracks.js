@@ -7,7 +7,7 @@ const stepFunctions = new StepFunctions()
  * SoundcloudImporter State Machine.
  * @TODO Check that the tracks belong to the viewer.
  */
-export default async function importSoundcloudTracks(root, args, { viewer }) {
+export default async function importSoundcloudTracks(root, args, { devMode, viewer }) {
   if (!viewer) {
     throw new Error('Authentication failed.')
   }
@@ -19,6 +19,7 @@ export default async function importSoundcloudTracks(root, args, { viewer }) {
     stepFunctions.startExecution({
       stateMachineArn: process.env.soundcloudImporterStateMachineArn,
       input: JSON.stringify({
+        devMode,
         userId,
         soundcloudTrackId
       })

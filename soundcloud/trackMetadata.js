@@ -1,6 +1,6 @@
 import uuid from 'node-uuid'
 import { getTrack } from 'gql/utils/soundcloud'
-import getUserById from 'gql/services/iam/helpers/getUserById'
+import User from 'models/User'
 import createMusicContent from 'gql/services/music/helpers/createMusicContent'
 
 /**
@@ -10,12 +10,11 @@ import createMusicContent from 'gql/services/music/helpers/createMusicContent'
 
 export default async function trackMetadata(event, context, callback) {
   try {
-    const { userId, soundcloudTrackId } = event
+    const { devMode, userId, soundcloudTrackId } = event
 
     // Get the user object from DynamoDB.
-    const user = await getUserById(userId)
-    console.log(user)
-    console.log(soundcloudTrackId)
+    const user = await new User(devMode).getUserById(userId)
+
     // Get the track object from SoundCloud
     const soundcloudTrack = await getTrack(soundcloudTrackId, user.soundcloudAccessToken)
 
@@ -46,6 +45,7 @@ export default async function trackMetadata(event, context, callback) {
     })
 
     callback(null, {
+      ...event,
       soundcloudTrack,
       jamoutTrack
     })
