@@ -2,10 +2,10 @@ import dynogels from 'gql/io/dynogels'
 import Joi from 'joi'
 import uuid from 'node-uuid'
 
-const Release = devMode => dynogels.define('Release', {
+const Release = dynogels.define('Release', {
   hashKey: 'userId',
   rangeKey: 'contentId',
-  tableName: devMode ? 'Release.development' : 'Release.production',
+  tableName: 'distribution.Release',
   timestamps: true,
   schema: {
     id: Joi.string(),
