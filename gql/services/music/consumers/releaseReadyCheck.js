@@ -51,12 +51,12 @@ const releaseReadyCheck = async function releaseReadyCheck(key) {
   console.log(type)
   if (type === 'audio') {
     const s3 = new S3()
-    let getUrl = s3.getSignedUrl('getObject', { Bucket: 'jamout-music', Key: key })
+    let getUrl = s3.getSignedUrl('getObject', { Bucket: 'jamout.music', Key: key })
     getUrl = getUrl.replace('https', 'http')
     // Get latest version of audio.
     const versions = await new Promise((resolve, reject) => {
       s3.listObjectVersions({
-        Bucket: 'jamout-music',
+        Bucket: 'jamout.music',
         Prefix: key
       }, (err, data) => {
         if (err) {
@@ -75,7 +75,7 @@ const releaseReadyCheck = async function releaseReadyCheck(key) {
     // Get the metadata of the latest version. Did we check for quality?
     const latestMetadata = await new Promise((resolve, reject) => {
       s3.headObject({
-        Bucket: 'jamout-music',
+        Bucket: 'jamout.music',
         Key: key,
         VersionId: latestVersion.VersionId
       }, (err, data) => {
@@ -98,9 +98,9 @@ const releaseReadyCheck = async function releaseReadyCheck(key) {
     try {
       const releaseReady = await checkDistributionRequirements(getUrl)
       const copiedObject = s3.copyObject({
-        Bucket: 'jamout-music',
+        Bucket: 'jamout.music',
         Key: key,
-        CopySource: `/jamout-music/${key}`,
+        CopySource: `/jamout.music/${key}`,
         MetadataDirective: 'REPLACE',
         Metadata: {
           'release-ready': 'true'
@@ -112,9 +112,9 @@ const releaseReadyCheck = async function releaseReadyCheck(key) {
     } catch (err) {
       console.log(err)
       const copiedObject = s3.copyObject({
-        Bucket: 'jamout-music',
+        Bucket: 'jamout.music',
         Key: key,
-        CopySource: `/jamout-music/${key}`,
+        CopySource: `/jamout.music/${key}`,
         MetadataDirective: 'REPLACE',
         Metadata: {
           'release-ready': 'false',
@@ -129,7 +129,7 @@ const releaseReadyCheck = async function releaseReadyCheck(key) {
 
     // Delete the version that isn't checked.
     s3.deleteObject({
-      Bucket: 'jamout-music',
+      Bucket: 'jamout.music',
       Key: key,
       VersionId: latestVersion.VersionId
     }, (err, data) => {

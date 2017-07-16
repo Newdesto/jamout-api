@@ -45,6 +45,8 @@ input UserInput {
   # Account
   email: String
   phoneNumber: String
+  
+  didOnboard: Boolean
 
   # Profile
   avatarKey: String

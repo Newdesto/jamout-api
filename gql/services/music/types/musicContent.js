@@ -6,7 +6,7 @@ const resolvers = {
   async artworkVersions(musicContent, args, { viewer }) {
     const versions = await new Promise((resolve, reject) => {
       s3.listObjectVersions({
-        Bucket: 'jamout-music',
+        Bucket: 'jamout.music',
         Prefix: `${viewer.id}/${musicContent.id}/artwork`
       }, (err, data) => {
         if (err) {
@@ -23,7 +23,7 @@ const resolvers = {
       // Get metadata for this version.
       const metadata = await new Promise((resolve, reject) => {
         s3.headObject({
-          Bucket: 'jamout-music',
+          Bucket: 'jamout.music',
           Key: `${viewer.id}/${musicContent.id}/artwork`,
           VersionId: v.VersionId
         }, (err, data) => {
@@ -47,7 +47,7 @@ const resolvers = {
         lastModified: v.LastModified,
         isLatest: v.IsLatest,
         versionId: v.VersionId,
-        url: s3.getSignedUrl('getObject', { Bucket: 'jamout-music', Key: `${viewer.id}/${musicContent.id}/artwork`, VersionId: v.VersionId })
+        url: s3.getSignedUrl('getObject', { Bucket: 'jamout.music', Key: `${viewer.id}/${musicContent.id}/artwork`, VersionId: v.VersionId })
       }
     }))
 
@@ -56,7 +56,7 @@ const resolvers = {
   async audioVersions(musicContent, args, { viewer }) {
     const versions = await new Promise((resolve, reject) => {
       s3.listObjectVersions({
-        Bucket: 'jamout-music',
+        Bucket: 'jamout.music',
         Prefix: `${viewer.id}/${musicContent.id}/audio`
       }, (err, data) => {
         if (err) {
@@ -75,7 +75,7 @@ const resolvers = {
       // Get metadata for this version.
       const metadata = await new Promise((resolve, reject) => {
         s3.headObject({
-          Bucket: 'jamout-music',
+          Bucket: 'jamout.music',
           Key: `${viewer.id}/${musicContent.id}/audio`,
           VersionId: v.VersionId
         }, (err, data) => {
@@ -98,7 +98,7 @@ const resolvers = {
         lastModified: v.LastModified,
         isLatest: v.IsLatest,
         versionId: v.VersionId,
-        url: s3.getSignedUrl('getObject', { Bucket: 'jamout-music', Key: `${viewer.id}/${musicContent.id}/artwork`, VersionId: v.VersionId })
+        url: s3.getSignedUrl('getObject', { Bucket: 'jamout.music', Key: `${viewer.id}/${musicContent.id}/artwork`, VersionId: v.VersionId })
       }
     }))
 
