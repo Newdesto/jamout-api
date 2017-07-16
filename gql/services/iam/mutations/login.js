@@ -5,10 +5,6 @@ import { hashPassword, authenticate } from 'gql/utils/auth'
 import { createError } from 'apollo-errors'
 import jwt from 'jsonwebtoken'
 import SNS from 'aws-sdk/clients/sns'
-import getUserBySoundCloudId from '../helpers/getUserBySoundCloudId'
-import getUserByEmail from '../helpers/getUserByEmail'
-import createUser from '../helpers/createUser'
-import updateUser from '../helpers/updateUser'
 
 const InvalidLoginError = createError('InvalidLoginError', {
   message: 'Invalid email or password.'

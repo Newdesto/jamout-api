@@ -44,7 +44,7 @@ export default async function trackFiles(event, context, callback) {
     const streamer = S3Stream(new S3())
 
     const audioStreamer = streamer.upload({
-      Bucket: 'jamout-music',
+      Bucket: 'jamout.music',
       Key: audioS3Key,
       ContentType: `audio/${scTrack.original_format}`,
       ACL: 'private',
@@ -97,7 +97,7 @@ export default async function trackFiles(event, context, callback) {
       // but let's just stick with the large format for now.
     if (scTrack.artwork_url) {
       const artworkStreamer = streamer.upload({
-        Bucket: 'jamout-music',
+        Bucket: 'jamout.music',
         Key: artworkS3Key,
         ContentType: 'image/jpeg',
         ACL: 'private',

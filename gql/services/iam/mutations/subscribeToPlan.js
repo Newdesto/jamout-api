@@ -5,9 +5,8 @@ const planEnum = {
   DISTRIBUTION_PREMIUM: 'distribution-premium'
 }
 
-const subscribeToPlan = async function subscribeToPlan(root, { token, planId }, { viewer, UserDef }) {
-  const User = UserDef()
-    // Create a Stripe customer account if they do not have one yet.
+const subscribeToPlan = async function subscribeToPlan(root, { token, planId }, { viewer, User }) {
+  // Create a Stripe customer account if they do not have one yet.
   if (!viewer.stripeCustomerId) {
     const stripeCustomer = await createCustomer({
       email: viewer.email,

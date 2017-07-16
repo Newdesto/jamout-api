@@ -1,14 +1,10 @@
-import updateUserHelper from '../helpers/updateUser'
-
-const updateUser = async function updateUser(root, { input: updates }, { viewer, UserDef }) {
+const updateUser = async function updateUser(root, { input: updates }, { viewer, User }) {
   if (!viewer) {
     throw new Error('Authentication failed.')
   }
 
-  // Define the models.
-  const User = UserDef()
 
-  const user = await updateUserHelper(User)({
+  const user = await User.updateUser({
     id: viewer.id,
     updates
   })

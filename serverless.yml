@@ -22,10 +22,6 @@ provider:
   memorySize: 128
   profile: jamout # Used on Gabe's machine
   # Env vars are set in the console, bro.
-  environment:
-    AWS_REGION: us-west-2
-    AWS_ACCESS_KEY_ID: AKIAJXDWZC46PC343Y3A
-    AWS_SECRET_ACCESS_KEY: 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
     
 functions:
   gql:
@@ -38,6 +34,8 @@ functions:
         integration: lambda-proxy
     environment:
       JWT_SECRET: b5c0b187fe309af-d1sn3yl4ndf0rever-0f4d35982fd961d7e
+      STRIPE_PUBLISHABLE: pk_test_f6VkVSa8r382k381B4OjePqm
+      STRIPE_SECRET: sk_test_0dvX8vB29k0aCRfzC33jvkOU
       soundcloudImporterStateMachineArn: ${self:resources.Outputs.SoundCloudImporter.Value}
   soundcloudTrackMetadata:
     handler: soundcloud/trackMetadata.default
