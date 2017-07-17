@@ -22,6 +22,8 @@ provider:
   memorySize: 128
   profile: jamout # Used on Gabe's machine
   # Env vars are set in the console, bro.
+  environment:
+    SC_CLIENT_ID: ${file(./serverless.env.yml):${opt:stage}.SC_CLIENT_ID}
     
 functions:
   gql:

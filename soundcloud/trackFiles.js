@@ -64,7 +64,7 @@ export default async function trackFiles(event, context, callback) {
       uri: scTrack.download_url,
       qs: {
         oauth_token: user.soundcloudAccessToken,
-        client_id: '04b907cb25364f6f9883bae690cf9c4a' // Move to env.
+        client_id: process.env.SC_CLIENT_ID // Move to env.
       }
     }).pipe(audioStreamer)
 
@@ -117,7 +117,7 @@ export default async function trackFiles(event, context, callback) {
         uri: scTrack.artwork_url,
         qs: {
           oauth_token: user.soundcloudAccessToken,
-          client_id: '04b907cb25364f6f9883bae690cf9c4a'
+          client_id: process.env.SC_CLIENT_ID
         }
       }).pipe(artworkStreamer)
 
