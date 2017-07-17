@@ -11,7 +11,7 @@ const User = devMode => {
   // Define the model
   const model = dynogels.define('User', {
     hashKey: 'id',
-    tableName: devMode ? 'User.development' : 'User.production',
+    tableName: process.env.USER_TABLE,
     timestamps: true,
     schema: {
       id: Joi.string(),

@@ -26,6 +26,7 @@ provider:
     SC_CLIENT_ID: ${file(./serverless.env.yml):${opt:stage}.SC_CLIENT_ID}
     STRIPE_PUBLISHABLE: ${file(./serverless.env.yml):${opt:stage}.STRIPE_PUBLISHABLE}
     STRIPE_SECRET: ${file(./serverless.env.yml):${opt:stage}.STRIPE_SECRET}
+    USER_TABLE: ${file(./serverless.env.yml):${opt:stage}.USER_TABLE}
     
 functions:
   gql:

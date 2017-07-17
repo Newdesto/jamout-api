@@ -25,3 +25,4 @@ deployment:
     branch: master
     commands:
       - yarn deploy:production
+      - yarn deploy:dev
