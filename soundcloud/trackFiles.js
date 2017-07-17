@@ -8,6 +8,7 @@ import { zipObj } from 'ramda'
 import request from 'request'
 import S3Stream from 's3-upload-stream'
 import logger from 'gql/io/logger'
+import User from 'models/User'
 
 /**
  * Streams the artwork/audio for a track from SoundCloud and to S3.
@@ -15,14 +16,14 @@ import logger from 'gql/io/logger'
 
 export default async function trackFiles(event, context, callback) {
   try {
-    const { jamoutTrack: track } = event
+    const { devMode, jamoutTrack: track } = event
 
     // Notice the lack of file extension.
     const audioS3Key = `${track.userId}/${track.id}/audio`
     const artworkS3Key = `${track.userId}/${track.id}/artwork`
 
     // Users should be cached for speed!
-    const user = await getUserById(track.userId)
+    const user = await new User(devMode).getUserById(track.userId)
 
     // Get the current downloadable setting.
     let scTrack = await getTrack(track.soundCloudId, user.soundcloudAccessToken)
