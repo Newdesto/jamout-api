@@ -12,7 +12,7 @@
     "test": "echo 0",
     "watch:test": "NODE_ENV=test ava -w -v",
     "deploy:production": "node_modules/serverless/bin/serverless deploy --stage=production",
-    "deploy:dev": "node_modules/serverless/bin/serverless deploy --stage=dev",
+    "deploy:staging": "node_modules/serverless/bin/serverless deploy --stage=staging",
     "start:offline": "serverless offline start --location .webpack"
   },
   "author": "gabriel p samson",
