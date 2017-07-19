@@ -44,6 +44,7 @@ functions:
     handler: soundcloud/trackMetadata.default
   soundcloudTrackFiles:
     handler: soundcloud/trackFiles.default
+    timeout: 60
   music-triggerReleaseReadinessChecker:
     handler: music/triggerReleaseReadinessChecker.default
     events:
@@ -59,6 +60,7 @@ functions:
     handler: music/metadataCheck.default
   music-objectCheck:
     handler: music/objectCheck.default
+    timeout: 60
   music-objectCopy:
     handler: music/objectCopy.default
 
